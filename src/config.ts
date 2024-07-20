@@ -7,6 +7,12 @@ export interface Config {
 }
 
 export const config: Config = {
-  site: { name: 'Athenas', description: 'EHS Software', themeColor: '#090a0b', url: getSiteURL(), serverURL: 'https://56f4-103-197-112-103.ngrok-free.app' },
+  site: {
+    name: 'Athenas',
+    description: 'EHS Software',
+    themeColor: '#090a0b',
+    url: getSiteURL(),
+    serverURL: 'https://b570-103-197-112-105.ngrok-free.app',
+  },
   logLevel: (process.env.NEXT_PUBLIC_LOG_LEVEL as keyof typeof LogLevel) ?? LogLevel.ALL,
 };

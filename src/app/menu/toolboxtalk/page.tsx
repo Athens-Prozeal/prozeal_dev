@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { useCallback, useRef } from 'react';
 import { useState } from 'react';
+import RouterLink from 'next/link'; // Use this for layout to not reload the page
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -75,11 +76,10 @@ export default function Grid() {
         </Stack>
         <div>
           <Button
+            component={RouterLink}
+            href={'/menu/toolboxtalk/add'}
             startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
             variant="contained"
-            onClick={() => {
-              window.location.href = '/menu/toolboxtalk/add';
-            }}
           >
             Add
           </Button>

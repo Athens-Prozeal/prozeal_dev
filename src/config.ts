@@ -7,6 +7,12 @@ export interface Config {
 }
 
 export const config: Config = {
-  site: { name: 'Athenas', description: 'EHS Software', themeColor: '#090a0b', url: getSiteURL(), serverURL: 'http://127.0.0.1:8000' },
+  site: {
+    name: 'Athenas',
+    description: 'EHS Software',
+    themeColor: '#090a0b',
+    url: getSiteURL(),
+    serverURL: 'http://127.0.0.1:8000',
+  },
   logLevel: (process.env.NEXT_PUBLIC_LOG_LEVEL as keyof typeof LogLevel) ?? LogLevel.ALL,
 };

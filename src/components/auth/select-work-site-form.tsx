@@ -52,7 +52,7 @@ export function SelectWorkSiteForm() {
           >
             {WorkSites?.map((workSite: workSiteType) => (
               <MenuItem key={workSite.id} value={workSite.id}>
-                {workSite.name}
+                {workSite.id}
               </MenuItem>
             ))}
           </Select>

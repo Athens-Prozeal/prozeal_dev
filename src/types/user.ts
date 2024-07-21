@@ -1,5 +1,5 @@
 export interface WorkSite{
-  id: number;
+  id: string;
   name: string;
   role: string;
 }

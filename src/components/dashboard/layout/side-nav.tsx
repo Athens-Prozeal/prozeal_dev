@@ -1,16 +1,30 @@
 'use client';
 
-// import * as React from 'react';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RouterLink from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Box, Button, Collapse, Divider, List, ListItem, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Collapse,
+  Divider,
+  FormControl,
+  InputLabel,
+  List,
+  ListItem,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { CaretDown, CaretUp } from '@phosphor-icons/react';
 import { CaretUpDown as CaretUpDownIcon } from '@phosphor-icons/react/dist/ssr/CaretUpDown';
 
 import type { NavItemConfig } from '@/types/nav';
+import { WorkSite as workSiteType } from '@/types/user';
 import { paths } from '@/paths';
+import { authClient } from '@/lib/auth/client';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
 import { Logo } from '@/components/core/logo';
 
@@ -19,6 +33,29 @@ import { navIcons } from './nav-icons';
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
+  const [workSites, setWorkSites] = useState<workSiteType[] | null>(null);
+  const [selectedWorkSite, setSelectedWorkSite] = useState<string>('');
+
+  useEffect(() => {
+    authClient.getUser().then(({ data }) => {
+      const newWorkSites = data?.workSites ?? null;
+      setWorkSites(newWorkSites);
+
+      // Load work site from local storage on first render
+      const savedWorkSite = localStorage.getItem('work-site-id');
+      if (savedWorkSite == null) {
+        window.location.href = '/auth/select-work-site';
+      }
+      setSelectedWorkSite(savedWorkSite || '');
+    });
+  }, [selectedWorkSite]);
+
+  // Handle worksite change and saves work-site-id to local storage
+  const handleWorkSiteChange = (event: SelectChangeEvent<string>) => {
+    const newWorkSite = event.target.value;
+    localStorage.setItem('work-site-id', newWorkSite);
+    window.location.reload(); // Refresh the page
+  };
 
   return (
     <Box
@@ -63,15 +100,35 @@ export function SideNav(): React.JSX.Element {
             p: '4px 12px',
           }}
         >
-          <Box sx={{ flex: '1 1 auto' }}>
-            <Typography color="var(--mui-palette-neutral-400)" variant="body2">
-              Workspace
-            </Typography>
-            <Typography color="inherit" variant="subtitle1">
-              Devias
-            </Typography>
-          </Box>
-          <CaretUpDownIcon />
+          <FormControl variant="filled" fullWidth>
+            <InputLabel id="work-site-label" sx={{ color: 'var(--mui-palette-neutral-400)' }}>
+              Work site
+            </InputLabel>
+            <Select
+              labelId="work-site-label"
+              value={selectedWorkSite}
+              onChange={handleWorkSiteChange}
+              sx={{
+                color: 'var(--mui-palette-neutral-400)',
+                '.MuiSelect-icon': { color: 'inherit' },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    backgroundColor: 'var(--mui-palette-neutral-950)',
+                    color: 'var(--mui-palette-neutral-400)',
+                  },
+                },
+              }}
+            >
+              {workSites &&
+                workSites.map((workSite) => (
+                  <MenuItem key={workSite.id} value={workSite.id}>
+                    {workSite.id}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
         </Box>
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />

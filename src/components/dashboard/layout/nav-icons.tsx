@@ -6,6 +6,7 @@ import { User as UserIcon } from '@phosphor-icons/react/dist/ssr/User';
 import { Users as UsersIcon } from '@phosphor-icons/react/dist/ssr/Users';
 import { XSquare } from '@phosphor-icons/react/dist/ssr/XSquare';
 import { UsersFour } from '@phosphor-icons/react/dist/ssr/UsersFour';
+import { Person } from '@phosphor-icons/react/dist/ssr/Person';
 
 // Get icon code from https://phosphoricons.com/
 
@@ -15,6 +16,7 @@ export const navIcons = {
   'plugs-connected': PlugsConnectedIcon,
   'x-square': XSquare,
   'users-four': UsersFour,
+  'worker': Person,
   user: UserIcon,
   users: UsersIcon,
 } as Record<string, Icon>;

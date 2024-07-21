@@ -8,6 +8,7 @@ export const paths = {
   },
   menu:{
     toolboxtalk: '/menu/toolboxtalk',
+    worker: '/menu/worker',
     manpower:'/menu/manpower',
   },
 

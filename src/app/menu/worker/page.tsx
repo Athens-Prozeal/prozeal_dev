@@ -16,6 +16,7 @@ import { config } from '@/config';
 
 import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Optional Theme applied to the Data Grid
+
 import '@/styles/ag-grid.css';
 
 import ActionButtonsRenderer from '@/components/core/ag-grid/action-buttons-renderer';
@@ -29,7 +30,7 @@ export default function Grid() {
 
   React.useEffect(() => {
     axios
-      .get(`${config.site.serverURL}/api/tbt/?work_site_id=${localStorage.getItem('work-site-id')}`, {
+      .get(`${config.site.serverURL}/api/worker/?work_site_id=${localStorage.getItem('work-site-id')}`, {
         headers: {
           Authorization: authToken,
           'ngrok-skip-browser-warning': 'true',
@@ -44,10 +45,14 @@ export default function Grid() {
   }, []);
 
   const [colDefs, setColDefs] = useState<ColDef[]>([
-    { field: 'date', headerName: 'Date', filter: 'agDateColumnFilter' },
-    { field: 'topic', headerName: 'Topic', filter: 'agTextColumnFilter' },
-    { field: 'number_of_participants', headerName: 'Number Of Participants', filter: 'agNumberColumnFilter' },
-    { field: 'agency_name', headerName: 'Agency Name', filter: 'agTextColumnFilter' },
+    { field: 'name', headerName: 'Name', filter: 'agTextColumnFilter' },
+    { field: 'induction_date', headerName: 'Induction Date', filter: 'agDateColumnFilter' },
+    { field: 'father_name', headerName: 'Father Name', filter: 'agTextColumnFilter' },
+    { field: 'created_under', headerName: 'Created Under', filter: 'agTextColumnFilter' },
+    { field: 'date_of_birth', headerName: 'Date Of Birth', filter: 'agDateColumnFilter' },
+    { field: 'gender', headerName: 'Gender', filter: 'agTextColumnFilter' },
+    { field: 'designation', headerName: 'Designation', filter: 'agTextColumnFilter' },
+
     {
       field: 'actions',
       cellRenderer: ActionButtonsRenderer,
@@ -57,7 +62,7 @@ export default function Grid() {
 
   const onBtnExport = useCallback(() => {
     const params = {
-      columnKeys: ['date', 'topic', 'number_of_participants', 'agency_name'], // Specify the keys of the columns you want to export
+      columnKeys: ['name', 'induction_date', 'father_name', 'agency_name'], // Specify the keys of the columns you want to export
     };
 
     gridRef.current!.api.exportDataAsCsv(params);
@@ -67,7 +72,7 @@ export default function Grid() {
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-          <Typography variant="h5">Tool Box Talk</Typography>
+          <Typography variant="h5">Worker</Typography>
           <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
             <Button color="inherit" startIcon={<UploadIcon fontSize="var(--icon-fontSize-md)" />} onClick={onBtnExport}>
               Export

@@ -14,24 +14,31 @@ import { WorkSite as workSiteType } from '@/types/user';
 import { authClient } from '@/lib/auth/client';
 
 export function SelectWorkSiteForm() {
-  const [WorkSite, setWorkSite] = React.useState('');
-  const [WorkSites, setWorkSites] = React.useState<workSiteType[] | null>(null);
+  const [SelectedWorkSite, setSelectedWorkSite] = React.useState('');
+  const [WorkSites, setWorkSites] = React.useState<workSiteType[]>();
 
   React.useEffect(() => {
     authClient.getUser().then(({ data }) => {
-      return setWorkSites(data?.workSites ?? null);
+      return setWorkSites(data?.workSites);
     });
   }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setWorkSite(event.target.value as string);
+    setSelectedWorkSite(event.target.value as string);
   };
 
   const handleSubmit = () => {
-    if (!WorkSite) {
+    if (!SelectedWorkSite) {
       return;
     }
-    localStorage.setItem('work-site-id', WorkSite);
+
+    for (const workSite of WorkSites || []) {
+      if (workSite.id == SelectedWorkSite) {
+        localStorage.setItem('work-site-id', SelectedWorkSite);
+        localStorage.setItem('role', workSite.role);
+      }
+    }
+
     window.location.href = '/dashboard';
   };
 
@@ -46,7 +53,7 @@ export function SelectWorkSiteForm() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={WorkSite}
+            value={SelectedWorkSite}
             label="Age"
             onChange={handleChange}
           >

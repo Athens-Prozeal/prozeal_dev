@@ -32,12 +32,12 @@ import { navIcons } from './nav-icons';
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
-  const [workSites, setWorkSites] = useState<workSiteType[] | null>(null);
+  const [workSites, setWorkSites] = useState<workSiteType[]>();
   const [selectedWorkSite, setSelectedWorkSite] = useState<string>('');
 
   useEffect(() => {
     authClient.getUser().then(({ data }) => {
-      const allWorkSites = data?.workSites ?? null;
+      const allWorkSites = data?.workSites;
       setWorkSites(allWorkSites);
 
       // Load work site from local storage on first render
@@ -51,8 +51,13 @@ export function SideNav(): React.JSX.Element {
 
   // Handle worksite change and saves work-site-id to local storage
   const handleWorkSiteChange = (event: SelectChangeEvent<string>) => {
-    const newWorkSite = event.target.value;
-    localStorage.setItem('work-site-id', newWorkSite);
+    const newWorkSiteId = event.target.value;
+    for (const workSite of workSites || []) {
+      if (workSite.id == newWorkSiteId) {
+        localStorage.setItem('work-site-id', newWorkSiteId);
+        localStorage.setItem('role', workSite.role);
+      }
+    }
     window.location.reload(); // Refresh the page
   };
 

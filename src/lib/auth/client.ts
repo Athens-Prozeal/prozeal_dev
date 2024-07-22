@@ -110,9 +110,30 @@ class AuthClient {
     return { data: user };
   }
 
+  async getWorkSiteRole(): Promise<{ role: string | null }> {
+    let role = 'null';
+    try {
+      const response = await axios.get(`${config.site.serverURL}/api/auth/work-site-role/?work_site_id=${localStorage.getItem('work-site-id')}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+          'ngrok-skip-browser-warning': 'true',
+        },
+      });
+  
+      if (response.status === 200) {
+         role = response.data.role;
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+    return { role };
+  }
+
   async signOut(): Promise<{ error?: string }> {
     localStorage.removeItem('access-token');
-
+    localStorage.removeItem('refresh-token');
+    localStorage.removeItem('work-site-id');
+    localStorage.removeItem('role');
     return {};
   }
 }

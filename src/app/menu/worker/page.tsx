@@ -1,8 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useCallback, useRef } from 'react';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -10,20 +9,18 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 import { ColDef } from 'ag-grid-community'; // Importing ColDef type
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
-import axios from 'axios';
-
-import { config } from '@/config';
 
 import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Optional Theme applied to the Data Grid
-
 import '@/styles/ag-grid.css';
+import axios from 'axios';
+import { config } from '@/config';
 
 import ActionButtonsRenderer from '@/components/core/ag-grid/action-buttons-renderer';
 
 // New file: metadata.ts
 
-export default function Grid() {
+export default function Page() {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
   const [rowData, setRowData] = useState([]);
   const gridRef = useRef<AgGridReact>(null);
@@ -50,12 +47,31 @@ export default function Grid() {
     { field: 'father_name', headerName: 'Father Name', filter: 'agTextColumnFilter' },
     { field: 'created_under', headerName: 'Created Under', filter: 'agTextColumnFilter' },
     { field: 'date_of_birth', headerName: 'Date Of Birth', filter: 'agDateColumnFilter' },
-    { field: 'gender', headerName: 'Gender', filter: 'agTextColumnFilter' },
+    {
+      field: 'gender',
+      headerName: 'Gender',
+      filter: 'agTextColumnFilter',
+      valueGetter: (params) => {
+        if (params.data.gender === 'M') {
+          return 'Male';
+        }
+        else if (params.data.gender === 'F'){
+          return 'Female';
+        }
+        else if (params.data.gender === 'O'){
+          return 'Other';
+        }
+        return params.data.gender;
+      },
+    },
     { field: 'designation', headerName: 'Designation', filter: 'agTextColumnFilter' },
 
     {
       field: 'actions',
       cellRenderer: ActionButtonsRenderer,
+      cellRendererParams: {
+        actionToDisplay: ['view', 'edit', 'delete'],
+      },
       minWidth: 250,
     },
   ]);

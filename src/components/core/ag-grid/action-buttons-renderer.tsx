@@ -14,14 +14,11 @@ interface Action {
 }
 
 interface CustomCellRendererParams extends ICellRendererParams {
-  actions: string[];
+  actionToDisplay: string[];
 }
 
 const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
-  const [actions, setActions] = useState<Action[]>([]);
-  useEffect(() => {
-    setActions(params.data.actions);
-  }, []);
+  const [actions, setActions] = useState(params.data.actions);
 
   const getIcon = (actionName: string) => {
     switch (actionName) {
@@ -57,21 +54,23 @@ const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
 
   return (
     <Box display="flex" justifyContent="flex-end" gap="5px" margin="5px 0 5px 5px">
-      {actions.map((action, index) => (
-        <Button
-          key={index}
-          variant="outlined"
-          className="btn-simple action-btn"
-          color={action.name === 'delete' ? 'error' : undefined}
-          onClick={() => {
-            if (action.name === 'delete') {
-              deleteRecord(`${config.site.serverURL}${action.url}`);
-            }
-            console.log(`Action: ${action.name}, URL: ${action.url}`);
-          }}
-        >
-          {getIcon(action.name)}
-        </Button>
+      {actions.map((action: Action, index: number) => (
+        <React.Fragment key={index}>
+          {params.actionToDisplay.includes(action.name) && (
+            <Button
+              variant="outlined"
+              className="btn-simple action-btn"
+              color={action.name === 'delete' ? 'error' : undefined}
+              onClick={() => {
+                if (action.name === 'delete') {
+                  deleteRecord(`${config.site.serverURL}${action.url}`);
+                }
+              }}
+            >
+              {getIcon(action.name)}
+            </Button>
+          )}
+        </React.Fragment>
       ))}
     </Box>
   );

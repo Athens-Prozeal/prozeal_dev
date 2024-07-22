@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import { config } from '@/config';
 
-export default function Add() {
+export default function Page() {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
   const [rowData, setRowData] = useState([]);
 

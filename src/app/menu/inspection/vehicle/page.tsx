@@ -18,7 +18,7 @@ import ActionButtonsRenderer from '@/components/core/ag-grid/action-buttons-rend
 
 // New file: metadata.ts
 
-export default function Grid() {
+export default function Page() {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
   const [rowData, setRowData] = useState([]);
   const gridRef = useRef<AgGridReact>(null);

@@ -19,7 +19,6 @@ import {
   Typography,
 } from '@mui/material';
 import { CaretDown, CaretUp } from '@phosphor-icons/react';
-import { CaretUpDown as CaretUpDownIcon } from '@phosphor-icons/react/dist/ssr/CaretUpDown';
 
 import type { NavItemConfig } from '@/types/nav';
 import { WorkSite as workSiteType } from '@/types/user';
@@ -38,8 +37,8 @@ export function SideNav(): React.JSX.Element {
 
   useEffect(() => {
     authClient.getUser().then(({ data }) => {
-      const newWorkSites = data?.workSites ?? null;
-      setWorkSites(newWorkSites);
+      const allWorkSites = data?.workSites ?? null;
+      setWorkSites(allWorkSites);
 
       // Load work site from local storage on first render
       const savedWorkSite = localStorage.getItem('work-site-id');

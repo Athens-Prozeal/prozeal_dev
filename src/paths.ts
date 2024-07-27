@@ -22,6 +22,7 @@ export const paths = {
     worker: '/menu/worker',
     manpower: {
       home:  '/menu/manpower',
+      add: '/menu/manpower/add',
       statistics: '/menu/manpower/statistics',
     },
     inspection: {

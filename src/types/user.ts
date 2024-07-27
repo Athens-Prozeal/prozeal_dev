@@ -16,3 +16,8 @@ export interface User {
   [key: string]: unknown;
 }
 
+
+export interface SubContractor {
+  id: number;
+  username: string;
+}

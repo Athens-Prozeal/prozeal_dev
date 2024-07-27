@@ -6,22 +6,24 @@ import RouterLink from 'next/link'; // Use this for layout to not reload the pag
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
+import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { ColDef } from 'ag-grid-community'; // Importing ColDef type
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 
 import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Optional Theme applied to the Data Grid
 import '@/styles/ag-grid.css';
-import axios from 'axios';
-import { config } from '@/config';
 
+import axios from 'axios';
+
+import { config } from '@/config';
 import ActionButtonsRenderer from '@/components/core/ag-grid/action-buttons-renderer';
 import verificationButton from '@/components/menu/manpower/verification-button';
 
 export default function Page() {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
+  const role = localStorage.getItem('role');
   const [rowData, setRowData] = useState([]);
   const gridRef = useRef<AgGridReact>(null);
 
@@ -43,19 +45,20 @@ export default function Page() {
 
   const [colDefs, setColDefs] = useState<ColDef[]>([
     { field: 'date', headerName: 'Date', filter: 'agDateColumnFilter' },
-    { field: 'sub_contractor', headerName: 'Sub Contractor', filter: 'agTextColumnFilter' },
+    { field: 'sub_contractor_username', headerName: 'Sub Contractor', filter: 'agTextColumnFilter' },
     { field: 'number_of_workers', headerName: 'Number Of Workers', filter: 'agDateNumberFilter' },
-    { field: 'verification_status', 
-      headerName: 'Verification Status', 
+    {
+      field: 'verification_status',
+      headerName: 'Verification Status',
       cellRenderer: verificationButton,
-      filter: 'agTextColumnFilter' 
+      filter: 'agTextColumnFilter',
     },
     {
       // Display actions
       field: 'actions',
       cellRenderer: ActionButtonsRenderer,
       cellRendererParams: {
-        actionToDisplay: ['edit','delete'],
+        actionToDisplay: ['edit', 'delete'],
       },
       minWidth: 150,
     },
@@ -67,20 +70,27 @@ export default function Page() {
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
           <Typography variant="h5">Manpower</Typography>
           <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
-          <Button
-            component={RouterLink}
-            href={'/menu/manpower/statistics'}
-            startIcon={<EyeIcon fontSize="var(--icon-fontSize-md)" />}
-            color="inherit"
-          >
-              View Report
+            <Button
+              component={RouterLink}
+              href={'/menu/manpower/statistics'}
+              startIcon={<EyeIcon fontSize="var(--icon-fontSize-md)" />}
+              color="inherit"
+            >
+              View Statistics
             </Button>
           </Stack>
         </Stack>
         <div>
-          <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
-            Add
-          </Button>
+          {role === 'epc_admin' || role === 'epc' || role === 'sub_contractor' ? (
+            <Button
+              component={RouterLink}
+              href={'/menu/manpower/add'}
+              startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+              variant="contained"
+            >
+              Add
+            </Button>
+          ) : null}
         </div>
       </Stack>
       <Stack>

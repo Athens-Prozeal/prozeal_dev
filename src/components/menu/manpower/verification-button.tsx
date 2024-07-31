@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { ICellRendererParams } from 'ag-grid-community';
 import axios from 'axios';
-import { createTheme } from '@mui/material/styles';
 
 import { config } from '@/config';
 
@@ -36,6 +35,9 @@ const verificationButton = (props: CustomCellRendererParams) => {
         }).then((response) => {
           let newStatus = response.data.verification_status;
           setStatus(newStatus);
+          return;
+
+          // Error popup to be implemented
         });
       }
     }

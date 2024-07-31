@@ -42,6 +42,7 @@ export function UserProvider({ children }: UserProviderProps): React.JSX.Element
       if (data) {
         const workSite = localStorage.getItem('work-site-id');
         if (!workSite && location.pathname != paths.auth.selectWorkSite) {
+          // Check dashboard or menu
           window.location.href = paths.auth.selectWorkSite;
         }
       }

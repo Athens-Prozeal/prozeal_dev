@@ -70,7 +70,7 @@ export default function Page() {
       field: 'actions',
       cellRenderer: ActionButtonsRenderer,
       cellRendererParams: {
-        actionToDisplay: ['view', 'edit', 'delete'],
+        actionsToDisplay: ['view', 'edit', 'delete'],
       },
       minWidth: 250,
     },

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { Eye } from '@phosphor-icons/react/dist/ssr/Eye';
 import { Pen } from '@phosphor-icons/react/dist/ssr/Pen';
 import { Trash } from '@phosphor-icons/react/dist/ssr/Trash';
 import { ICellRendererParams } from 'ag-grid-community';
-import { set } from 'react-hook-form';
 import { config } from '@/config';
 
 interface Action {
@@ -14,7 +13,7 @@ interface Action {
 }
 
 interface CustomCellRendererParams extends ICellRendererParams {
-  actionToDisplay: string[];
+  actionsToDisplay: string[];
 }
 
 const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
@@ -56,7 +55,7 @@ const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
     <Box display="flex" justifyContent="flex-end" gap="5px" margin="5px 0 5px 5px">
       {actions.map((action: Action, index: number) => (
         <React.Fragment key={index}>
-          {params.actionToDisplay.includes(action.name) && (
+          {params.actionsToDisplay.includes(action.name) && (
             <Button
               variant="outlined"
               className="btn-simple action-btn"

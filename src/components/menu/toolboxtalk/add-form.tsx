@@ -194,8 +194,8 @@ const ToolBoxTalkForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  helperText={errors.evidence ? errors.evidence.message : null}
-                  error={!!errors.evidence}
+                  helperText={errors.attendance ? errors.attendance.message : null}
+                  error={!!errors.attendance}
                   InputLabelProps={{ shrink: true }}
                   inputProps={{
                     accept: 'image/*',

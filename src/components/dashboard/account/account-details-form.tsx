@@ -13,7 +13,8 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import { User, WorkSite } from '@/types/user';
+import { User } from '@/types/user';
+import { WorkSiteRole } from '@/types/worksite';
 import { authClient } from '@/lib/auth/client';
 
 export function AccountDetailsForm(): React.JSX.Element {
@@ -34,32 +35,32 @@ export function AccountDetailsForm(): React.JSX.Element {
       }}
     >
       <Card>
-        <CardHeader subheader="The information can only be edited by admin " title="Profile" />
+        <CardHeader subheader="The information can only be updated by admin " title="Profile" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
             <Grid md={6} xs={12}>
               <FormControl fullWidth required>
                 <InputLabel>First name</InputLabel>
-                <OutlinedInput value={user?.firstName || 'Loading...'} label="First name" name="firstName" disabled />
+                <OutlinedInput value={user?.firstName || ''} label="First name" name="firstName" disabled />
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
               <FormControl fullWidth required>
                 <InputLabel>Last name</InputLabel>
-                <OutlinedInput value={user?.lastName || 'Loading...'} label="Last name" name="lastName" disabled />
+                <OutlinedInput value={user?.lastName || ''} label="Last name" name="lastName" disabled />
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
               <FormControl fullWidth required>
                 <InputLabel>Email address</InputLabel>
-                <OutlinedInput value={user?.email || 'Loading...'} label="Email address" name="email" disabled />
+                <OutlinedInput value={user?.email || ''} label="Email address" name="email" disabled />
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
               <FormControl fullWidth>
                 <InputLabel>Company</InputLabel>
-                <OutlinedInput value={user?.company || 'Loading...'} label="Company" name="company" disabled />
+                <OutlinedInput value={user?.company || ''} label="Company" name="company" disabled />
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
@@ -72,7 +73,7 @@ export function AccountDetailsForm(): React.JSX.Element {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {user?.workSites?.map((workSite: WorkSite) => (
+                    {user?.workSites?.map((workSite: WorkSiteRole) => (
                       <TableRow key={workSite.id}>
                         <TableCell>{workSite.name}</TableCell>
                         <TableCell>{workSite.display_role}</TableCell>

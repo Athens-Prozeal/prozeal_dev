@@ -1,5 +1,3 @@
-import { inspect } from 'util';
-
 export const paths = {
   home: '/',
   auth: {
@@ -13,13 +11,17 @@ export const paths = {
     settings: '/dashboard/settings',
     account: '/dashboard/account',
   },
+  settings: '/dashboard/settings',
+  account: '/dashboard/account',
   menu:{
     toolboxtalk: {
       home: '/menu/toolboxtalk',
       add: '/menu/toolboxtalk/add',
       edit: '/menu/toolboxtalk/edit',
     },
-    worker: '/menu/worker',
+    worker: {
+      home: '/menu/worker'
+    },
     manpower: {
       home:  '/menu/manpower',
       add: '/menu/manpower/add',

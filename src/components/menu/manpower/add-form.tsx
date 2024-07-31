@@ -26,8 +26,6 @@ export const Form = () => {
     resolver: zodResolver(manpowerSchema),
     defaultValues: {
       selectedDate: currentDate,
-      numberOfWorkers: undefined,
-      subContractor: undefined,
       verificationStatus: 'Not Verified',
     }
   });
@@ -68,7 +66,7 @@ export const Form = () => {
           setAlertOpen(true);
           setTimeout(() => {
             window.location.href = '/menu/manpower';
-          }, 1500);
+          }, 500);
         }
       })
       .catch((error) => {

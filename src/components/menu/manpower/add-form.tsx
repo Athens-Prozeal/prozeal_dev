@@ -1,74 +1,74 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid, MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
 
 import { SubContractor as SubContractorType } from '@/types/user';
 import { config } from '@/config';
 import { PopUp } from '@/components/core/alert';
+import { manpowerSchema, ManpowerFormData } from '@/schemas/manpower'
 
 export const Form = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState<'error' | 'success'>('success');
   const [alertKey, setAlertKey] = useState(0);
-
   const [buttonDisabled, setButtonDisabled] = useState(false);
-
-  const role = localStorage.getItem('role');
-  const url = `${config.site.serverURL}/api/manpower/?work_site_id=${localStorage.getItem('work-site-id')}`;
-  const currentDate = new Date().toISOString().split('T')[0];
-
-  // Make it form kind of submit
-  const [selectedDate, setSelectedDate] = useState(currentDate);
-  const [numberOfWorkers, setNumberOfWorkers] = useState<Number>();
-  const [subContractor, setSubContractor] = useState<SubContractorType>();
-  const [verificationStatus, setVerificationStatus] = useState('Not Verified');
   const [subContractors, setSubContractors] = useState<SubContractorType[]>([]);
 
-  React.useEffect(() => {
+  const role = localStorage.getItem('role');
+  const currentDate = new Date().toISOString().split('T')[0];
+
+  const { control, handleSubmit, setValue, formState: { errors } } = useForm<ManpowerFormData>({
+    resolver: zodResolver(manpowerSchema),
+    defaultValues: {
+      selectedDate: currentDate,
+      numberOfWorkers: undefined,
+      subContractor: undefined,
+      verificationStatus: 'Not Verified',
+    }
+  });
+
+  useEffect(() => {
     if (role !== 'sub_contractor') {
-      axios
-        .get(
-          `${config.site.serverURL}/api/auth/sub-contractors/?work_site_id=${localStorage.getItem('work-site-id')}`,
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
-          }
-        )
-        .then((response) => {
-          setSubContractors(response.data);
-        });
+      axios.get(
+        `${config.site.serverURL}/api/auth/sub-contractors/?work_site_id=${localStorage.getItem('work-site-id')}`,
+        { headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` } }
+      ).then((response) => {
+        setSubContractors(response.data);
+      });
     }
 
     if (role === 'epc_admin' || role === 'epc') {
-      setVerificationStatus('Verified');
+      setValue('verificationStatus', 'Verified');
     }
-  }, []);
+  }, [role, setValue]);
 
-  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (data: ManpowerFormData) => {
     setButtonDisabled(true);
     axios({
       method: 'POST',
-      url: url,
+      url: `${config.site.serverURL}/api/manpower/?work_site_id=${localStorage.getItem('work-site-id')}`,
       data: {
-        date: selectedDate,
-        number_of_workers: numberOfWorkers,
-        sub_contractor: subContractor?.id,
-        verification_status: verificationStatus,
+        date: data.selectedDate,
+        number_of_workers: data.numberOfWorkers,
+        sub_contractor: data.subContractor,
+        verification_status: data.verificationStatus,
       },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('access-token')}`,
-      },
+      headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
     })
       .then((response) => {
         if (response.status === 201) {
           setAlertSeverity('success');
           setAlertMessage('Manpower Report added successfully');
+          setAlertKey(prev => prev + 1);
           setAlertOpen(true);
-          setAlertKey(prevKey => prevKey + 1);  // Update the key
-          window.location.href = '/menu/manpower';
+          setTimeout(() => {
+            window.location.href = '/menu/manpower';
+          }, 1500);
         }
       })
       .catch((error) => {
@@ -79,89 +79,95 @@ export const Form = () => {
         } else {
           setAlertMessage('Something went wrong');
         }
+        setAlertKey(prev => prev + 1);
         setAlertOpen(true);
-        setAlertKey(prevKey => prevKey + 1);  // Update the key
-        console.log(error);
       });
   };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <form onSubmit={submitForm}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={12} sm={4} md={4}>
-            <TextField
-              type="date"
-              label="Date"
-              value={selectedDate}
-              required
-              variant="outlined"
-              sx={{ width: '100%' }}
-              onChange={(e) => {
-                setSelectedDate(e.target.value);
-              }}
+            <Controller
+              name="selectedDate"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="date"
+                  label="Date"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.selectedDate}
+                  helperText={errors.selectedDate?.message}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12} sm={4} md={4}>
-            <TextField
-              type="number"
-              required
-              fullWidth
-              label="Number Of Workers"
-              variant="outlined"
-              onChange={(e) => {
-                setNumberOfWorkers(parseInt(e.target.value));
-              }}
+            <Controller
+              name="numberOfWorkers"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="number"
+                  label="Number Of Workers"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.numberOfWorkers}
+                  helperText={errors.numberOfWorkers?.message}
+                />
+              )}
             />
           </Grid>
           {role !== 'sub_contractor' && (
             <Grid item xs={12} sm={4} md={4}>
-              <TextField
-                select
-                required
-                fullWidth
-                label="Sub Contractors"
-                variant="outlined"
-                defaultValue={subContractor?.id}
-                onChange={(e) => {
-                  setSubContractor(
-                    subContractors?.find((subContractor) => subContractor.id === parseInt(e.target.value))
-                  );
-                }}
-              >
-                {subContractors?.map((subContractor) => {
-                  return (
-                    <MenuItem key={subContractor.id} value={subContractor.id}>
-                      {subContractor.username}
-                    </MenuItem>
-                  );
-                })}
-              </TextField>
+              <Controller
+                name="subContractor"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    select
+                    label="Sub Contractors"
+                    variant="outlined"
+                    fullWidth
+                    error={!!errors.subContractor}
+                    helperText={errors.subContractor?.message}
+                  >
+                    {subContractors?.map((subContractor) => (
+                      <MenuItem key={subContractor.id} value={subContractor.id}>
+                        {subContractor.username}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
+              />
             </Grid>
           )}
           <Grid item xs={12} sm={4} md={4}>
-            <TextField
-              disabled={role === 'sub_contractor'}
-              select
-              fullWidth
-              label="Verification Status"
-              variant="outlined"
-              required
-              value={verificationStatus}
-              onChange={(e) => {
-                setVerificationStatus(e.target.value);
-              }}
-            >
-              <MenuItem key={'Verified'} value={'Verified'}>
-                {'Verified'}
-              </MenuItem>
-              <MenuItem key={'Revise'} value={'Revise'}>
-                {'Revise'}
-              </MenuItem>
-              <MenuItem key={'Not Verified'} value={'Not Verified'}>
-                {'Not Verified'}
-              </MenuItem>
-            </TextField>
+            <Controller
+              name="verificationStatus"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  select
+                  label="Verification Status"
+                  variant="outlined"
+                  fullWidth
+                  disabled={role === 'sub_contractor'}
+                  error={!!errors.verificationStatus}
+                  helperText={errors.verificationStatus?.message}
+                >
+                  <MenuItem value="Verified">Verified</MenuItem>
+                  <MenuItem value="Revise">Revise</MenuItem>
+                  <MenuItem value="Not Verified">Not Verified</MenuItem>
+                </TextField>
+              )}
+            />
           </Grid>
           <Grid item xs={12} container justifyContent="flex-start">
             <Button disabled={buttonDisabled} variant="contained" color="primary" type="submit">

@@ -12,6 +12,7 @@ import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 import ToolBoxTalkTable, { ToolBoxTalkTableHandles } from '@/components/menu/toolboxtalk/table';
 
 export default function Page() {
+  const role = localStorage.getItem('role');
   const exportRef = useRef<ToolBoxTalkTableHandles>(null);
   
   const onBtnExport = () => {
@@ -32,6 +33,7 @@ export default function Page() {
           </Stack>
         </Stack>
         <div>
+        {role === 'epc_admin' || role === 'epc'? (
           <Button
             component={RouterLink}
             href={'/menu/toolboxtalk/add'}
@@ -40,6 +42,7 @@ export default function Page() {
           >
             Add
           </Button>
+        ) : null}
         </div>
       </Stack>
       <Stack>

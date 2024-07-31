@@ -1,16 +1,13 @@
-export interface WorkSite{
-  id: string;
-  name: string;
-  role: string;
-}
+import { WorkSiteRole } from "./worksite";
 
 export interface User {
   id: string;
   username?: string;
   email?: string;
+  company?: string;
   firstName?: string;
   lastName?: string;
-  workSites?: WorkSite[];
+  workSites?: WorkSiteRole[];
 
   avatar?: string;
   [key: string]: unknown;

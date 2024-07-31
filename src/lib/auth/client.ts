@@ -86,7 +86,7 @@ class AuthClient {
     // Get user data from backend
     let user: User | null = null;
     try {
-      const response = await axios.get(`${config.site.serverURL}/api/auth/user-detail/`, {
+      const response = await axios.get(`${config.site.serverURL}/api/auth/my-user-detail/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'ngrok-skip-browser-warning': 'true',
@@ -96,9 +96,11 @@ class AuthClient {
       if (response.status === 200) {
         user = {
           id: response.data.id,
+          username: response.data.username,
           email: response.data.email,
           firstName: response.data.first_name,
           lastName: response.data.last_name,
+          company: response.data.company,
           workSites: response.data.work_sites,
           avatar: '/assets/avatar.png',
         } as User;
@@ -110,26 +112,9 @@ class AuthClient {
     return { data: user };
   }
 
-  async getWorkSiteRole(): Promise<{ role: string | null }> {
-    let role = 'null';
-    try {
-      const response = await axios.get(`${config.site.serverURL}/api/auth/work-site-role/?work_site_id=${localStorage.getItem('work-site-id')}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access-token')}`,
-          'ngrok-skip-browser-warning': 'true',
-        },
-      });
-  
-      if (response.status === 200) {
-         role = response.data.role;
-      }
-    } catch (error: any) {
-      console.log(error);
-    }
-    return { role };
-  }
 
   async signOut(): Promise<{ error?: string }> {
+    // Expire token from server
     localStorage.removeItem('access-token');
     localStorage.removeItem('refresh-token');
     localStorage.removeItem('work-site-id');

@@ -21,7 +21,7 @@ import {
 import { CaretDown, CaretUp } from '@phosphor-icons/react';
 
 import type { NavItemConfig } from '@/types/nav';
-import { WorkSite as workSiteType } from '@/types/user';
+import { WorkSiteRole } from '@/types/worksite';
 import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
@@ -32,7 +32,7 @@ import { navIcons } from './nav-icons';
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
-  const [workSites, setWorkSites] = useState<workSiteType[]>();
+  const [workSites, setWorkSites] = useState<WorkSiteRole[]>();
   const [selectedWorkSite, setSelectedWorkSite] = useState<string>('');
 
   useEffect(() => {

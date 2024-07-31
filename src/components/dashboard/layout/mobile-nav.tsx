@@ -28,7 +28,7 @@ import { paths } from '@/paths';
 import { navItems } from './config';
 import { navIcons } from './nav-icons';
 
-import { WorkSite as workSiteType } from '@/types/user';
+import { WorkSiteRole } from '@/types/worksite';
 import { authClient } from '@/lib/auth/client';
 
 export interface MobileNavProps {
@@ -39,7 +39,7 @@ export interface MobileNavProps {
 
 export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element {
   const pathname = usePathname();
-  const [workSites, setWorkSites] = useState<workSiteType[]>();
+  const [workSites, setWorkSites] = useState<WorkSiteRole[]>();
   const [selectedWorkSite, setSelectedWorkSite] = useState<string>('');
 
   useEffect(() => {

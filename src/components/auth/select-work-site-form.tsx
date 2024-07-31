@@ -10,16 +10,16 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { WorkSite as workSiteType } from '@/types/user';
+import { WorkSiteRole } from '@/types/worksite';
 import { authClient } from '@/lib/auth/client';
 
 export function SelectWorkSiteForm() {
-  const [SelectedWorkSite, setSelectedWorkSite] = React.useState('');
-  const [WorkSites, setWorkSites] = React.useState<workSiteType[]>();
+  const [selectedWorkSite, setSelectedWorkSite] = React.useState('');
+  const [workSites, setWorkSites] = React.useState<WorkSiteRole[]>();
 
   React.useEffect(() => {
     authClient.getUser().then(({ data }) => {
-      return setWorkSites(data?.workSites);
+      setWorkSites(data?.workSites);
     });
   }, []);
 
@@ -28,13 +28,13 @@ export function SelectWorkSiteForm() {
   };
 
   const handleSubmit = () => {
-    if (!SelectedWorkSite) {
+    if (!selectedWorkSite) {
       return;
     }
 
-    for (const workSite of WorkSites || []) {
-      if (workSite.id == SelectedWorkSite) {
-        localStorage.setItem('work-site-id', SelectedWorkSite);
+    for (const workSite of workSites || []) {
+      if (workSite.id == selectedWorkSite) {
+        localStorage.setItem('work-site-id', selectedWorkSite);
         localStorage.setItem('role', workSite.role);
       }
     }
@@ -53,11 +53,11 @@ export function SelectWorkSiteForm() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={SelectedWorkSite}
+            value={selectedWorkSite}
             label="Age"
             onChange={handleChange}
           >
-            {WorkSites?.map((workSite: workSiteType) => (
+            {workSites?.map((workSite: WorkSiteRole) => (
               <MenuItem key={workSite.id} value={workSite.id}>
                 {workSite.id}
               </MenuItem>

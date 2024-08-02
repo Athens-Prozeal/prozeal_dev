@@ -21,7 +21,7 @@ import {
 import { CaretDown, CaretUp } from '@phosphor-icons/react';
 
 import type { NavItemConfig } from '@/types/nav';
-import { WorkSiteRole } from '@/types/worksite';
+import { WorkSiteRole as workSiteRoleType } from '@/types/worksite';
 import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
@@ -32,13 +32,13 @@ import { navIcons } from './nav-icons';
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
-  const [workSites, setWorkSites] = useState<WorkSiteRole[]>();
+  const [workSiteRoles, setWorkSiteRoles] = useState<workSiteRoleType[]>();
   const [selectedWorkSite, setSelectedWorkSite] = useState<string>('');
 
   useEffect(() => {
     authClient.getUser().then(({ data }) => {
-      const allWorkSites = data?.workSites;
-      setWorkSites(allWorkSites);
+      const allWorkSiteRoles = data?.workSiteRoles;
+      setWorkSiteRoles(allWorkSiteRoles);
 
       // Load work site from local storage on first render
       const savedWorkSite = localStorage.getItem('work-site-id');
@@ -52,7 +52,7 @@ export function SideNav(): React.JSX.Element {
   // Handle worksite change and saves work-site-id to local storage
   const handleWorkSiteChange = (event: SelectChangeEvent<string>) => {
     const newWorkSiteId = event.target.value;
-    for (const workSite of workSites || []) {
+    for (const workSite of workSiteRoles || []) {
       if (workSite.id == newWorkSiteId) {
         localStorage.setItem('work-site-id', newWorkSiteId);
         localStorage.setItem('role', workSite.role);
@@ -125,10 +125,10 @@ export function SideNav(): React.JSX.Element {
                 },
               }}
             >
-              {workSites &&
-                workSites.map((workSite) => (
-                  <MenuItem key={workSite.id} value={workSite.id}>
-                    {workSite.id}
+              {workSiteRoles &&
+                workSiteRoles.map((workSiteRole) => (
+                  <MenuItem key={workSiteRole.id} value={workSiteRole.id}>
+                    {workSiteRole.id}
                   </MenuItem>
                 ))}
             </Select>

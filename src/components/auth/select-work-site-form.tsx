@@ -15,11 +15,11 @@ import { authClient } from '@/lib/auth/client';
 
 export function SelectWorkSiteForm() {
   const [selectedWorkSite, setSelectedWorkSite] = React.useState('');
-  const [workSites, setWorkSites] = React.useState<WorkSiteRole[]>();
+  const [workSiteRoles, setworkSiteRoles] = React.useState<WorkSiteRole[]>();
 
   React.useEffect(() => {
     authClient.getUser().then(({ data }) => {
-      setWorkSites(data?.workSites);
+      setworkSiteRoles(data?.workSiteRoles);
     });
   }, []);
 
@@ -32,7 +32,7 @@ export function SelectWorkSiteForm() {
       return;
     }
 
-    for (const workSite of workSites || []) {
+    for (const workSite of workSiteRoles || []) {
       if (workSite.id == selectedWorkSite) {
         localStorage.setItem('work-site-id', selectedWorkSite);
         localStorage.setItem('role', workSite.role);
@@ -57,7 +57,7 @@ export function SelectWorkSiteForm() {
             label="Age"
             onChange={handleChange}
           >
-            {workSites?.map((workSite: WorkSiteRole) => (
+            {workSiteRoles?.map((workSite: WorkSiteRole) => (
               <MenuItem key={workSite.id} value={workSite.id}>
                 {workSite.id}
               </MenuItem>

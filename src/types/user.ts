@@ -7,7 +7,7 @@ export interface User {
   company?: string;
   firstName?: string;
   lastName?: string;
-  workSites?: WorkSiteRole[];
+  workSiteRoles?: WorkSiteRole[];
 
   avatar?: string;
   [key: string]: unknown;

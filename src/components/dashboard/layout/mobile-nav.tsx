@@ -28,7 +28,7 @@ import { paths } from '@/paths';
 import { navItems } from './config';
 import { navIcons } from './nav-icons';
 
-import { WorkSiteRole } from '@/types/worksite';
+import { WorkSiteRole as workSiteRoleType } from '@/types/worksite';
 import { authClient } from '@/lib/auth/client';
 
 export interface MobileNavProps {
@@ -39,13 +39,13 @@ export interface MobileNavProps {
 
 export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element {
   const pathname = usePathname();
-  const [workSites, setWorkSites] = useState<WorkSiteRole[]>();
+  const [workSiteRoles, setWorkSiteRoles] = useState<workSiteRoleType[]>();
   const [selectedWorkSite, setSelectedWorkSite] = useState<string>('');
 
   useEffect(() => {
     authClient.getUser().then(({ data }) => {
-      const newWorkSites = data?.workSites;
-      setWorkSites(newWorkSites);
+      const newWorkSiteRoles = data?.workSiteRoles;
+      setWorkSiteRoles(newWorkSiteRoles);
 
       // Load work site from local storage on first render
       const savedWorkSite = localStorage.getItem('work-site-id');
@@ -59,7 +59,7 @@ export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element 
   // Handle worksite change and saves work-site-id to local storage
   const handleWorkSiteChange = (event: SelectChangeEvent<string>) => {
     const newWorkSiteId = event.target.value;
-    for (const workSite of workSites || []) {
+    for (const workSite of workSiteRoles || []) {
       if (workSite.id == newWorkSiteId) {
         localStorage.setItem('work-site-id', newWorkSiteId);
         localStorage.setItem('role', workSite.role);
@@ -134,10 +134,10 @@ export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element 
                   },
                 }}
               >
-                {workSites &&
-                  workSites.map((workSite) => (
-                    <MenuItem key={workSite.id} value={workSite.id}>
-                      {workSite.id}
+                {workSiteRoles &&
+                  workSiteRoles.map((workSiteRole:workSiteRoleType) => (
+                    <MenuItem key={workSiteRole.id} value={workSiteRole.id}>
+                      {workSiteRole.id}
                     </MenuItem>
                   ))}
               </Select>

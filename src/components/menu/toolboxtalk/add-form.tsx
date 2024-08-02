@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid, TextField } from '@mui/material';
 import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import z from 'zod';
 
 import { config } from '@/config';
 import { PopUp } from '@/components/core/alert';
@@ -67,13 +67,12 @@ const ToolBoxTalkForm: React.FC = () => {
       .then((response) => {
         if (response.status === 201) {
           setAlertSeverity('success');
-          setAlertMessage('Manpower Report added successfully');
+          setAlertMessage('Tool Box Talk added successfully');
           setAlertKey((prev) => prev + 1);
           setAlertOpen(true);
           setTimeout(() => {
             window.location.href = '/menu/toolboxtalk/';
           }, 500);
-
         }
       })
       .catch((error) => {
@@ -112,7 +111,7 @@ const ToolBoxTalkForm: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="topic"
               control={control}
@@ -148,7 +147,7 @@ const ToolBoxTalkForm: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="agencyName"
               control={control}
@@ -166,7 +165,7 @@ const ToolBoxTalkForm: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="evidence"
               control={control}
@@ -174,7 +173,7 @@ const ToolBoxTalkForm: React.FC = () => {
                 <TextField
                   helperText={errors.evidence ? errors.evidence.message : null}
                   error={!!errors.evidence}
-                  InputLabelProps={{ shrink: true }}  
+                  InputLabelProps={{ shrink: true }}
                   inputProps={{
                     accept: 'image/*',
                   }}
@@ -188,7 +187,7 @@ const ToolBoxTalkForm: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="attendance"
               control={control}

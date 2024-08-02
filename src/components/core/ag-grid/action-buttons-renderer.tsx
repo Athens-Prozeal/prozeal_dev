@@ -17,7 +17,7 @@ interface CustomCellRendererParams extends ICellRendererParams {
 }
 
 const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
-  const [actions, setActions] = useState(params.data.actions);
+  const [actions] = useState(params.data.actions);
 
   const getIcon = (actionName: string) => {
     switch (actionName) {
@@ -36,13 +36,13 @@ const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
     fetch(url, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access-token')}`, 
+        'Authorization': `Bearer ${localStorage.getItem('access-token')}`,
       }
     })
       .then((response) => {
         if (response.status === 204) {
           params.api.applyTransaction({ remove: [params.data] });
-        }else{
+        } else {
           window.alert('Error deleting record');
         }
       })

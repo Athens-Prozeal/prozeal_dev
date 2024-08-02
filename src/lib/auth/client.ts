@@ -101,7 +101,7 @@ class AuthClient {
           firstName: response.data.first_name,
           lastName: response.data.last_name,
           company: response.data.company,
-          workSites: response.data.work_sites,
+          workSiteRoles: response.data.work_site_roles,
           avatar: '/assets/avatar.png',
         } as User;
       }

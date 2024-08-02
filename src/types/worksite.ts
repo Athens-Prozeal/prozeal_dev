@@ -4,7 +4,7 @@ export interface WorkSite {
 }
 
 export interface WorkSiteRole{
-    id: string;
+    id: string; // Change to work_Site_id
     name: string;
     role: string;
     display_role: string | null;

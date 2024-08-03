@@ -1,15 +1,24 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { Box, Button, Grid, MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
+import { Controller, useForm } from 'react-hook-form';
 
 import { SubContractor as SubContractorType } from '@/types/user';
 import { config } from '@/config';
 import { PopUp } from '@/components/core/alert';
-import { manpowerSchema, ManpowerFormData } from '@/schemas/manpower'
+
+const manpowerSchema = z.object({
+  selectedDate: z.string().nonempty('Date is required'),
+  numberOfWorkers: z.string().min(1, 'Number of workers must be at least 1').transform((val) => Number(val)),
+  subContractor: z.number().optional(),
+  verificationStatus: z.enum(['Verified', 'Revise', 'Not Verified']),
+});
+
+type ManpowerFormData = z.infer<typeof manpowerSchema>;
 
 export const Form = () => {
   const [alertOpen, setAlertOpen] = useState(false);
@@ -22,22 +31,29 @@ export const Form = () => {
   const role = localStorage.getItem('role');
   const currentDate = new Date().toISOString().split('T')[0];
 
-  const { control, handleSubmit, setValue, formState: { errors } } = useForm<ManpowerFormData>({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ManpowerFormData>({
     resolver: zodResolver(manpowerSchema),
     defaultValues: {
       selectedDate: currentDate,
       verificationStatus: 'Not Verified',
-    }
+    },
   });
 
   useEffect(() => {
     if (role !== 'sub_contractor') {
-      axios.get(
-        `${config.site.serverURL}/api/auth/sub-contractors/?work_site_id=${localStorage.getItem('work-site-id')}`,
-        { headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` } }
-      ).then((response) => {
-        setSubContractors(response.data);
-      });
+      axios
+        .get(
+          `${config.site.serverURL}/api/auth/user/sub-contractor/?work_site_id=${localStorage.getItem('work-site-id')}`,
+          { headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` } }
+        )
+        .then((response) => {
+          setSubContractors(response.data);
+        });
     }
 
     if (role === 'epc_admin' || role === 'epc') {
@@ -62,7 +78,7 @@ export const Form = () => {
         if (response.status === 201) {
           setAlertSeverity('success');
           setAlertMessage('Manpower Report added successfully');
-          setAlertKey(prev => prev + 1);
+          setAlertKey((prev) => prev + 1);
           setAlertOpen(true);
           setTimeout(() => {
             window.location.href = '/menu/manpower';
@@ -77,7 +93,7 @@ export const Form = () => {
         } else {
           setAlertMessage('Something went wrong');
         }
-        setAlertKey(prev => prev + 1);
+        setAlertKey((prev) => prev + 1);
         setAlertOpen(true);
       });
   };
@@ -127,6 +143,7 @@ export const Form = () => {
                 control={control}
                 render={({ field }) => (
                   <TextField
+                    required
                     {...field}
                     select
                     label="Sub Contractors"

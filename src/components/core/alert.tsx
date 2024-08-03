@@ -20,7 +20,7 @@ export function PopUp({ open, alertSeverity, alertMessage }: PopUpProps): React.
     };
 
     return (
-        <div style={{ position: 'absolute', bottom: 20, right: 20 }}>
+        <div style={{ position: 'fixed', bottom: 20, right: 20}}>
             <Collapse in={isOpen}>
                 <Alert
                     severity={alertSeverity}

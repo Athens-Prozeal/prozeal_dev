@@ -143,7 +143,6 @@ export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element 
               </Select>
             </FormControl>
           </Box>
-          <CaretUpDownIcon />
         </Box>
       </Stack>
 

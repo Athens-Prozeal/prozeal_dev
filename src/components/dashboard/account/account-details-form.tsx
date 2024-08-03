@@ -46,20 +46,20 @@ export function AccountDetailsForm(): React.JSX.Element {
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth>
                 <InputLabel>Last name</InputLabel>
                 <OutlinedInput value={user?.lastName || ''} label="Last name" name="lastName" disabled />
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
               <FormControl fullWidth required>
-                <InputLabel>Email address</InputLabel>
+                <InputLabel shrink>Email address</InputLabel>
                 <OutlinedInput value={user?.email || ''} label="Email address" name="email" disabled />
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
               <FormControl fullWidth>
-                <InputLabel>Company</InputLabel>
+                <InputLabel >Company</InputLabel>
                 <OutlinedInput value={user?.company || ''} label="Company" name="company" disabled />
               </FormControl>
             </Grid>
@@ -73,10 +73,10 @@ export function AccountDetailsForm(): React.JSX.Element {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {user?.workSites?.map((workSite: WorkSiteRole) => (
-                      <TableRow key={workSite.id}>
-                        <TableCell>{workSite.name}</TableCell>
-                        <TableCell>{workSite.display_role}</TableCell>
+                    {user?.workSiteRoles?.map((workSiteRole: WorkSiteRole) => (
+                      <TableRow key={workSiteRole.id}>
+                        <TableCell>{workSiteRole.name}</TableCell>
+                        <TableCell>{workSiteRole.display_role}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

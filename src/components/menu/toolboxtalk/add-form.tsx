@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid, TextField } from '@mui/material';
@@ -49,7 +51,6 @@ const ToolBoxTalkForm: React.FC = () => {
   });
 
   const onSubmit = async (data: ToolBoxTalkSchemaType) => {
-    console.log('Form Data:', data);
     const formdata = new FormData();
     formdata.append('topic', data.topic);
     formdata.append('date', data.date);

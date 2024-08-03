@@ -1,9 +1,10 @@
-import React, {  useState } from 'react';
+import React from 'react';
 import { Box, Button } from '@mui/material';
 import { Eye } from '@phosphor-icons/react/dist/ssr/Eye';
 import { Pen } from '@phosphor-icons/react/dist/ssr/Pen';
 import { Trash } from '@phosphor-icons/react/dist/ssr/Trash';
 import { ICellRendererParams } from 'ag-grid-community';
+
 import { config } from '@/config';
 
 interface Action {
@@ -14,10 +15,13 @@ interface Action {
 
 interface CustomCellRendererParams extends ICellRendererParams {
   actionsToDisplay: string[];
+  viewUrl?: string;
+  router: any;
 }
 
 const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
-  const [actions] = useState(params.data.actions);
+  const recordId = params.data.id;
+  const actions = params.data.actions;
 
   const getIcon = (actionName: string) => {
     switch (actionName) {
@@ -32,12 +36,16 @@ const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
     }
   };
 
+  const viewRecord = (url: string) => {
+    params.router.push(url);
+  };
+
   const deleteRecord = (url: string) => {
     fetch(url, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access-token')}`,
-      }
+        Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+      },
     })
       .then((response) => {
         if (response.status === 204) {
@@ -62,7 +70,11 @@ const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
               color={action.name === 'delete' ? 'error' : undefined}
               onClick={() => {
                 if (action.name === 'delete') {
-                  deleteRecord(`${config.site.serverURL}${action.url}`);
+                  deleteRecord(`${config.site.serverURL}${action.url}`); // url from server response
+                }
+
+                if (action.name === 'view') {
+                  viewRecord(`${params.viewUrl}${recordId}`);
                 }
               }}
             >

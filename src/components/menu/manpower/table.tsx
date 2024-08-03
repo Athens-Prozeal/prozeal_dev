@@ -1,6 +1,5 @@
-'use client';
-
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { ColDef } from 'ag-grid-community'; 
 import { AgGridReact } from 'ag-grid-react';
@@ -49,6 +48,7 @@ export function ManpowerTable():React.JSX.Element {
       cellRenderer: ActionButtonsRenderer,
       cellRendererParams: {
         actionsToDisplay: ['edit', 'delete'],
+        router: useRouter(),
       },
       minWidth: 150,
     },

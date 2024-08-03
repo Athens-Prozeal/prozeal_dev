@@ -1,4 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { ColDef } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
@@ -60,6 +61,8 @@ const ToolBoxTalkTable = forwardRef<ToolBoxTalkTableHandles, ToolBoxTalkTablePro
       cellRenderer: ActionButtonsRenderer,
       cellRendererParams: {
         actionsToDisplay: ['view', 'edit', 'delete'],
+        viewUrl: `/menu/toolboxtalk/view?toolBoxTalkId=`,
+        router: useRouter(),
       },
       minWidth: 250,
     },

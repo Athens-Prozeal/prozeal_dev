@@ -1,9 +1,11 @@
-'use client';
-
 import React from 'react';
+import type { Metadata } from 'next';
 import { Box, Stack, Typography } from '@mui/material';
+import {config} from '@/config';
 
 import ToolBoxTalkForm from '@/components/menu/toolboxtalk/add-form';
+
+export const metadata = { title: `Tool Box Talk | Add | ${config.site.name}` } satisfies Metadata;
 
 const Page = () => {
   return (

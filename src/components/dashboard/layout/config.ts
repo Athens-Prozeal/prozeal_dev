@@ -3,7 +3,12 @@ import { paths } from '@/paths';
 
 let allNavItems: NavItemConfig[] = [
   { key: 'overview', title: 'Overview', href: paths.dashboard.overview, icon: 'chart-pie' },
-  { key: 'settings', title: 'Settings', href: paths.dashboard.settings, icon: 'gear-six' },
+  { key: 'settings', 
+    title: 'Settings', 
+    href: paths.dashboard.settings.home, 
+    icon: 'gear-six',
+    matcher: { type: 'startsWith' as const, href: paths.dashboard.settings.home },
+  },
   { key: 'account', title: 'Account', href: paths.dashboard.account, icon: 'user' },
   {
     key: 'toolboxtalk',

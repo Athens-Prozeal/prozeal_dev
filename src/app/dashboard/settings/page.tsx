@@ -1,20 +1,18 @@
-import type { Metadata } from 'next';
+'use client'
+
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { config } from '@/config';
-import { UpdatePasswordForm } from '@/components/dashboard/settings/update-password-form';
-import { Users } from '@/components/dashboard/settings/users';
-
-export const metadata = { title: `Settings | Dashboard | ${config.site.name}` } satisfies Metadata;
+import  UpdatePasswordForm  from '@/components/dashboard/settings/update-password-form';
+import { Users } from '@/components/dashboard/settings/user';
 
 export default function Page(): React.JSX.Element {
+  const role = localStorage.getItem('role');
+
   return (
     <Stack spacing={3}>
-      <div>
-        <Typography variant="h4">Settings</Typography>
-      </div>
-      <Users />
+      <Typography variant="h4">Settings</Typography>
+      {role === 'epc_admin' && <Users />}
       <UpdatePasswordForm />
     </Stack>
   );

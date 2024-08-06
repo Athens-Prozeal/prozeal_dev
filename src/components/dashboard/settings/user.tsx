@@ -96,7 +96,7 @@ export function Users(): React.JSX.Element {
             aria-label="visible arrows tabs example"
           >
             <Tab label={'All'} key={'all'} />
-            {workSites.map((workSite) => (
+            {workSites.length > 0 && workSites.map((workSite) => (
               <Tab
                 label={workSite.id}
                 key={workSite.id}

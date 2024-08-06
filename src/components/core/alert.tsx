@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import * as React from "react";
 import { Alert, Collapse, IconButton } from '@mui/material';
 import { X as CloseIcon } from '@phosphor-icons/react/dist/ssr/X';
 
@@ -9,9 +9,9 @@ interface PopUpProps {
 }
 
 export function PopUp({ open, alertSeverity, alertMessage }: PopUpProps): React.JSX.Element {
-    const [isOpen, setIsOpen] = useState(open);
+    const [isOpen, setIsOpen] = React.useState(open);
 
-    useEffect(() => {
+    React.useEffect(() => {
         setIsOpen(open);
     }, [open]);
 

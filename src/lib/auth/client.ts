@@ -86,7 +86,7 @@ class AuthClient {
     // Get user data from backend
     let user: User | null = null;
     try {
-      const response = await axios.get(`${config.site.serverURL}/api/auth/my-user-detail/`, {
+      const response = await axios.get(`${config.site.serverURL}/api/auth/my-detail/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'ngrok-skip-browser-warning': 'true',

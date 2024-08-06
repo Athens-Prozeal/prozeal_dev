@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import * as React from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -18,9 +18,9 @@ import { WorkSiteRole } from '@/types/worksite';
 import { authClient } from '@/lib/auth/client';
 
 export function AccountDetailsForm(): React.JSX.Element {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = React.useState<User>();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchUser = async () => {
       const { data } = await authClient.getUser();
       setUser(data as User);

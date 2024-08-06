@@ -12,7 +12,7 @@ export const config: Config = {
     description: 'EHS Software',
     themeColor: '#090a0b',
     url: getSiteURL(),
-    serverURL: 'https://39fc-103-197-112-241.ngrok-free.app',
+    serverURL: 'http://127.0.0.1:8000',
   },
   logLevel: (process.env.NEXT_PUBLIC_LOG_LEVEL as keyof typeof LogLevel) ?? LogLevel.ALL,
 };

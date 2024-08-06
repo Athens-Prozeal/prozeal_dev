@@ -10,10 +10,9 @@ export const config: Config = {
   site: {
     name: 'Athenas',
     description: 'EHS Software',
-    themeColor: '#090a0b',
+    themeColor: '#090a0b', 
     url: getSiteURL(),
     serverURL: process.env.serverURL ?? "http://localhost:3000",
   },
   logLevel: (process.env.NEXT_PUBLIC_LOG_LEVEL as keyof typeof LogLevel) ?? LogLevel.ALL,
 };
- 

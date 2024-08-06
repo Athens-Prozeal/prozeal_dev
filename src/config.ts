@@ -16,3 +16,4 @@ export const config: Config = {
   },
   logLevel: (process.env.NEXT_PUBLIC_LOG_LEVEL as keyof typeof LogLevel) ?? LogLevel.ALL,
 };
+ 

@@ -20,7 +20,7 @@ import {
   Typography,
 } from '@mui/material';
 import { CaretDown, CaretUp } from '@phosphor-icons/react';
-import { CaretUpDown as CaretUpDownIcon } from '@phosphor-icons/react/dist/ssr/CaretUpDown';  
+import { CaretUpDown as CaretUpDownIcon } from '@phosphor-icons/react/dist/ssr/CaretUpDown';
 import type { NavItemConfig } from '@/types/nav';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
 import { Logo } from '@/components/core/logo';
@@ -49,6 +49,7 @@ export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element 
 
       // Load work site from local storage on first render
       const savedWorkSite = localStorage.getItem('work-site-id');
+      console.log('savedWorkSite', savedWorkSite);
       if (savedWorkSite == null) {
         window.location.href = '/auth/select-work-site';
       }

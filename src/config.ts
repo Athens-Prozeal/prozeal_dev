@@ -12,7 +12,7 @@ export const config: Config = {
     description: 'EHS Software',
     themeColor: '#090a0b',
     url: getSiteURL(),
-    serverURL: process.env.serverURL ?? "https://athenas-production.up.railway.app",
+    serverURL: process.env.serverURL ?? "http://127.0.0.1:8000",
   },
   logLevel: (process.env.NEXT_PUBLIC_LOG_LEVEL as keyof typeof LogLevel) ?? LogLevel.ALL,
 };

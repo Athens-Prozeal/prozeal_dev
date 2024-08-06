@@ -37,12 +37,13 @@ export function UserProvider({ children }: UserProviderProps): React.JSX.Element
       }
 
       setState((prev) => ({ ...prev, user: data ?? null, error: null, isLoading: false }));
-
+      console.log('data', data);
       // user is logged in but site not selected
       if (data) {
         const workSite = localStorage.getItem('work-site-id');
         if (!workSite && location.pathname != paths.auth.selectWorkSite) {
           // Check dashboard or menu
+          console.log('redirecting to select work site');
           window.location.href = paths.auth.selectWorkSite;
         }
       }

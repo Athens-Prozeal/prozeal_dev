@@ -52,7 +52,7 @@ export function UserTable(props: UserTableProps): React.JSX.Element {
             valueFormatter: (params) => {
               const roleMapping: { [key: string]: string } = {
                 sub_contractor: 'Sub Contractor',
-                epc: 'EPC',
+                epc: 'EPC User',
                 client: 'Client',
                 epc_admin: 'EPC Admin',
               };

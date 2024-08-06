@@ -1,11 +1,14 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { ColDef } from 'ag-grid-community';
+
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import '@/styles/ag-grid.css';
+
 import { AgGridReact } from 'ag-grid-react';
 import axios from 'axios';
+
 import { config } from '@/config';
 import ActionButtonsRenderer from '@/components/core/ag-grid/action-buttons-renderer';
 
@@ -17,7 +20,9 @@ export interface ToolBoxTalkTableHandles {
 
 const ToolBoxTalkTable = forwardRef<ToolBoxTalkTableHandles, ToolBoxTalkTableProps>((props, ref) => {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
+  const router = useRouter();
   const [rowData, setRowData] = React.useState([]);
+  const [colDefs, setColDefs] = React.useState<ColDef[]>();
 
   const gridRef = useRef<AgGridReact>(null);
 
@@ -31,6 +36,23 @@ const ToolBoxTalkTable = forwardRef<ToolBoxTalkTableHandles, ToolBoxTalkTablePro
       })
       .then((response) => {
         setRowData(response.data);
+
+        setColDefs([
+          { field: 'date', headerName: 'Date', filter: 'agDateColumnFilter' },
+          { field: 'topic', headerName: 'Topic', filter: 'agTextColumnFilter' },
+          { field: 'number_of_participants', headerName: 'Number Of Participants', filter: 'agNumberColumnFilter' },
+          { field: 'agency_name', headerName: 'Agency Name', filter: 'agTextColumnFilter' },
+          {
+            field: 'actions',
+            cellRenderer: ActionButtonsRenderer,
+            cellRendererParams: {
+              actionsToDisplay: ['view', 'edit', 'delete'],
+              viewUrl: `/menu/toolboxtalk/view?toolBoxTalkId=`,
+              router: router,
+            },
+            minWidth: 250,
+          },
+        ]);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -50,23 +72,6 @@ const ToolBoxTalkTable = forwardRef<ToolBoxTalkTableHandles, ToolBoxTalkTablePro
   useImperativeHandle(ref, () => ({
     triggerClick: exportTBT,
   }));
-
-  const [colDefs, setColDefs] = React.useState<ColDef[]>([
-    { field: 'date', headerName: 'Date', filter: 'agDateColumnFilter' },
-    { field: 'topic', headerName: 'Topic', filter: 'agTextColumnFilter' },
-    { field: 'number_of_participants', headerName: 'Number Of Participants', filter: 'agNumberColumnFilter' },
-    { field: 'agency_name', headerName: 'Agency Name', filter: 'agTextColumnFilter' },
-    {
-      field: 'actions',
-      cellRenderer: ActionButtonsRenderer,
-      cellRendererParams: {
-        actionsToDisplay: ['view', 'edit', 'delete'],
-        viewUrl: `/menu/toolboxtalk/view?toolBoxTalkId=`,
-        router: useRouter(),
-      },
-      minWidth: 250,
-    },
-  ]);
 
   return (
     <div className="ag-theme-quartz" style={{ height: 500 }}>

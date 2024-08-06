@@ -6,11 +6,13 @@ export interface Config {
   logLevel: keyof typeof LogLevel;
 }
 
+console.log("process.env.serverURL", process.env.serverURL);
+
 export const config: Config = {
   site: {
     name: 'Athenas',
     description: 'EHS Software',
-    themeColor: '#090a0b', 
+    themeColor: '#090a0b',
     url: getSiteURL(),
     serverURL: process.env.serverURL ?? "http://localhost:3000",
   },

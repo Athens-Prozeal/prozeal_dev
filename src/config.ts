@@ -6,7 +6,8 @@ export interface Config {
   logLevel: keyof typeof LogLevel;
 }
 
-console.log("process.env.serverURL", process.env.serverURL);
+console.log("process.env", process.env);
+console.log("process.env.serverURL", process.env.serverURL, process.env.NEXT_PUBLIC_LOG_LEVEL);
 
 export const config: Config = {
   site: {

@@ -32,8 +32,7 @@ type WorkSite = { id: string; name: string };
 
 export function UserForm(props: { workSiteId: string }): React.JSX.Element {
   const [workSites, setWorkSites] = useState<WorkSite[]>([]);
-  const [btnDisable, setBtnDisable] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   useEffect(() => {
     const fetchWorkSites = async () => {
@@ -76,7 +75,7 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
   });
 
   const onSubmit = async (data: UserSchemaType) => {
-    setBtnDisable(true);
+    setBtnDisabled(true);
     axios
       .post(
         `${config.site.serverURL}/api/auth/user/`,
@@ -114,10 +113,8 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
           if (responseErrors.detail){
             alert(responseErrors.detail)
           }
-        } else {
-          setErrorMessage('An unexpected error occurred.');
         }
-        setBtnDisable(false);
+        setBtnDisabled(false);
       });
   };
 
@@ -320,7 +317,7 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
           </Stack>
         </Stack>
         <Stack sx={{ width: '100px' }} marginTop={2}>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" color="primary" type="submit" disabled={btnDisabled}>
             Submit
           </Button>
         </Stack>

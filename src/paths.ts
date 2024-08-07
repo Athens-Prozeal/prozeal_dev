@@ -20,7 +20,8 @@ export const paths = {
       edit: '/menu/toolboxtalk/edit',
     },
     worker: {
-      home: '/menu/worker'
+      home: '/menu/worker',
+      add: '/menu/worker/add'
     },
     manpower: {
       home:  '/menu/manpower',

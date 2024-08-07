@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import RouterLink from 'next/link'; // Use this for layout to not reload the page
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -11,7 +12,7 @@ import WorkerTable, { WorkerHandles } from '@/components/menu/worker/table';
 
 export default function Page() {
   const exportRef = React.useRef<WorkerHandles>(null);
-  
+
   const onBtnExport = () => {
     if (exportRef.current) {
       exportRef.current.triggerClick();
@@ -30,12 +31,11 @@ export default function Page() {
           </Stack>
         </Stack>
         <div>
-          <Button
+        <Button
+            component={RouterLink}
+            href={'/menu/worker/add'}
             startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
             variant="contained"
-            onClick={() => {
-              window.location.href = '/menu/toolboxtalk/add';
-            }}
           >
             Add
           </Button>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Checkbox, FormControlLabel, Grid, IconButton, MenuItem, Paper, TextField } from '@mui/material';
-import { Stack } from '@mui/system';
+import { Box, Button, Checkbox, FormControlLabel, Grid, IconButton, MenuItem, Stack, TextField } from '@mui/material';
 import { Plus as Add } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Trash as Remove } from '@phosphor-icons/react/dist/ssr/Trash';
 import axios from 'axios';
@@ -22,7 +21,7 @@ const userSchema = z.object({
     .array(
       z.object({
         id: z.string().nonempty('Work site is required'),
-        role: z.enum(['sub_contractor', 'epc', 'client', 'epc_admin']),
+        role: z.enum(['sub_contractor', 'epc', 'client']),
       })
     )
     .optional(),
@@ -33,6 +32,8 @@ type WorkSite = { id: string; name: string };
 
 export function UserForm(props: { workSiteId: string }): React.JSX.Element {
   const [workSites, setWorkSites] = useState<WorkSite[]>([]);
+  const [btnDisable, setBtnDisable] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchWorkSites = async () => {
@@ -56,6 +57,7 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
     handleSubmit,
     formState: { errors },
     register,
+    setError,
   } = useForm<UserSchemaType>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -74,28 +76,49 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
   });
 
   const onSubmit = async (data: UserSchemaType) => {
-    axios.post(`${config.site.serverURL}/api/auth/user/`, 
-      {
-        'first_name':data.firstName,
-        'last_name':data.lastName,
-        'email':data.email,
-        'company':data.company,
-        'is_active':data.isActive,
-        'username':data.username,
-        'password':data.password,
-        'work_site_roles':data.workSiteRoles
-      }, {
-      headers:{
-        'Authorization': `Bearer ${localStorage.getItem('access-token')}`
-      }
-    }).then((response)=>{
-      if (response.status===200){
-        alert('User Addedd successfully!')
-        // Disable submit btn
-      }
-    }).catch((error)=>{
-      console.log(error)
-    })
+    setBtnDisable(true);
+    axios
+      .post(
+        `${config.site.serverURL}/api/auth/user/`,
+        {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          email: data.email,
+          company: data.company,
+          is_active: data.isActive,
+          username: data.username,
+          password: data.password,
+          work_site_roles: data.workSiteRoles,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          alert('User added successfully!');
+          // reload
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          const responseErrors = error.response.data;
+          for (const key in responseErrors) {
+            setError(key as keyof UserSchemaType, {
+              type: 'server',
+              message: responseErrors[key][0],
+            });
+          }
+          if (responseErrors.detail){
+            alert(responseErrors.detail)
+          }
+        } else {
+          setErrorMessage('An unexpected error occurred.');
+        }
+        setBtnDisable(false);
+      });
   };
 
   return (
@@ -229,12 +252,11 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
               )}
             />
           </Grid>
-
         </Grid>
-                
+
         <Stack spacing={2} marginTop={3}>
           {fields.map((field, index) => (
-            <Stack spacing={2} direction={'row'} sx={{ width: '100%' }}>
+            <Stack spacing={2} direction={'row'} sx={{ width: '100%' }} key={field.id}>
               <Stack sx={{ width: '200px' }}>
                 <Controller
                   name={`workSiteRoles.${index}.id`}
@@ -275,17 +297,16 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
                       helperText={error ? error.message : null}
                       error={!!error}
                     >
-                      <MenuItem value="sub_contractor">Sub Contractor</MenuItem>
-                      <MenuItem value="epc">EPC</MenuItem>
-                      <MenuItem value="client">Client</MenuItem>
-                      <MenuItem value="epc_admin">EPC Admin</MenuItem>
+                      <MenuItem value={'sub_contractor'}>Sub Contractor</MenuItem>
+                      <MenuItem value={'epc'}>EPC</MenuItem>
+                      <MenuItem value={'client'}>Client</MenuItem>
                     </TextField>
                   )}
                 />
               </Stack>
 
-              <Stack>
-                <IconButton onClick={() => remove(index)}>
+              <Stack direction={'row'} alignItems="center">
+                <IconButton aria-label="delete" onClick={() => remove(index)}>
                   <Remove />
                 </IconButton>
               </Stack>

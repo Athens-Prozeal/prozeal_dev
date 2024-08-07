@@ -25,7 +25,6 @@ export function ManpowerTable(): React.JSX.Element {
       .get(`${config.site.serverURL}/api/manpower/?work_site_id=${localStorage.getItem('work-site-id')}`, {
         headers: {
           Authorization: authToken,
-          'ngrok-skip-browser-warning': 'true',
         },
       })
       .then((response) => {

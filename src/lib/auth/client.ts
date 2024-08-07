@@ -89,7 +89,6 @@ class AuthClient {
       const response = await axios.get(`${config.site.serverURL}/api/auth/my-detail/`, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'ngrok-skip-browser-warning': 'true',
         },
       });
 

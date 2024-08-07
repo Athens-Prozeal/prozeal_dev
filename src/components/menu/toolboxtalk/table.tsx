@@ -31,7 +31,6 @@ const ToolBoxTalkTable = forwardRef<ToolBoxTalkTableHandles, ToolBoxTalkTablePro
       .get(`${config.site.serverURL}/api/tbt/?work_site_id=${localStorage.getItem('work-site-id')}`, {
         headers: {
           Authorization: authToken,
-          'ngrok-skip-browser-warning': 'true',
         },
       })
       .then((response) => {

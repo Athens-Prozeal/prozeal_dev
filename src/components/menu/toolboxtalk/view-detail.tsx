@@ -18,7 +18,6 @@ const ToolBoxTalkDetail: React.FC = () => {
       .get(`${config.site.serverURL}/api/tbt/${toolBoxTalkId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
-          'ngrok-skip-browser-warning': 'true',
         },
       })
       .then((response) => {
@@ -33,7 +32,7 @@ const ToolBoxTalkDetail: React.FC = () => {
     <Box display="flex" justifyContent="center" minHeight="100vh">
       <Paper elevation={2} style={{ padding: '32px', maxWidth: '800px', width: '100%' }}>
         <Typography variant="h4" gutterBottom align="center" style={{ marginBottom: '24px' }}>
-          {data?.topic} 
+          {data?.topic}
         </Typography>
         <Grid container spacing={1}>
           <Grid item xs={12}>

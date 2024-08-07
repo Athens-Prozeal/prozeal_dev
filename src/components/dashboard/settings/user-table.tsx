@@ -29,7 +29,6 @@ export function UserTable(props: UserTableProps): React.JSX.Element {
       .get(url, {
         headers: {
           Authorization: authToken,
-          'ngrok-skip-browser-warning': 'true',
         },
       })
       .then((response) => {

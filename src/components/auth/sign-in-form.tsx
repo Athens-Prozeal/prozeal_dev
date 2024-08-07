@@ -117,7 +117,7 @@ export function SignInForm(): React.JSX.Element {
                   label="Password"
                   type={showPassword ? 'text' : 'password'}
                 />
-                {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
+                {errors.password ? <FormHelperText> {errors.password.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -126,7 +126,7 @@ export function SignInForm(): React.JSX.Element {
               Forgot password?
             </Link>
           </div>
-          {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
+          {errors.root ? <Alert severity="error"> {errors.root.message}</Alert> : null}
           <Button disabled={isPending} type="submit" variant="contained">
             Sign in
           </Button>

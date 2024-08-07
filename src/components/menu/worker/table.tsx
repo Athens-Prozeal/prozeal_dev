@@ -31,7 +31,6 @@ const WorkerTable = forwardRef<WorkerHandles, WorkerProps>((props, ref) => {
       .get(`${config.site.serverURL}/api/worker/?work_site_id=${localStorage.getItem('work-site-id')}`, {
         headers: {
           Authorization: authToken,
-          'ngrok-skip-browser-warning': 'true',
         },
       })
       .then((response) => {

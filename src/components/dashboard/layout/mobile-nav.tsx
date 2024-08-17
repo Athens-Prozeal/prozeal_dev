@@ -49,7 +49,6 @@ export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element 
 
       // Load work site from local storage on first render
       const savedWorkSite = localStorage.getItem('work-site-id');
-      console.log('savedWorkSite', savedWorkSite);
       if (savedWorkSite == null) {
         window.location.href = '/auth/select-work-site';
       }

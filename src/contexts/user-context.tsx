@@ -37,7 +37,6 @@ export function UserProvider({ children }: UserProviderProps): React.JSX.Element
       }
 
       setState((prev) => ({ ...prev, user: data ?? null, error: null, isLoading: false }));
-      console.log('data', data);
       // user is logged in but site not selected
       if (data) {
         const workSite = localStorage.getItem('work-site-id');

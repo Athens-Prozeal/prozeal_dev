@@ -26,6 +26,7 @@ export const paths = {
     manpower: {
       home:  '/menu/manpower',
       add: '/menu/manpower/add',
+      edit: '/menu/manpower/edit',
       statistics: '/menu/manpower/statistics',
     },
     inspection: {

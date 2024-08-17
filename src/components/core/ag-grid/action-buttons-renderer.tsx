@@ -16,6 +16,7 @@ interface Action {
 interface CustomCellRendererParams extends ICellRendererParams {
   actionsToDisplay: string[];
   viewUrl?: string;
+  editUrl?: string;
   router: any;
 }
 
@@ -39,6 +40,10 @@ const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
   const viewRecord = (url: string) => {
     params.router.push(url);
   };
+
+  const editRecord = (url: string) => {
+    params.router.push(url);
+  }
 
   const deleteRecord = (url: string) => {
     fetch(url, {
@@ -75,6 +80,10 @@ const ActionButtonsRenderer = (params: CustomCellRendererParams) => {
 
                 if (action.name === 'view') {
                   viewRecord(`${params.viewUrl}${recordId}`);
+                }
+
+                if (action.name == 'edit'){
+                  editRecord(`${params.editUrl}${recordId}`);
                 }
               }}
             >

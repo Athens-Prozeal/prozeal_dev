@@ -1,5 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 
+import { Form } from '@/components/menu/manpower/edit-form';
 
 export default function Page() {
   return (
@@ -7,6 +8,7 @@ export default function Page() {
       <Stack direction="row" spacing={3}>
         <Stack spacing={5} sx={{ flex: '1 1 auto' }}>
           <Typography variant="h5">Edit Manpower</Typography>
+          <Form />
         </Stack>
       </Stack>
     </Stack>

@@ -45,6 +45,7 @@ export function ManpowerTable(): React.JSX.Element {
             cellRendererParams: {
               actionsToDisplay: ['edit', 'delete'],
               router: router,
+              editUrl: `/menu/manpower/edit?manpowerId=`,
             },
             minWidth: 150,
           },

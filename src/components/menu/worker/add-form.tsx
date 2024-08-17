@@ -223,6 +223,7 @@ const WorkerForm: React.FC = () => {
                   {...field}
                   type="date"
                   label="Date of Birth"
+                  InputLabelProps={{ shrink: true }}
                   variant="outlined"
                   fullWidth
                   error={!!errors.dateOfBirth}

@@ -66,7 +66,7 @@ const ExcavationDetail: React.FC = () => {
     setApproveBtnDisabled(true);
     try {
       const formData = new FormData();
-      formData.append('signature', (event.target as HTMLFormElement).signature.files[0]); // Replace 'signature' with the name of the file input field in your form
+      formData.append('signature', (event.target as HTMLFormElement).signature.files[0]);
 
       await axios
         .put(`${config.site.serverURL}${approveUrl}`, formData, {
@@ -82,6 +82,7 @@ const ExcavationDetail: React.FC = () => {
           }
         });
     } catch (error) {
+      setApproveBtnDisabled(false);
       console.error('Error approving:', error);
     }
   };

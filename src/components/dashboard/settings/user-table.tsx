@@ -54,6 +54,7 @@ export function UserTable(props: UserTableProps): React.JSX.Element {
                 epc: 'EPC User',
                 client: 'Client',
                 epc_admin: 'EPC Admin',
+                quality_inspector: 'Quality Inspector',
               };
               return roleMapping[params.value] || params.value;
             },

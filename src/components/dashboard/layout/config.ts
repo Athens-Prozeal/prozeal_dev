@@ -24,9 +24,11 @@ let allNavItems: NavItemConfig[] = [
   },
   {
     key: 'inspection',
-    title: 'Vehicle Inspection',
+    title: 'Inspection',
     icon: 'magnifying-glass',
-    items: [{ key: 'vehicle', title: 'Vehicle', href: paths.menu.inspection.vehicle, icon: 'users-four' }],
+    items: [
+      {key: 'excavation', title: 'Excavation', href: paths.menu.inspection.excavation.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.excavation.home },}
+    ],
   },
   { key: 'manpower',
     title: 'Manpower',
@@ -40,6 +42,10 @@ const getNavItems = () => {
   const role = localStorage.getItem('role');
   if (role === 'sub_contractor') {
     allNavItems = allNavItems.filter(item => item.key !== 'overview');
+  }
+  if (role === 'quality_inspector') {
+    allNavItems = allNavItems.filter(item => item.key !== 'manpower' && item.key !== 'overview' && item.key !== 'worker');
+
   }
   return allNavItems;
 };

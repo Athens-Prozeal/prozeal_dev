@@ -21,7 +21,7 @@ const userSchema = z.object({
     .array(
       z.object({
         id: z.string().nonempty('Work site is required'),
-        role: z.enum(['sub_contractor', 'epc', 'client']),
+        role: z.enum(['sub_contractor', 'epc', 'client', 'quality_inspector']),
       })
     )
     .optional(),
@@ -297,6 +297,7 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
                       <MenuItem value={'sub_contractor'}>Sub Contractor</MenuItem>
                       <MenuItem value={'epc'}>EPC</MenuItem>
                       <MenuItem value={'client'}>Client</MenuItem>
+                      <MenuItem value={'quality_inspector'}>Quality Inspector</MenuItem>
                     </TextField>
                   )}
                 />

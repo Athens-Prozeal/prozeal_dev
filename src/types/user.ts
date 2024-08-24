@@ -18,3 +18,9 @@ export interface SubContractor {
   id: number;
   username: string;
 }
+
+export interface Witness {
+  id: number;
+  username: string;
+  company: string;
+}

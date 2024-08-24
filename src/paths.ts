@@ -30,7 +30,10 @@ export const paths = {
       statistics: '/menu/manpower/statistics',
     },
     inspection: {
-      vehicle: '/menu/inspection/vehicle',
+      excavation: {
+        home: '/menu/inspection/excavation',
+        add: '/menu/inspection/excavation/add'
+      },
     },
   },
 

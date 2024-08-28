@@ -188,6 +188,33 @@ const ExcavationDetail: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
+                  <TableRow key={1}>
+                    <TableCell>{1}</TableCell>
+                    <TableCell>{data?.witness_1_date}</TableCell>
+                    <TableCell>{data?.witness_1_username}</TableCell>
+                    <TableCell>{data?.witness_1_company}</TableCell>
+                    <TableCell>
+                      <img src={data?.witness_1_signature} alt="" />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key={2}>
+                    <TableCell>{2}</TableCell>
+                    <TableCell>{data?.witness_2_date}</TableCell>
+                    <TableCell>{data?.witness_2_username}</TableCell>
+                    <TableCell>{data?.witness_2_company}</TableCell>
+                    <TableCell>
+                      <img src={data?.witness_2_signature} alt="" />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key={3}>
+                    <TableCell>{3}</TableCell>
+                    <TableCell>{data?.witness_3_date}</TableCell>
+                    <TableCell>{data?.witness_3_username}</TableCell>
+                    <TableCell>{data?.witness_3_company}</TableCell>
+                    <TableCell>
+                      <img src={data?.witness_3_signature} alt="" />
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>

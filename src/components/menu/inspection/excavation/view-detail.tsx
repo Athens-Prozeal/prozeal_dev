@@ -104,11 +104,6 @@ const ExcavationDetail: React.FC = () => {
               <strong>Project Name:</strong> {data?.project_name}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={12}>
-            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Description:</strong> {data?.description}
-            </Typography>
-          </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
               <strong>Ref Drawing Number:</strong> {data?.ref_drawing_no}
@@ -117,6 +112,11 @@ const ExcavationDetail: React.FC = () => {
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
               <strong>Checked By:</strong> {data?.checked_by_username}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
+              <strong>Description:</strong> {data?.description}
             </Typography>
           </Grid>
 

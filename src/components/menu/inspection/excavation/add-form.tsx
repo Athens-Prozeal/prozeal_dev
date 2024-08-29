@@ -1,24 +1,18 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { ChecklistSchema } from '@/schemas/checklist';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Grid, MenuItem, TextField, Typography, Alert } from '@mui/material';
+import { Alert, Autocomplete, Box, Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { ChecklistResponseType } from '@/types/checklist';
 import { Witness as WitnessType } from '@/types/user';
 import { config } from '@/config';
-
-interface ChecklistSchema {
-  [key: string]: {
-    verbose_name: string;
-    choices: string[];
-    required?: boolean;
-  };
-}
 
 // Checklist Schema Configuration
 const preWorkChecklistSchema : ChecklistSchema = {
@@ -85,11 +79,6 @@ const postWorkChecklistSchema : ChecklistSchema = {
     choices: ['Yes', 'No', 'N/A'],
     required: true
   },
-};
-
-type ChecklistResponseType = {
-  choice: string;
-  remark: string;
 };
 
 type CategorizedChecklistResponseType = {
@@ -202,33 +191,32 @@ export const Form = () => {
     if(validateForm()){
       setBtnDisabled(true);
       axios({
-      method: 'POST',
-      url: `${config.site.serverURL}/api/inspection/excavation/?work_site_id=${localStorage.getItem('work-site-id')}`,
-      data: {
-        date_of_checking: data.dateOfChecking,
-        project_name: data.projectName,
-        description: data.description,
-        ref_drawing_no: data.refDrawingNumber,
-        witness_1: data.witness1,
-        witness_2: data.witness2,
-        witness_3: data.witness3,
-        checklists: checklistResponses,
-      },
-      headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
-    })
-      .then((response) => {
-        if (response.status === 201) {
-          window.alert('Excavation Report Added');
-          setTimeout(() => {
-            window.location.href = '/menu/inspection/excavation?status=approved';
-          }, 500);
-        }
+        method: 'POST',
+        url: `${config.site.serverURL}/api/inspection/excavation/?work_site_id=${localStorage.getItem('work-site-id')}`,
+        data: {
+          date_of_checking: data.dateOfChecking,
+          project_name: data.projectName,
+          description: data.description,
+          ref_drawing_no: data.refDrawingNumber,
+          witness_1: data.witness1,
+          witness_2: data.witness2,
+          witness_3: data.witness3,
+          checklists: checklistResponses,
+        },
+        headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
       })
-      .catch((error) => {
-        setBtnDisabled(false);
-        window.alert('Something went wrong!');
-      });
-
+        .then((response) => {
+          if (response.status === 201) {
+            window.alert('Excavation Report Added');
+            setTimeout(() => {
+              window.location.href = '/menu/inspection/excavation?status=approved';
+            }, 500);
+          }
+        })
+        .catch((error) => {
+          setBtnDisabled(false);
+          window.alert('Something went wrong!');
+        });
     }
   };
 
@@ -309,8 +297,8 @@ export const Form = () => {
           <Grid item xs={12} sm={12} md={12}>
             <Typography variant="h6">Items to be checked</Typography>
           </Grid>
+          <br />
 
-          {/* Dynamic Checklist Rendering */}
           {/* Pre-Work Checklist */}
           <Grid item xs={12}>
             <Typography variant="h6">Pre-Work Checklist</Typography>
@@ -340,6 +328,7 @@ export const Form = () => {
               />
             </Grid>
           ))}
+          <br />
 
           {/* Post-Work Checklist */}
           <Grid item xs={12}>
@@ -372,7 +361,7 @@ export const Form = () => {
           ))}
           <br />
 
-          {/* Witness */}
+         { /* Witness */}
           <Grid item xs={12} sm={12} md={12}>
             <Typography variant="h6">Witnesses</Typography>
           </Grid>
@@ -381,22 +370,26 @@ export const Form = () => {
               name="witness1"
               control={control}
               render={({ field }) => (
-                <TextField
-                  required
+                <Autocomplete
                   {...field}
-                  select
-                  label="Witness 1"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.witness1}
-                  helperText={errors.witness1?.message}
-                >
-                  {witnesses?.map((witness) => (
-                    <MenuItem key={witness.id} value={witness.id}>
-                      {witness.username} ({witness.company})
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  options={witnesses}
+                  getOptionLabel={(witness) => `${witness.username} (${witness.company})`}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      label="Witness 1"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.witness1}
+                      helperText={errors.witness1?.message}
+                    />
+                  )}
+                  value={field.value !== null ? witnesses.find((witness) => witness.id === field.value) : null}
+                  onChange={(e, newValue) => {
+                    field.onChange(newValue?.id || null);
+                  }}
+                />
               )}
             />
           </Grid>
@@ -406,22 +399,26 @@ export const Form = () => {
               name="witness2"
               control={control}
               render={({ field }) => (
-                <TextField
-                  required
+                <Autocomplete
                   {...field}
-                  select
-                  label="Witness 2"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.witness2}
-                  helperText={errors.witness2?.message}
-                >
-                  {witnesses?.map((witness) => (
-                    <MenuItem key={witness.id} value={witness.id}>
-                      {witness.username} ({witness.company})
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  options={witnesses}
+                  getOptionLabel={(witness) => `${witness.username} (${witness.company})`}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      label="Witness 2"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.witness2}
+                      helperText={errors.witness2?.message}
+                    />
+                  )}
+                  value={field.value !== null ? witnesses.find((witness) => witness.id === field.value) : null}
+                  onChange={(e, newValue) => {
+                    field.onChange(newValue?.id || null);
+                  }}
+                />
               )}
             />
           </Grid>
@@ -431,28 +428,32 @@ export const Form = () => {
               name="witness3"
               control={control}
               render={({ field }) => (
-                <TextField
-                  required
+                <Autocomplete
                   {...field}
-                  select
-                  label="Witness 3"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.witness3}
-                  helperText={errors.witness3?.message}
-                >
-                  {witnesses?.map((witness) => (
-                    <MenuItem key={witness.id} value={witness.id}>
-                      {witness.username} ({witness.company})
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  options={witnesses}
+                  getOptionLabel={(witness) => `${witness.username} (${witness.company})`}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      label="Witness 3"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.witness3}
+                      helperText={errors.witness3?.message}
+                    />
+                  )}
+                  value={field.value !== null ? witnesses.find((witness) => witness.id === field.value) : null}
+                  onChange={(e, newValue) => {
+                    field.onChange(newValue?.id || null);
+                  }}
+                />
               )}
             />
           </Grid>
 
-            {/* Validation Errors Display */}
-            {validationErrors.length > 0 && (
+          {/* Validation Errors Display */}
+          {validationErrors.length > 0 && (
             <Grid item xs={12}>
               <Alert severity="error">
                 Please complete the following required fields:

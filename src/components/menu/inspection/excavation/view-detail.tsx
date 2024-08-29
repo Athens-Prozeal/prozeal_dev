@@ -34,7 +34,6 @@ const ExcavationDetail: React.FC = () => {
       .get(`${config.site.serverURL}/api/inspection/excavation/${excavationId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
-          'ngrok-skip-browser-warning': 'true',
         },
       })
       .then((response) => {
@@ -132,7 +131,7 @@ const ExcavationDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  Installation checklist for Anti-termite Treatment
+                Check List for Excavation
                 </Typography>
               </Box>
             </Stack>
@@ -150,7 +149,7 @@ const ExcavationDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/020
+                IMS/FOR/PR/004
               </Stack>
               <Stack
                 direction="row"
@@ -174,11 +173,12 @@ const ExcavationDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                Rev. Date: 14.03.2024
+                Rev. Date: 30.09.2023
               </Stack>
             </Stack>
           </Grid>
         </Grid>
+        <br />
 
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>

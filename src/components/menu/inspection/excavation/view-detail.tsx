@@ -18,6 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 import axios from 'axios';
+
 import { config } from '@/config';
 
 const ExcavationDetail: React.FC = () => {
@@ -33,6 +34,7 @@ const ExcavationDetail: React.FC = () => {
       .get(`${config.site.serverURL}/api/inspection/excavation/${excavationId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+          'ngrok-skip-browser-warning': 'true',
         },
       })
       .then((response) => {
@@ -90,9 +92,94 @@ const ExcavationDetail: React.FC = () => {
   return (
     <Box display="flex" justifyContent="center" minHeight="100vh" flexDirection="column" gap={4}>
       <Paper elevation={2} sx={{ maxWidth: '100%', width: '100%' }}>
-        <Typography variant="h4" gutterBottom align="center" sx={{ marginBottom: { xs: 2, sm: 3 } }}>
+        {/* <Typography variant="h4" gutterBottom align="center" sx={{ marginBottom: { xs: 2, sm: 3 } }}>
           {data?.project_name}
-        </Typography>
+        </Typography> */}
+
+        <Grid container mb={2} sx={{ border: '1px solid #999999', minHeight: '130px' }}>
+          <Grid item xs={3}>
+            <Stack
+              direction="column"
+              sx={{ border: '1px solid #999999', height: '100%', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Typography variant="h5">Add Logo here</Typography>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Stack direction="column" height="100%">
+              <Box
+                sx={{
+                  flex: 1,
+                  border: '1px solid #999999',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                  Prozeal Green Energy Pvt. Ltd.
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  flex: 2,
+                  border: '1px solid #999999',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                  Installation checklist for Anti-termite Treatment
+                </Typography>
+              </Box>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={3}>
+            <Stack direction="column" height="100%">
+              <Stack
+                direction="row"
+                sx={{
+                  flexGrow: 1,
+                  border: '1px solid #999999',
+                  alignItems: 'center',
+                  fontWeight: 500,
+                  p: 1,
+                }}
+              >
+                IMS/FOR/PR/020
+              </Stack>
+              <Stack
+                direction="row"
+                sx={{
+                  flexGrow: 1,
+                  border: '1px solid #999999',
+                  alignItems: 'center',
+                  fontWeight: 500,
+                  p: 1,
+                }}
+              >
+                Rev. No.:00
+              </Stack>
+              <Stack
+                direction="row"
+                sx={{
+                  flexGrow: 1,
+                  border: '1px solid #999999',
+                  alignItems: 'center',
+                  fontWeight: 500,
+                  p: 1,
+                }}
+              >
+                Rev. Date: 14.03.2024
+              </Stack>
+            </Stack>
+          </Grid>
+        </Grid>
+
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
@@ -120,8 +207,8 @@ const ExcavationDetail: React.FC = () => {
             </Typography>
           </Grid>
 
-          <Grid item xs={12}>
-            <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+          <Grid item xs={12} sx={{ maxWidth: '100%', whiteSpace: 'nowrap', overflowX: 'auto' }}>
+            <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
@@ -162,11 +249,11 @@ const ExcavationDetail: React.FC = () => {
             </TableContainer>
           </Grid>
 
-          <Grid item xs={12} marginTop="30px">
+          <Grid item xs={12} marginTop="30px" sx={{ maxWidth: '100%', whiteSpace: 'nowrap', overflowX: 'auto' }}>
             <Typography variant="h5" sx={{ marginBottom: 2 }}>
               Witness
             </Typography>
-            <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+            <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>

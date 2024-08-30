@@ -34,6 +34,11 @@ export const paths = {
         home: '/menu/inspection/excavation',
         add: '/menu/inspection/excavation/add'
       },
+      antiTermiteTreatment: {
+        home: '/menu/inspection/anti-termite-treatment',
+        add: '/menu/inspection/anti-termite-treatment/add'
+      },
+
     },
   },
 

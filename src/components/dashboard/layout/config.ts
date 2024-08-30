@@ -27,7 +27,8 @@ let allNavItems: NavItemConfig[] = [
     title: 'Inspection',
     icon: 'magnifying-glass',
     items: [
-      {key: 'excavation', title: 'Excavation', href: paths.menu.inspection.excavation.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.excavation.home },}
+      {key: 'excavation', title: 'Excavation', href: paths.menu.inspection.excavation.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.excavation.home },},
+      {key: 'anti-termite-treatment', title: 'Anti Termite Treatment', href: paths.menu.inspection.antiTermiteTreatment.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.antiTermiteTreatment.home },}
     ],
   },
   { key: 'manpower',

@@ -282,7 +282,7 @@ const antiTermiteTreatmentDetail: React.FC = () => {
                     <TableCell>{data?.witness_1_username}</TableCell>
                     <TableCell>{data?.witness_1_company}</TableCell>
                     <TableCell>
-                      <img src={data?.witness_1_signature} alt="" />
+                      <img src={data?.witness_1_signature} alt="" style={{maxWidth:"250px"}}/>
                     </TableCell>
                   </TableRow>
                   <TableRow key={2}>
@@ -291,7 +291,7 @@ const antiTermiteTreatmentDetail: React.FC = () => {
                     <TableCell>{data?.witness_2_username}</TableCell>
                     <TableCell>{data?.witness_2_company}</TableCell>
                     <TableCell>
-                      <img src={data?.witness_2_signature} alt="" />
+                      <img src={data?.witness_2_signature} alt="" style={{maxWidth:"250px"}}/>
                     </TableCell>
                   </TableRow>
                   <TableRow key={3}>
@@ -300,7 +300,7 @@ const antiTermiteTreatmentDetail: React.FC = () => {
                     <TableCell>{data?.witness_3_username}</TableCell>
                     <TableCell>{data?.witness_3_company}</TableCell>
                     <TableCell>
-                      <img src={data?.witness_3_signature} alt="" />
+                      <img src={data?.witness_3_signature} alt="" style={{maxWidth:"250px"}}/>
                     </TableCell>
                   </TableRow>
                 </TableBody>

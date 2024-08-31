@@ -35,7 +35,7 @@ const AntiTermiteTreatmentTable = () => {
       try {
         const statusParam = statusFilter ? `&status=${statusFilter}` : '';
         const response = await axios.get(
-          `${config.site.serverURL}/api/inspection/antitermitetreatment/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
+          `${config.site.serverURL}/api/inspection/anti-termite-treatment/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
           {
             headers: {
               Authorization: authToken,

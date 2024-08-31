@@ -261,7 +261,7 @@ export const Form = () => {
       setBtnDisabled(true);
       axios({
         method: 'POST',
-        url: `${config.site.serverURL}/api/inspection/antitermitetreatment/?work_site_id=${localStorage.getItem('work-site-id')}`,
+        url: `${config.site.serverURL}/api/inspection/anti-termite-treatment/?work_site_id=${localStorage.getItem('work-site-id')}`,
         data: {
           date_of_checking: data.dateOfChecking,
           project_name: data.projectName,

@@ -31,7 +31,7 @@ const antiTermiteTreatmentDetail: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get(`${config.site.serverURL}/api/inspection/antitermitetreatment/${antiTermiteTreatmentId}/?work_site_id=${workSiteId}`, {
+      .get(`${config.site.serverURL}/api/inspection/anti-termite-treatment/${antiTermiteTreatmentId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
         },
@@ -243,6 +243,11 @@ const antiTermiteTreatmentDetail: React.FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
+              <strong>Comments:</strong> {data?.comments}
+            </Typography>
           </Grid>
 
           <Grid item xs={12} marginTop="30px" sx={{ maxWidth: '100%', whiteSpace: 'nowrap', overflowX: 'auto' }}>

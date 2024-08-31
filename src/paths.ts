@@ -38,6 +38,10 @@ export const paths = {
         home: '/menu/inspection/anti-termite-treatment',
         add: '/menu/inspection/anti-termite-treatment/add'
       },
+      pourCardForColumnConcrete: {
+        home: '/menu/inspection/pour-card-for-column-concrete',
+        add: '/menu/inspection/pour-card-for-column-concrete/add'
+      },
 
     },
   },

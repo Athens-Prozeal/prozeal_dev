@@ -20,6 +20,7 @@ import {
 import axios from 'axios';
 
 import { config } from '@/config';
+import WitnessTable from '@/components/menu/inspection/witnesses/witness-table';
 
 const ExcavationDetail: React.FC = () => {
   const searchParams = useSearchParams();
@@ -253,58 +254,20 @@ const ExcavationDetail: React.FC = () => {
             <Typography variant="h5" sx={{ marginBottom: 2 }}>
               Witness
             </Typography>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <strong>#</strong>
-                    </TableCell>
-                    <TableCell>
-                      <strong>Date</strong>
-                    </TableCell>
-                    <TableCell>
-                      <strong>Name</strong>
-                    </TableCell>
-                    <TableCell>
-                      <strong>Company</strong>
-                    </TableCell>
-                    <TableCell>
-                      <strong>Signature</strong>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow key={1}>
-                    <TableCell>{1}</TableCell>
-                    <TableCell>{data?.witness_1_date}</TableCell>
-                    <TableCell>{data?.witness_1_username}</TableCell>
-                    <TableCell>{data?.witness_1_company}</TableCell>
-                    <TableCell>
-                      <img src={data?.witness_1_signature} alt="" style={{maxWidth:"250px"}}/>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow key={2}>
-                    <TableCell>{2}</TableCell>
-                    <TableCell>{data?.witness_2_date}</TableCell>
-                    <TableCell>{data?.witness_2_username}</TableCell>
-                    <TableCell>{data?.witness_2_company}</TableCell>
-                    <TableCell>
-                      <img src={data?.witness_2_signature} alt="" style={{maxWidth:"250px"}}/>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow key={3}>
-                    <TableCell>{3}</TableCell>
-                    <TableCell>{data?.witness_3_date}</TableCell>
-                    <TableCell>{data?.witness_3_username}</TableCell>
-                    <TableCell>{data?.witness_3_company}</TableCell>
-                    <TableCell>
-                      <img src={data?.witness_3_signature} alt="" style={{maxWidth:"250px"}}/>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <WitnessTable
+              witness_1_date={data?.witness_1_date}
+              witness_1_name={data?.witness_1_full_name}
+              witness_1_company={data?.witness_1_company}
+              witness_1_signature={data?.witness_1_signature}
+              witness_2_date={data?.witness_2_date}
+              witness_2_name={data?.witness_2_full_name}
+              witness_2_company={data?.witness_2_company}
+              witness_2_signature={data?.witness_2_signature}
+              witness_3_date={data?.witness_3_date}
+              witness_3_name={data?.witness_3_full_name}
+              witness_3_company={data?.witness_3_company}
+              witness_3_signature={data?.witness_3_signature}
+            />
           </Grid>
         </Grid>
       </Paper>

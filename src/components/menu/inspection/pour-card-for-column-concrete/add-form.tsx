@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { ChecklistSchema } from '@/schemas/checklist';
+import { useEffect, useState, Fragment } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -10,177 +9,182 @@ import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { ChecklistResponseType } from '@/types/checklist';
 import { Witness as WitnessType } from '@/types/user';
+import { ChecklistResponseType } from '@/types/checklist';
+import { ChecklistSchema } from '@/schemas/checklist';
 import { config } from '@/config';
 
-// Checklist Schema Configuration
-const beforeFixingColumnBoxSchema: ChecklistSchema = {
-  check_the_quality_of_cast_starter: {
-    verbose_name: 'Check the quality of cast starter',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_dia_and_rebar_configuration: {
-    verbose_name: 'Check the dia. and rebar configuration of longitudinal bars with respect to drawing and BBS',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_dia_and_spacing_of_ties: {
-    verbose_name: 'Check dia and spacing of ties & binding of bars',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_size_of_column_reinforcement_cage: {
-    verbose_name: 'Check the size of column reinforcement cage after deducting cover',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_lap_length: {
-    verbose_name: 'Check for lap length if any, laps are staggered & location of lapping',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_specified_cover_blocks: {
-    verbose_name: 'Check the specified cover blocks are provided',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_dowel_bars: {
-    verbose_name: 'Check dowel bars if any',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_construction_joint_surface: {
-    verbose_name: 'Check the construction joint surface is rough and free from laitance',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+type CategorizedChecklistSchema = {
+  [key: string]: ChecklistSchema;
+  before_fixing_column_box: ChecklistSchema;
+  after_fixing_column_box: ChecklistSchema;
 };
 
-const afterFixingColumnBoxSchema: ChecklistSchema = {
-  check_gaps_in_shuttering: {
-    verbose_name: 'Check any gaps in shuttering',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+const checklistSchemas: CategorizedChecklistSchema = {
+  before_fixing_column_box: {
+    check_the_quality_of_cast_starter: {
+      verbose_name: 'Check the quality of cast starter',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
 
-  check_plumb_and_size_of_column_box: {
-    verbose_name: 'Check the plumb and size of column box',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+    check_dia_and_rebar_configuration: {
+      verbose_name: 'Check the dia. and rebar configuration of longitudinal bars with respect to drawing and BBS',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
 
-  check_supports_the_column_box: {
-    verbose_name: 'Check the supports the column box',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+    check_dia_and_spacing_of_ties: {
+      verbose_name: 'Check dia and spacing of ties & binding of bars',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
 
-  check_all_round_uniform_cover_to_rebars: {
-    verbose_name: 'Check for all round uniform cover to rebar’s',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+    check_size_of_column_reinforcement_cage: {
+      verbose_name: 'Check the size of column reinforcement cage after deducting cover',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
 
-  check_protruding_longitudinal_bar: {
-    verbose_name: 'Check the protruding longitudinal bar shall not be less than lap length if column has to be raised',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+    check_lap_length: {
+      verbose_name: 'Check for lap length if any, laps are staggered & location of lapping',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
 
-  check_test_certificates_of_materials: {
-    verbose_name: 'Check the test certificates of materials',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+    check_specified_cover_blocks: {
+      verbose_name: 'Check the specified cover blocks are provided',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
 
-  check_men_materials_equipments_and_arrangement_for_concrete: {
-    verbose_name: 'Check men, materials, equipment’s and arrangement for concrete',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+    check_dowel_bars: {
+      verbose_name: 'Check dowel bars if any',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
 
-  check_commencement_for_concreting: {
-    verbose_name: 'Check commencement for concreting - Approved',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
+    check_construction_joint_surface: {
+      verbose_name: 'Check the construction joint surface is rough and free from laitance',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
   },
+  after_fixing_column_box: {
+    check_gaps_in_shuttering: {
+      verbose_name: 'Check any gaps in shuttering',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
 
-  check_concrete_production: {
-    verbose_name: 'Check the production of concrete is conforming to mix design',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
+    check_plumb_and_size_of_column_box: {
+      verbose_name: 'Check the plumb and size of column box',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_supports_the_column_box: {
+      verbose_name: 'Check the supports the column box',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_all_round_uniform_cover_to_rebars: {
+      verbose_name: 'Check for all round uniform cover to rebar’s',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_protruding_longitudinal_bar: {
+      verbose_name:
+        'Check the protruding longitudinal bar shall not be less than lap length if column has to be raised',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_test_certificates_of_materials: {
+      verbose_name: 'Check the test certificates of materials',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_men_materials_equipments_and_arrangement_for_concrete: {
+      verbose_name: 'Check men, materials, equipment’s and arrangement for concrete',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_commencement_for_concreting: {
+      verbose_name: 'Check commencement for concreting - Approved',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_concrete_production: {
+      verbose_name: 'Check the production of concrete is conforming to mix design',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_pouring_concrete: {
+      verbose_name: 'Check concrete is poured by using stands/working platform without disturbing column shuttering',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_slump_and_cast_cubes: {
+      verbose_name: 'Check slump and cast cubes for testing',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_proper_compaction: {
+      verbose_name:
+        'Check proper compaction is done by vibrator and free space for vibrator operation without disturbing column box',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_plumb_after_concreting: {
+      verbose_name: 'Check the plumb after concreting',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_pore_top_level: {
+      verbose_name: 'Check the pore top level',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_construction_joint_surface_roughened: {
+      verbose_name: 'Check the construction joint surface is roughened',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_concrete_condition_on_form_removal: {
+      verbose_name: 'Check the concrete condition on form removal',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_curing: {
+      verbose_name: 'Check for curing',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+
+    check_cube_results: {
+      verbose_name: 'Test cube results (7/28)',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
   },
-
-  check_pouring_concrete: {
-    verbose_name: 'Check concrete is poured by using stands/working platform without disturbing column shuttering',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_slump_and_cast_cubes: {
-    verbose_name: 'Check slump and cast cubes for testing',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_proper_compaction: {
-    verbose_name: 'Check proper compaction is done by vibrator and free space for vibrator operation without disturbing column box',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_plumb_after_concreting: {
-    verbose_name: 'Check the plumb after concreting',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_pore_top_level: {
-    verbose_name: 'Check the pore top level',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_construction_joint_surface_roughened: {
-    verbose_name: 'Check the construction joint surface is roughened',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_concrete_condition_on_form_removal: {
-    verbose_name: 'Check the concrete condition on form removal',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_curing: {
-    verbose_name: 'Check for curing',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
-  check_cube_results: {
-    verbose_name: 'Test cube results (7/28)',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-
 };
 
 type CategorizedChecklistResponseType = {
-  before_fixing_column_box: {
-    [key: string]: ChecklistResponseType;
-  };
-  after_fixing_column_box: {
+  [category: string]: {
     [key: string]: ChecklistResponseType;
   };
 };
@@ -204,10 +208,7 @@ type PourCardForColumnConcreteSchemaType = z.infer<typeof pourCardForColumnConcr
 
 export const Form = () => {
   const currentDate = new Date().toISOString().split('T')[0];
-  const [checklistResponses, setChecklistResponses] = useState<CategorizedChecklistResponseType>({
-    before_fixing_column_box: {},
-    after_fixing_column_box: {},
-  });
+  const [checklistResponses, setChecklistResponses] = useState<CategorizedChecklistResponseType>({});
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [witnesses, setWitnesses] = useState<WitnessType[]>([]);
   const [btnDisabled, setBtnDisabled] = useState(false);
@@ -222,55 +223,45 @@ export const Form = () => {
       });
   }, []);
 
-  const handleChoiceChange = (
-    category: 'before_fixing_column_box' | 'after_fixing_column_box',
-    itemKey: string,
-    choice: string
-  ) => {
+  const handleChoiceChange = (category: keyof CategorizedChecklistSchema, itemKey: string, choice: string) => {
     setChecklistResponses((prevResponses) => ({
       ...prevResponses,
       [category]: {
         ...prevResponses[category],
         [itemKey]: {
-          ...prevResponses[category][itemKey],
+          ...(prevResponses[category]?.[itemKey] || {}),
           choice,
+          verbose_name: checklistSchemas[category][itemKey].verbose_name, // Include verbose_name
         },
       },
     }));
   };
 
-  const handleRemarkChange = (
-    category: 'before_fixing_column_box' | 'after_fixing_column_box',
-    itemKey: string,
-    remark: string
-  ) => {
+  const handleRemarkChange = (category: keyof CategorizedChecklistSchema, itemKey: string, remark: string) => {
     setChecklistResponses((prevResponses) => ({
       ...prevResponses,
       [category]: {
         ...prevResponses[category],
         [itemKey]: {
-          ...prevResponses[category][itemKey],
+          ...(prevResponses[category]?.[itemKey] || {}),
           remark,
+          verbose_name: checklistSchemas[category][itemKey].verbose_name, // Include verbose_name
         },
       },
     }));
   };
+
 
   const validateForm = () => {
     const errors: string[] = [];
 
-    // Validate before fixing column box checklist
-    Object.keys(beforeFixingColumnBoxSchema).forEach((key) => {
-      if (beforeFixingColumnBoxSchema[key].required && !checklistResponses.before_fixing_column_box[key]?.choice) {
-        errors.push(beforeFixingColumnBoxSchema[key].verbose_name);
-      }
-    });
-
-    // Validate after fixing column box checklist
-    Object.keys(afterFixingColumnBoxSchema).forEach((key) => {
-      if (afterFixingColumnBoxSchema[key].required && !checklistResponses.after_fixing_column_box[key]?.choice) {
-        errors.push(afterFixingColumnBoxSchema[key].verbose_name);
-      }
+    Object.keys(checklistSchemas).forEach((category) => {
+      const categoryKey = category as keyof CategorizedChecklistSchema;
+      Object.keys(checklistSchemas[categoryKey]).forEach((key) => {
+        if (checklistSchemas[categoryKey][key].required && !checklistResponses[categoryKey]?.[key]?.choice) {
+          errors.push(checklistSchemas[categoryKey][key].verbose_name);
+        }
+      });
     });
 
     setValidationErrors(errors);
@@ -441,75 +432,57 @@ export const Form = () => {
           </Grid>
           <br />
 
-          {/* BEFORE FIXING COLUMN BOX Checklist */}
-          <Grid item xs={12}>
-            <Typography variant="h6">BEFORE FIXING COLUMN BOX Checklist</Typography>
-          </Grid>
-          {Object.keys(beforeFixingColumnBoxSchema).map((key) => (
-            <Grid item xs={12} key={key}>
-              <Typography gutterBottom>{beforeFixingColumnBoxSchema[key].verbose_name}</Typography>
-              <ToggleButtonGroup
-                color="primary"
-                value={checklistResponses.before_fixing_column_box[key]?.choice || ''}
-                exclusive
-                onChange={(event, newValue) => handleChoiceChange('before_fixing_column_box', key, newValue)}
-                aria-label={beforeFixingColumnBoxSchema[key].verbose_name}
-              >
-                {beforeFixingColumnBoxSchema[key].choices.map((choice) => (
-                  <ToggleButton key={choice} value={choice}>
-                    {choice}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-              <TextField
-                label="Remark"
-                variant="standard"
-                fullWidth
-                value={checklistResponses.before_fixing_column_box[key]?.remark || ''}
-                onChange={(e) => handleRemarkChange('before_fixing_column_box', key, e.target.value)}
-              />
-            </Grid>
+          {Object.keys(checklistSchemas).map((category) => (
+            <Fragment key={category}>
+              <Grid item xs={12}>
+                <Typography variant="h6">
+                  {category
+                    .split('_')
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ')}{' '}
+                </Typography>
+              </Grid>
+              {Object.keys(checklistSchemas[category]).map((key) => (
+                <Grid item xs={12} key={key}>
+                  <Typography gutterBottom>{checklistSchemas[category][key].verbose_name}</Typography>
+                  <ToggleButtonGroup
+                    color="primary"
+                    value={checklistResponses[category]?.[key]?.choice || ''}
+                    exclusive
+                    onChange={(event, newValue) =>
+                      handleChoiceChange(category as keyof CategorizedChecklistSchema, key, newValue)
+                    }
+                    aria-label={checklistSchemas[category][key].verbose_name}
+                  >
+                    {checklistSchemas[category][key].choices.map((choice) => (
+                      <ToggleButton key={choice} value={choice}>
+                        {choice}
+                      </ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                  <TextField
+                    label="Remark"
+                    variant="standard"
+                    fullWidth
+                    value={checklistResponses[category]?.[key]?.remark || ''}
+                    onChange={(e) =>
+                      handleRemarkChange(category as keyof CategorizedChecklistSchema, key, e.target.value)
+                    }
+                  />
+                </Grid>
+              ))}
+            </Fragment>
           ))}
-          <br />
 
-          {/* AFTER FIXING COLUMN BOX Checklist */}
-          <Grid item xs={12}>
-            <Typography variant="h6">AFTER FIXING COLUMN BOX</Typography>
-          </Grid>
-          {Object.keys(afterFixingColumnBoxSchema).map((key) => (
-            <Grid item xs={12} key={key}>
-              <Typography gutterBottom>{afterFixingColumnBoxSchema[key].verbose_name}</Typography>
-              <ToggleButtonGroup
-                color="primary"
-                value={checklistResponses.after_fixing_column_box[key]?.choice || ''}
-                exclusive
-                onChange={(event, newValue) => handleChoiceChange('after_fixing_column_box', key, newValue)}
-                aria-label={afterFixingColumnBoxSchema[key].verbose_name}
-              >
-                {afterFixingColumnBoxSchema[key].choices.map((choice) => (
-                  <ToggleButton key={choice} value={choice}>
-                    {choice}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-              <TextField
-                label="Remark"
-                variant="standard"
-                fullWidth
-                value={checklistResponses.after_fixing_column_box[key]?.remark || ''}
-                onChange={(e) => handleRemarkChange('after_fixing_column_box', key, e.target.value)}
-              />
-            </Grid>
-          ))}
-          <br />
+
           <Grid item xs={12} sm={12} md={6}>
             <Controller
               name="comments"
               control={control}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
-                required
-                helperText={error ? error.message : null}
+                  required
+                  helperText={error ? error.message : null}
                   error={!!error}
                   onChange={onChange}
                   value={value}

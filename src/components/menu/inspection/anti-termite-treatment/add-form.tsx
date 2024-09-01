@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { ChecklistSchema } from '@/schemas/checklist';
+import React, { useEffect, useState, Fragment } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, Box, Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -10,124 +9,125 @@ import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { ChecklistResponseType } from '@/types/checklist';
 import { Witness as WitnessType } from '@/types/user';
+import { ChecklistSchema } from '@/schemas/checklist';
+import { ChecklistResponseType } from '@/types/checklist';
 import { config } from '@/config';
 
-const preparationChecklistSchema: ChecklistSchema = {
-  check_the_orientation_of_footing_and_dimensions: {
-    verbose_name: 'Check the orientation of footing and dimensions',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  check_the_center_line_of_columns_or_footings: {
-    verbose_name: 'Check the center line of columns/footings with reference to gridline and drawing',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  check_the_reinforcement_of_footing_mat: {
-    verbose_name: 'Check the reinforcement of footing mat with respect to BBS/Drawing',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  check_column_rebars_dia_and_no_of_longitudinal_bars: {
-    verbose_name:
-      'Check column rebar’s dia and no. of longitudinal bars and column L provided with respect to BBS/Drawing',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  check_column_ties_dia_spacing_and_configuration: {
-    verbose_name: 'Check the dia of column ties, spacing and tie configuration',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  check_plumb_of_column_cage_and_necessary_arrangements: {
-    verbose_name: 'Check the plumb of the column cage and necessary arrangements to hold the same',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  check_cover_blocks_chairs_and_binding_of_bars: {
-    verbose_name: 'Check cover blocks, chairs & binding of bars',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  check_shuttering_rigidity_line_plumb_leak_proof_and_applying_of_deshuttering_oil: {
-    verbose_name: 'Check the shuttering for its rigidity, line, plumb, leak proof and applying of de-shuttering oil',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+
+type CategorizedChecklistSchema = {
+  [key: string]: ChecklistSchema;
+  preparation: ChecklistSchema;
+  general: ChecklistSchema;
+  in_process: ChecklistSchema;
+  after_concreting: ChecklistSchema;
 };
 
-const generalChecklistSchema: ChecklistSchema = {
-  verify_test_certificates_reports_of_cement_steel_and_materials: {
-    verbose_name: 'Verify test certificates/reports of cement, steel & materials',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
+const checklistSchemas: CategorizedChecklistSchema = {
+  preparation: {
+    check_the_orientation_of_footing_and_dimensions: {
+      verbose_name: 'Check the orientation of footing and dimensions',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    check_the_center_line_of_columns_or_footings: {
+      verbose_name: 'Check the center line of columns/footings with reference to gridline and drawing',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    check_the_reinforcement_of_footing_mat: {
+      verbose_name: 'Check the reinforcement of footing mat with respect to BBS/Drawing',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    check_column_rebars_dia_and_no_of_longitudinal_bars: {
+      verbose_name:
+        'Check column rebar’s dia and no. of longitudinal bars and column L provided with respect to BBS/Drawing',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    check_column_ties_dia_spacing_and_configuration: {
+      verbose_name: 'Check the dia of column ties, spacing and tie configuration',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    check_plumb_of_column_cage_and_necessary_arrangements: {
+      verbose_name: 'Check the plumb of the column cage and necessary arrangements to hold the same',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    check_cover_blocks_chairs_and_binding_of_bars: {
+      verbose_name: 'Check cover blocks, chairs & binding of bars',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    check_shuttering_rigidity_line_plumb_leak_proof_and_applying_of_deshuttering_oil: {
+      verbose_name: 'Check the shuttering for its rigidity, line, plumb, leak proof and applying of de-shuttering oil',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
   },
-  concrete_top_level_marking: {
-    verbose_name: 'Concrete top level marking - checked',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
+  general: {
+    verify_test_certificates_reports_of_cement_steel_and_materials: {
+      verbose_name: 'Verify test certificates/reports of cement, steel & materials',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    concrete_top_level_marking: {
+      verbose_name: 'Concrete top level marking - checked',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    check_adequacy_of_men_materials_equipment_and_arrangement_for_concrete: {
+      verbose_name: 'Check adequacy of men, materials, equipment’s and arrangement for concrete',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
   },
-  check_adequacy_of_men_materials_equipment_and_arrangement_for_concrete: {
-    verbose_name: 'Check adequacy of men, materials, equipment’s and arrangement for concrete',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
+  in_process: {
+    production_and_workability_of_concrete: {
+      verbose_name: 'Production and workability of concrete - checked',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    placing_and_compaction_of_concrete: {
+      verbose_name: 'Placing and compaction of concrete - checked',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    cubes_cast_for_testing: {
+      verbose_name: 'Cubes cast for testing (Mention no. of cubes cast at remarks column)',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
   },
-};
-
-const inProcessChecklistSchema: ChecklistSchema = {
-  production_and_workability_of_concrete: {
-    verbose_name: 'Production and workability of concrete - checked',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
+  after_concreting: {
+    soffit_and_pour_top_level: {
+      verbose_name: 'Soffit and pour top level checked',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    curing: {
+      verbose_name: 'Curing - checked',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    concrete_condition_on_form_removal: {
+      verbose_name: 'Concrete condition on form removal',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
+    test_cube_results: {
+      verbose_name: 'Test cube results (7 day/28)',
+      choices: ['Yes', 'No', 'N/A'],
+      required: true,
+    },
   },
-  placing_and_compaction_of_concrete: {
-    verbose_name: 'Placing and compaction of concrete - checked',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  cubes_cast_for_testing: {
-    verbose_name: 'Cubes cast for testing (Mention no. of cubes cast at remarks column)',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-};
-
-const afterConcretingChecklistSchema: ChecklistSchema = {
-  soffit_and_pour_top_level: {
-    verbose_name: 'Soffit and pour top level checked',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  curing: {
-    verbose_name: 'Curing - checked',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  concrete_condition_on_form_removal: {
-    verbose_name: 'Concrete condition on form removal',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
-  test_cube_results: {
-    verbose_name: 'Test cube results (7 day/28)',
-    choices: ['Yes', 'No', 'N/A'],
-    required: true,
-  },
+  // Add more categories if needed
 };
 
 type CategorizedChecklistResponseType = {
-  preparation: {
-    [key: string]: ChecklistResponseType;
-  };
-  general: {
-    [key: string]: ChecklistResponseType;
-  };
-  in_process: {
-    [key: string]: ChecklistResponseType;
-  };
-  after_concreting: {
+  [category: string]: {
     [key: string]: ChecklistResponseType;
   };
 };
@@ -140,14 +140,14 @@ const baseAntiTermiteTreatmentSchema = {
   gradeOfConcrete: z.string().max(155, 'Grade of Concrete must be at most 155 characters'),
   sourceOfConcrete: z.string().max(155, 'Source of Concrete must be at most 155 characters'),
   comments: z.string().max(255, 'Comments must be at most 255 characters'),
-  witness1: z.number(),
-  witness2: z.number(),
-  witness3: z.number(),
+  witness1: z.number().optional(),
+  witness2: z.number().optional(),
+  witness3: z.number().optional(),
 };
 
-const antiTermiteTermiteSchema = z.object(baseAntiTermiteTreatmentSchema);
+const antiTermiteTreatmentSchema = z.object(baseAntiTermiteTreatmentSchema);
 
-type antiTermiteTermiteSchemaType = z.infer<typeof antiTermiteTermiteSchema>;
+type AntiTermiteTreatmentSchemaType = z.infer<typeof antiTermiteTreatmentSchema>;
 
 export const Form = () => {
   const currentDate = new Date().toISOString().split('T')[0];
@@ -172,7 +172,7 @@ export const Form = () => {
   }, []);
 
   const handleChoiceChange = (
-    category: 'preparation' | 'general' | 'in_process' | 'after_concreting',
+    category: keyof typeof checklistSchemas,
     itemKey: string,
     choice: string
   ) => {
@@ -183,13 +183,14 @@ export const Form = () => {
         [itemKey]: {
           ...prevResponses[category][itemKey],
           choice,
+          verbose_name: checklistSchemas[category][itemKey].verbose_name,
         },
       },
     }));
   };
 
   const handleRemarkChange = (
-    category: 'preparation' | 'general' | 'in_process' | 'after_concreting',
+    category: keyof typeof checklistSchemas,
     itemKey: string,
     remark: string
   ) => {
@@ -200,6 +201,7 @@ export const Form = () => {
         [itemKey]: {
           ...prevResponses[category][itemKey],
           remark,
+          verbose_name: checklistSchemas[category][itemKey].verbose_name,
         },
       },
     }));
@@ -208,32 +210,13 @@ export const Form = () => {
   const validateForm = () => {
     const errors: string[] = [];
 
-    // Validate preparation checklist
-    Object.keys(preparationChecklistSchema).forEach((key) => {
-      if (preparationChecklistSchema[key].required && !checklistResponses.preparation[key]?.choice) {
-        errors.push(preparationChecklistSchema[key].verbose_name);
-      }
-    });
-
-    // Validate general checklist
-    Object.keys(generalChecklistSchema).forEach((key) => {
-      if (generalChecklistSchema[key].required && !checklistResponses.general[key]?.choice) {
-        errors.push(generalChecklistSchema[key].verbose_name);
-      }
-    });
-
-    // Validate in-process checklist
-    Object.keys(inProcessChecklistSchema).forEach((key) => {
-      if (inProcessChecklistSchema[key].required && !checklistResponses.in_process[key]?.choice) {
-        errors.push(inProcessChecklistSchema[key].verbose_name);
-      }
-    });
-
-    // Validate after concreting checklist
-    Object.keys(afterConcretingChecklistSchema).forEach((key) => {
-      if (afterConcretingChecklistSchema[key].required && !checklistResponses.after_concreting[key]?.choice) {
-        errors.push(afterConcretingChecklistSchema[key].verbose_name);
-      }
+    Object.keys(checklistSchemas).forEach((category) => {
+      const categoryKey = category as keyof typeof checklistSchemas;
+      Object.keys(checklistSchemas[categoryKey]).forEach((key) => {
+        if (checklistSchemas[categoryKey][key].required && !checklistResponses[categoryKey]?.[key]?.choice) {
+          errors.push(checklistSchemas[categoryKey][key].verbose_name);
+        }
+      });
     });
 
     setValidationErrors(errors);
@@ -244,14 +227,14 @@ export const Form = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<antiTermiteTermiteSchemaType>({
-    resolver: zodResolver(antiTermiteTermiteSchema),
+  } = useForm<AntiTermiteTreatmentSchemaType>({
+    resolver: zodResolver(antiTermiteTreatmentSchema),
     defaultValues: {
       dateOfChecking: currentDate,
     },
   });
 
-  const onSubmit = async (data: antiTermiteTermiteSchemaType) => {
+  const onSubmit = async (data: AntiTermiteTreatmentSchemaType) => {
     if (validateForm()) {
       if (data.witness1 === data.witness2 || data.witness2 === data.witness3 || data.witness3 === data.witness1) {
         alert('Witness cannot be same');
@@ -405,129 +388,43 @@ export const Form = () => {
             <Typography variant="h6">Items to be checked</Typography>
           </Grid>
 
-          {/* Pre-Work Checklist */}
-          <Grid item xs={12}>
-            <Typography variant="h6">Pre-Work Checklist</Typography>
-          </Grid>
-          {Object.keys(preparationChecklistSchema).map((key) => (
-            <Grid item xs={12} key={key}>
-              <Typography gutterBottom>{preparationChecklistSchema[key].verbose_name}</Typography>
-              <ToggleButtonGroup
-                color="primary"
-                value={checklistResponses.preparation[key]?.choice || ''}
-                exclusive
-                onChange={(event, newValue) => handleChoiceChange('preparation', key, newValue)}
-                aria-label={preparationChecklistSchema[key].verbose_name}
-              >
-                {preparationChecklistSchema[key].choices.map((choice) => (
-                  <ToggleButton key={choice} value={choice}>
-                    {choice}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-              <TextField
-                label="Remark"
-                variant="standard"
-                fullWidth
-                value={checklistResponses.preparation[key]?.remark || ''}
-                onChange={(e) => handleRemarkChange('preparation', key, e.target.value)}
-              />
-            </Grid>
+          {Object.keys(checklistSchemas).map((category) => (
+            <Fragment key={category}>
+              <Grid item xs={12}>
+                <Typography variant="h6">
+                  {category
+                    .split('_')
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ')}{' '}
+                </Typography>
+              </Grid>
+              {Object.keys(checklistSchemas[category]).map((key) => (
+                <Grid item xs={12} key={key}>
+                  <Typography gutterBottom>{checklistSchemas[category][key].verbose_name}</Typography>
+                  <ToggleButtonGroup
+                    color="primary"
+                    value={checklistResponses[category]?.[key]?.choice || ''}
+                    exclusive
+                    onChange={(event, newValue) => handleChoiceChange(category as keyof typeof checklistSchemas, key, newValue)}
+                    aria-label={checklistSchemas[category][key].verbose_name}
+                  >
+                    {checklistSchemas[category][key].choices.map((choice) => (
+                      <ToggleButton key={choice} value={choice}>
+                        {choice}
+                      </ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                  <TextField
+                    label="Remark"
+                    variant="standard"
+                    fullWidth
+                    value={checklistResponses[category]?.[key]?.remark || ''}
+                    onChange={(e) => handleRemarkChange(category as keyof typeof checklistSchemas, key, e.target.value)}
+                  />
+                </Grid>
+              ))}
+            </Fragment>
           ))}
-          <br />
-
-          {/* General Checklist */}
-          <Grid item xs={12}>
-            <Typography variant="h6">General Checklist</Typography>
-          </Grid>
-          {Object.keys(generalChecklistSchema).map((key) => (
-            <Grid item xs={12} key={key}>
-              <Typography gutterBottom>{generalChecklistSchema[key].verbose_name}</Typography>
-              <ToggleButtonGroup
-                color="primary"
-                value={checklistResponses.general[key]?.choice || ''}
-                exclusive
-                onChange={(event, newValue) => handleChoiceChange('general', key, newValue)}
-                aria-label={generalChecklistSchema[key].verbose_name}
-              >
-                {generalChecklistSchema[key].choices.map((choice) => (
-                  <ToggleButton key={choice} value={choice}>
-                    {choice}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-              <TextField
-                label="Remark"
-                variant="standard"
-                fullWidth
-                value={checklistResponses.general[key]?.remark || ''}
-                onChange={(e) => handleRemarkChange('general', key, e.target.value)}
-              />
-            </Grid>
-          ))}
-          <br />
-
-          {/* In-Process Checklist */}
-          <Grid item xs={12}>
-            <Typography variant="h6">In-Process Checklist</Typography>
-          </Grid>
-          {Object.keys(inProcessChecklistSchema).map((key) => (
-            <Grid item xs={12} key={key}>
-              <Typography gutterBottom>{inProcessChecklistSchema[key].verbose_name}</Typography>
-              <ToggleButtonGroup
-                color="primary"
-                value={checklistResponses.in_process[key]?.choice || ''}
-                exclusive
-                onChange={(event, newValue) => handleChoiceChange('in_process', key, newValue)}
-                aria-label={inProcessChecklistSchema[key].verbose_name}
-              >
-                {inProcessChecklistSchema[key].choices.map((choice) => (
-                  <ToggleButton key={choice} value={choice}>
-                    {choice}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-              <TextField
-                label="Remark"
-                variant="standard"
-                fullWidth
-                value={checklistResponses.in_process[key]?.remark || ''}
-                onChange={(e) => handleRemarkChange('in_process', key, e.target.value)}
-              />
-            </Grid>
-          ))}
-          <br />
-
-          {/* After Concreting Checklist */}
-          <Grid item xs={12}>
-            <Typography variant="h6">After Concreting Checklist</Typography>
-          </Grid>
-          {Object.keys(afterConcretingChecklistSchema).map((key) => (
-            <Grid item xs={12} key={key}>
-              <Typography gutterBottom>{afterConcretingChecklistSchema[key].verbose_name}</Typography>
-              <ToggleButtonGroup
-                color="primary"
-                value={checklistResponses.after_concreting[key]?.choice || ''}
-                exclusive
-                onChange={(event, newValue) => handleChoiceChange('after_concreting', key, newValue)}
-                aria-label={afterConcretingChecklistSchema[key].verbose_name}
-              >
-                {afterConcretingChecklistSchema[key].choices.map((choice) => (
-                  <ToggleButton key={choice} value={choice}>
-                    {choice}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-              <TextField
-                label="Remark"
-                variant="standard"
-                fullWidth
-                value={checklistResponses.after_concreting[key]?.remark || ''}
-                onChange={(e) => handleRemarkChange('after_concreting', key, e.target.value)}
-              />
-            </Grid>
-          ))}
-          <br />
 
           <Grid item xs={12} sm={12} md={6}>
             <Controller

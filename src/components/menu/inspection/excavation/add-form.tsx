@@ -10,6 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Witness as WitnessType } from '@/types/user';
+import { ChecklistResponseType } from '@/types/checklist';
 import { ChecklistSchema } from '@/schemas/checklist';
 import { config } from '@/config';
 
@@ -92,10 +93,6 @@ const checklistSchemas: CategorizedChecklistSchema = {
   // Add more categories if needed
 };
 
-type ChecklistResponseType = {
-  choice: string;
-  remark?: string;
-};
 
 type CategorizedChecklistResponseType = {
   [category: string]: {
@@ -311,7 +308,6 @@ export const Form = () => {
                     .split('_')
                     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' ')}{' '}
-                  Checklist
                 </Typography>
               </Grid>
               {Object.keys(checklistSchemas[category]).map((key) => (

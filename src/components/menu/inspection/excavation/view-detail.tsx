@@ -54,7 +54,7 @@ const ExcavationDetail: React.FC = () => {
     return Object.entries(checklists).map(([category, items]) => ({
       category: category.replace(/_/g, ' ').toUpperCase(),
       items: Object.entries(items as { [key: string]: any }).map(([item, details]: any) => ({
-        item: item.replace(/_/g, ' '),
+        item: details.verbose_name,
         choice: details.choice,
         remark: details.remark,
       })),

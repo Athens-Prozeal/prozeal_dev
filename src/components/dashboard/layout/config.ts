@@ -29,7 +29,8 @@ let allNavItems: NavItemConfig[] = [
     items: [
       {key: 'excavation', title: 'Excavation', href: paths.menu.inspection.excavation.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.excavation.home },},
       {key: 'anti-termite-treatment', title: 'Anti Termite Treatment', href: paths.menu.inspection.antiTermiteTreatment.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.antiTermiteTreatment.home },},
-      {key: 'pour-card-for-column-concrete', title: 'Pour Card Column Concrete', href: paths.menu.inspection.pourCardForColumnConcrete.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForColumnConcrete.home },}
+      {key: 'pour-card-for-column-concrete', title: 'Pour Card Column Concrete', href: paths.menu.inspection.pourCardForColumnConcrete.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForColumnConcrete.home },},
+      {key: 'pour-card-for-slab-concrete', title: 'Pour Card Slab Concrete', href: paths.menu.inspection.pourCardForSlabConcrete.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForSlabConcrete.home },},
     ],
   },
   { key: 'manpower',

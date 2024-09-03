@@ -42,6 +42,10 @@ export const paths = {
         home: '/menu/inspection/pour-card-for-column-concrete',
         add: '/menu/inspection/pour-card-for-column-concrete/add'
       },
+      pourCardForSlabConcrete: {
+        home: '/menu/inspection/pour-card-for-slab-concrete',
+        add: '/menu/inspection/pour-card-for-slab-concrete/add'
+      },
 
     },
   },

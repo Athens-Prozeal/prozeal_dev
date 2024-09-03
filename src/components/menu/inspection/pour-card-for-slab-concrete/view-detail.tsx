@@ -33,7 +33,7 @@ const pourCardForSlabConcreteDetail: React.FC = () => {
   useEffect(() => {
     axios
       .get(
-        `${config.site.serverURL}/api/inspection/pour-card-for-column-concrete/${pourCardForSlabConcreteId}/?work_site_id=${workSiteId}`,
+        `${config.site.serverURL}/api/inspection/pour-card-for-slab-concrete/${pourCardForSlabConcreteId}/?work_site_id=${workSiteId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access-token')}`,

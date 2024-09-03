@@ -187,7 +187,7 @@ required: true,
   choices: ['Yes', 'No', 'N/A'],
   required: true,
       },
-   
+
 },
 };
 type CategorizedChecklistResponseType = {
@@ -299,7 +299,7 @@ export const Form = () => {
       setBtnDisabled(true);
       axios({
         method: 'POST',
-        url: `${config.site.serverURL}/api/inspection/pour-card-for-column-concrete/?work_site_id=${localStorage.getItem('work-site-id')}`,
+        url: `${config.site.serverURL}/api/inspection/pour-card-for-slab-concrete/?work_site_id=${localStorage.getItem('work-site-id')}`,
         data: {
           date_of_checking: data.dateOfChecking,
           project_name: data.projectName,
@@ -307,6 +307,7 @@ export const Form = () => {
           ref_drawing_no: data.refDrawingNumber,
           grade_of_concrete: data.gradeOfConcrete,
           source_of_concrete: data.sourceOfConcrete,
+          level: data.level,
           comments: data.comments,
           witness_1: data.witness1,
           witness_2: data.witness2,
@@ -317,9 +318,9 @@ export const Form = () => {
       })
         .then((response) => {
           if (response.status === 201) {
-            window.alert('Pour Card For Column Concrete Report Added');
+            window.alert('Pour Card For Slab Concrete Report Added');
             setTimeout(() => {
-              window.location.href = '/menu/inspection/pour-card-for-column-concrete?status=approved';
+              window.location.href = '/menu/inspection/pour-card-for-slab-concrete?status=approved';
             }, 500);
           }
         })

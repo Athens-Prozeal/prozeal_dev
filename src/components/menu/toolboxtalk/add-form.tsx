@@ -11,7 +11,7 @@ import { config } from '@/config';
 import { PopUp } from '@/components/core/alert';
 
 // Define the schema using Zod
-const toolBoxTalkSchema = z.object({
+const toolboxTalkSchema = z.object({
   date: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: 'Invalid date format',
   }),
@@ -29,7 +29,7 @@ const toolBoxTalkSchema = z.object({
   }),
 });
 
-type ToolBoxTalkSchemaType = z.infer<typeof toolBoxTalkSchema>;
+type ToolBoxTalkSchemaType = z.infer<typeof toolboxTalkSchema>;
 
 const ToolBoxTalkForm: React.FC = () => {
   const [alertOpen, setAlertOpen] = React.useState(false);
@@ -44,7 +44,7 @@ const ToolBoxTalkForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<ToolBoxTalkSchemaType>({
-    resolver: zodResolver(toolBoxTalkSchema),
+    resolver: zodResolver(toolboxTalkSchema),
     defaultValues: {
       date: currentDate,
     },
@@ -68,7 +68,7 @@ const ToolBoxTalkForm: React.FC = () => {
       .then((response) => {
         if (response.status === 201) {
           setAlertSeverity('success');
-          setAlertMessage('Tool Box Talk added successfully');
+          setAlertMessage('Toolbox Talk added successfully');
           setAlertKey((prev) => prev + 1);
           setAlertOpen(true);
           setTimeout(() => {

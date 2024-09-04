@@ -11,11 +11,11 @@ const ToolBoxTalkDetail: React.FC = () => {
   const searchParams = useSearchParams();
   const [data, setData] = useState<any>();
   const workSiteId = localStorage.getItem('work-site-id');
-  const toolBoxTalkId = searchParams.get('toolBoxTalkId');
+  const toolboxTalkId = searchParams.get('toolboxTalkId');
 
   useEffect(() => {
     axios
-      .get(`${config.site.serverURL}/api/tbt/${toolBoxTalkId}/?work_site_id=${workSiteId}`, {
+      .get(`${config.site.serverURL}/api/tbt/${toolboxTalkId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
         },
@@ -26,7 +26,7 @@ const ToolBoxTalkDetail: React.FC = () => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [toolBoxTalkId]);
+  }, [toolboxTalkId]);
 
   return (
     <Box display="flex" justifyContent="center" minHeight="100vh">

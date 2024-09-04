@@ -14,7 +14,7 @@ import ToolBoxTalkTable, { ToolBoxTalkTableHandles } from '@/components/menu/too
 export default function Page() {
   const role = localStorage.getItem('role');
   const exportRef = useRef<ToolBoxTalkTableHandles>(null);
-  
+
   const onBtnExport = () => {
     if (exportRef.current) {
       exportRef.current.triggerClick();
@@ -25,7 +25,7 @@ export default function Page() {
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-          <Typography variant="h5">Tool Box Talk</Typography>
+          <Typography variant="h5">Toolbox Talk</Typography>
           <Stack sx={{ alignItems: 'center' }} direction="row" spacing={1}>
             <Button color="inherit" startIcon={<UploadIcon fontSize="var(--icon-fontSize-md)" />} onClick={onBtnExport}>
               Export
@@ -33,16 +33,16 @@ export default function Page() {
           </Stack>
         </Stack>
         <div>
-        {role === 'epc_admin' || role === 'epc'? (
-          <Button
-            component={RouterLink}
-            href={'/menu/toolboxtalk/add'}
-            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-            variant="contained"
-          >
-            Add
-          </Button>
-        ) : null}
+          {role === 'epc_admin' || role === 'epc' ? (
+            <Button
+              component={RouterLink}
+              href={'/menu/toolboxtalk/add'}
+              startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+              variant="contained"
+            >
+              Add
+            </Button>
+          ) : null}
         </div>
       </Stack>
       <Stack>

@@ -8,45 +8,49 @@ export const paths = {
   },
   dashboard: {
     overview: '/dashboard',
-    settings:'/dashboard/settings',
+    settings: '/dashboard/settings',
     account: '/dashboard/account',
   },
   settings: '/dashboard/settings',
   account: '/dashboard/account',
-  menu:{
-    toolboxtalk: {
+  menu: {
+    toolboxTalk: {
       home: '/menu/toolboxtalk',
       add: '/menu/toolboxtalk/add',
       edit: '/menu/toolboxtalk/edit',
     },
     worker: {
       home: '/menu/worker',
-      add: '/menu/worker/add'
+      add: '/menu/worker/add',
     },
     manpower: {
-      home:  '/menu/manpower',
+      home: '/menu/manpower',
       add: '/menu/manpower/add',
       edit: '/menu/manpower/edit',
       statistics: '/menu/manpower/statistics',
     },
+    safetyObservation: {
+      home: '/menu/safety-observation',
+      add: '/menu/safety-observation/add',
+      edit: '/menu/safety-observation/edit',
+    },
     inspection: {
       excavation: {
         home: '/menu/inspection/excavation',
-        add: '/menu/inspection/excavation/add'
+        add: '/menu/inspection/excavation/add',
       },
       antiTermiteTreatment: {
         home: '/menu/inspection/anti-termite-treatment',
-        add: '/menu/inspection/anti-termite-treatment/add'
+        add: '/menu/inspection/anti-termite-treatment/add',
       },
       pourCardForColumnConcrete: {
         home: '/menu/inspection/pour-card-for-column-concrete',
-        add: '/menu/inspection/pour-card-for-column-concrete/add'
+        add: '/menu/inspection/pour-card-for-column-concrete/add',
       },
       pourCardForSlabConcrete: {
         home: '/menu/inspection/pour-card-for-slab-concrete',
-        add: '/menu/inspection/pour-card-for-slab-concrete/add'
+        add: '/menu/inspection/pour-card-for-slab-concrete/add',
       },
-
     },
   },
 

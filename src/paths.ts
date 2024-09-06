@@ -51,6 +51,10 @@ export const paths = {
         home: '/menu/inspection/pour-card-for-slab-concrete',
         add: '/menu/inspection/pour-card-for-slab-concrete/add',
       },
+      htCable: {
+        home: '/menu/inspection/ht-cable',
+        add: '/menu/inspection/ht-cable/add',
+      }
     },
   },
 

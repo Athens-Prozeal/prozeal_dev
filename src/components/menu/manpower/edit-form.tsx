@@ -22,7 +22,7 @@ const manpowerSchema = z.object({
   verificationStatus: z.enum(['Verified', 'Revise', 'Not Verified', '']),
 });
 
-type ManpowerFormData = z.infer<typeof manpowerSchema>;
+type ManpowerSchemaType = z.infer<typeof manpowerSchema>;
 
 export const Form = () => {
   const searchParams = useSearchParams();
@@ -41,7 +41,7 @@ export const Form = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<ManpowerFormData>({
+  } = useForm<ManpowerSchemaType>({
     resolver: zodResolver(manpowerSchema),
     defaultValues: {
       verificationStatus: '',
@@ -81,7 +81,7 @@ export const Form = () => {
       });
   }, [role, setValue]);
 
-  const onSubmit = async (data: ManpowerFormData) => {
+  const onSubmit = async (data: ManpowerSchemaType) => {
     setButtonDisabled(true);
     axios({
       method: 'PUT',

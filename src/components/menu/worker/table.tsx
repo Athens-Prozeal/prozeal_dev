@@ -58,7 +58,80 @@ const WorkerTable = forwardRef<WorkerHandles, WorkerProps>((props, ref) => {
             },
           },
           { field: 'designation', headerName: 'Designation', filter: 'agTextColumnFilter' },
-
+          { field: 'blood_group', headerName: 'Blood Group', filter: 'agTextColumnFilter' },
+          {
+            field: 'mobile_number',
+            headerName: 'Mobile Number',
+            hide: true,
+            valueGetter: (params) => {
+              return `'${params.data.mobile_number}`; // Prepend a single quote to treat it as text
+            },
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'emergency_contact_number',
+            headerName: 'Emergency Contact Number',
+            filter: 'agTextColumnFilter',
+            hide: true,
+            valueGetter: (params) => {
+              return `'${params.data.emergency_contact_number}`; // Prepend a single quote to treat it as text
+            },
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'identity_marks',
+            headerName: 'Identity Marks',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'address',
+            headerName: 'Address',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'city',
+            headerName: 'City',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'state',
+            headerName: 'State',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'country',
+            headerName: 'Country',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'pincode',
+            headerName: 'Pincode',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'profile_pic',
+            headerName: 'Photo',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'medical_fitness',
+            headerName: 'Medical Fitness',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'aadhar',
+            headerName: 'Aadhar',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
           {
             field: 'actions',
             cellRenderer: ActionButtonsRenderer,
@@ -79,7 +152,7 @@ const WorkerTable = forwardRef<WorkerHandles, WorkerProps>((props, ref) => {
 
   const exportWorker = () => {
     const params = {
-      columnKeys: ['name', 'induction_date', 'father_name', 'agency_name'], // keys of the columns you want to export
+      columnKeys: ['name', 'induction_date', 'father_name', 'created_under', 'date_of_birth', 'gender', 'designation', 'blood_group', 'mobile_number', 'emergency_contact_number', 'identity_marks', 'address', 'city', 'state', 'country', 'pincode', 'medical_fitness', 'aadhar', 'profile_pic'],
     };
 
     if (gridRef.current?.api) {

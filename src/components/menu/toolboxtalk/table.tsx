@@ -42,6 +42,18 @@ const ToolBoxTalkTable = forwardRef<ToolBoxTalkTableHandles, ToolBoxTalkTablePro
           { field: 'number_of_participants', headerName: 'Number Of Participants', filter: 'agNumberColumnFilter' },
           { field: 'agency_name', headerName: 'Agency Name', filter: 'agTextColumnFilter' },
           {
+            field: 'evidence',
+            headerName: 'Evidence',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
+            field: 'attendance',
+            headerName: 'Attendance',
+            hide: true,
+            suppressColumnsToolPanel: true,
+          },
+          {
             field: 'actions',
             cellRenderer: ActionButtonsRenderer,
             cellRendererParams: {
@@ -61,7 +73,7 @@ const ToolBoxTalkTable = forwardRef<ToolBoxTalkTableHandles, ToolBoxTalkTablePro
 
   const exportTBT = () => {
     const params = {
-      columnKeys: ['date', 'topic', 'number_of_participants', 'agency_name'],
+      columnKeys: ['date', 'topic', 'number_of_participants', 'agency_name', 'evidence', 'attendance'],
     };
 
     if (gridRef.current?.api) {

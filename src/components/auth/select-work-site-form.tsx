@@ -1,30 +1,25 @@
 'use client';
 
 import * as React from 'react';
-import { Button } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Button, Box, TextField, MenuItem } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-
 import { WorkSiteRole } from '@/types/worksite';
 import { authClient } from '@/lib/auth/client';
 
 export function SelectWorkSiteForm() {
   const [selectedWorkSite, setSelectedWorkSite] = React.useState('');
-  const [workSiteRoles, setworkSiteRoles] = React.useState<WorkSiteRole[]>();
+  const [workSiteRoles, setWorkSiteRoles] = React.useState<WorkSiteRole[]>([]);
 
   React.useEffect(() => {
     authClient.getUser().then(({ data }) => {
-      setworkSiteRoles(data?.workSiteRoles);
+      setWorkSiteRoles(data?.workSiteRoles || []);
     });
   }, []);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedWorkSite(event.target.value as string);
+  const handleWorkSiteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedWorkSite(event.target.value);
   };
 
   const handleSubmit = () => {
@@ -32,11 +27,13 @@ export function SelectWorkSiteForm() {
       return;
     }
 
-    for (const workSite of workSiteRoles || []) {
-      if (workSite.id == selectedWorkSite) {
-        localStorage.setItem('work-site-id', selectedWorkSite);
-        localStorage.setItem('role', workSite.role);
-      }
+    const selectedRole = workSiteRoles.find(
+      (workSite) => workSite.id === selectedWorkSite
+    );
+
+    if (selectedRole) {
+      localStorage.setItem('work-site-id', selectedWorkSite);
+      localStorage.setItem('role', selectedRole.role);
     }
 
     window.location.href = '/dashboard';
@@ -49,20 +46,18 @@ export function SelectWorkSiteForm() {
       </Stack>
       <Box sx={{ minWidth: 240 }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Work Site</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+          <TextField
+            select
+            label="Work Site"
             value={selectedWorkSite}
-            label="Age"
-            onChange={handleChange}
+            onChange={handleWorkSiteChange} // Added onChange handler
           >
-            {workSiteRoles?.map((workSite: WorkSiteRole) => (
+            {workSiteRoles.map((workSite: WorkSiteRole) => (
               <MenuItem key={workSite.id} value={workSite.id}>
                 {workSite.id}
               </MenuItem>
             ))}
-          </Select>
+          </TextField>
         </FormControl>
       </Box>
       <Button variant="contained" onClick={handleSubmit}>

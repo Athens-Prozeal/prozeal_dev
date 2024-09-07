@@ -66,6 +66,7 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
       password: '',
       isActive: true,
       company: '',
+      workSiteRoles: [],
     },
   });
 
@@ -74,7 +75,22 @@ export function UserForm(props: { workSiteId: string }): React.JSX.Element {
     name: 'workSiteRoles',
   });
 
+  const checkForDuplicateRoles = (roles: { id: string; role: string }[]) => {
+    const seen = new Set();
+    return roles.every(role => {
+      const key = `${role.id}_${role.role}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
   const onSubmit = async (data: UserSchemaType) => {
+    if (!checkForDuplicateRoles(data.workSiteRoles || [])) {
+      alert('Duplicate roles for the same work site are not allowed.');
+      return;
+    }
+
     setBtnDisabled(true);
     axios
       .post(

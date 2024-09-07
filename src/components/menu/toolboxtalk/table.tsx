@@ -47,6 +47,7 @@ const ToolBoxTalkTable = forwardRef<ToolBoxTalkTableHandles, ToolBoxTalkTablePro
             cellRendererParams: {
               actionsToDisplay: ['view', 'edit', 'delete'],
               viewUrl: `/menu/toolboxtalk/view?toolboxTalkId=`,
+              editUrl: `/menu/toolboxtalk/edit?toolboxTalkId=`,
               router: router,
             },
             minWidth: 250,

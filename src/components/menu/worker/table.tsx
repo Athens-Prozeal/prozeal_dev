@@ -66,6 +66,7 @@ const WorkerTable = forwardRef<WorkerHandles, WorkerProps>((props, ref) => {
               actionsToDisplay: ['view', 'edit', 'delete'],
               router: router,
               viewUrl: `/menu/worker/view?workerId=`,
+              editUrl: `/menu/worker/edit?workerId=`,
             },
             minWidth: 250,
           },

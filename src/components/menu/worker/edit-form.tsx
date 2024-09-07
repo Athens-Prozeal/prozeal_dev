@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid, MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
@@ -52,91 +53,137 @@ const workerSchema = z.object({
     message: 'Invalid gender value',
   }),
   pincode: z.string().max(15, 'Pincode must be at most 15 characters'),
-  profilePic: z.instanceof(File).refine((file) => file instanceof File, {
-    message: 'Invalid file format',
-  }).optional(),
-  medicalFitness: z.instanceof(File).refine((file) => file instanceof File, {
-    message: 'Invalid file format',
-  }),
-  aadhar: z.instanceof(File).refine((file) => file instanceof File, {
-    message: 'Invalid file format',
-  }),
+  profilePic: z.any().optional(),
+  medicalFitness: z.any().optional(),
+  aadhar: z.any().optional(),
 });
 
-type workerSchemaType = z.infer<typeof workerSchema>;
+type WorkerSchemaType = z.infer<typeof workerSchema>;
 
-const WorkerForm: React.FC = () => {
-  const [alertOpen, setAlertOpen] = React.useState(false);
-  const [alertMessage, setAlertMessage] = React.useState('');
-  const [alertSeverity, setAlertSeverity] = React.useState<'error' | 'success'>('success');
-  const [alertKey, setAlertKey] = React.useState(0);
-  const [buttonDisabled, setButtonDisabled] = React.useState(false);
-  const currentDate = new Date().toISOString().split('T')[0];
+export const Form = () => {
+  const searchParams = useSearchParams();
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState<'error' | 'success'>('success');
+  const [alertKey, setAlertKey] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const [currentProfilePic, setCurrentProfilePic] = useState<string | null>(null);
+  const [currentMedicalFitness, setCurrentMedicalFitness] = useState<string | null>(null);
+  const [currentAadhar, setCurrentAadhar] = useState<string | null>(null);
+  const [profilePicPreview, setProfilePicPreview] = useState<string | null>(null);
+  const [medicalFitnessPreview, setMedicalFitnessPreview] = useState<string | null>(null);
+  const [aadharPreview, setAadharPreview] = useState<string | null>(null);
+
+  const workerId = searchParams.get('workerId');
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<workerSchemaType>({
+  } = useForm<WorkerSchemaType>({
     resolver: zodResolver(workerSchema),
-    defaultValues: {
-      inductionDate: currentDate
-    },
   });
 
-  const onSubmit = async (data: workerSchemaType) => {
-    const formdata = new FormData();
-    formdata.append('induction_date', data.inductionDate);
-    formdata.append('name', data.name);
-    formdata.append('father_name', data.fatherName);
-    formdata.append('gender', data.gender);
-    formdata.append('date_of_birth', data.dateOfBirth);
-    formdata.append('blood_group', data.bloodGroup);
-    formdata.append('designation', data.designation);
-    formdata.append('mobile_number', data.mobileNumber);
-    formdata.append('emergency_contact_number', data.emergencyContactNumber);
-    formdata.append('identity_marks', data.identityMarks);
-    formdata.append('address', data.address);
-    formdata.append('city', data.city);
-    formdata.append('state', data.state);
-    formdata.append('country', data.country);
-    formdata.append('pincode', data.pincode);
-    formdata.append('medical_fitness', data.medicalFitness);
-    formdata.append('aadhar', data.aadhar);
-    if (data.profilePic) {
-      formdata.append('profile_pic', data.profilePic);
+  useEffect(() => {
+    axios
+      .get(`${config.site.serverURL}/api/worker/${workerId}?work_site_id=${localStorage.getItem('work-site-id')}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
+      })
+      .then((response) => {
+        const data = response.data;
+        setValue('inductionDate', data.induction_date);
+        setValue('name', data.name);
+        setValue('fatherName', data.father_name);
+        setValue('gender', data.gender);
+        setValue('dateOfBirth', data.date_of_birth);
+        setValue('bloodGroup', data.blood_group);
+        setValue('designation', data.designation);
+        setValue('mobileNumber', data.mobile_number);
+        setValue('emergencyContactNumber', data.emergency_contact_number);
+        setValue('identityMarks', data.identity_marks);
+        setValue('address', data.address);
+        setValue('city', data.city);
+        setValue('state', data.state);
+        setValue('country', data.country);
+        setValue('pincode', data.pincode);
+        setCurrentProfilePic(data.profile_pic);
+        setCurrentMedicalFitness(data.medical_fitness);
+        setCurrentAadhar(data.aadhar);
+      })
+      .catch((error) => {
+        window.alert('Some error occurred');
+      });
+  }, [setValue]);
+
+  const onSubmit = (data: WorkerSchemaType) => {
+    setButtonDisabled(true);
+    const formData = new FormData();
+    formData.append('inductionDate', data.inductionDate);
+    formData.append('name', data.name);
+    formData.append('father_name', data.fatherName);
+    formData.append('gender', data.gender);
+    formData.append('date_of_birth', data.dateOfBirth);
+    formData.append('blood_group', data.bloodGroup);
+    formData.append('designation', data.designation);
+    formData.append('mobile_number', data.mobileNumber);
+    formData.append('emergency_contact_number', data.emergencyContactNumber);
+    formData.append('identity_marks', data.identityMarks);
+    formData.append('address', data.address);
+    formData.append('city', data.city);
+    formData.append('state', data.state);
+    formData.append('country', data.country);
+    formData.append('pincode', data.pincode);
+    if (data.profilePic instanceof File) {
+      formData.append('profile_pic', data.profilePic);
+    }
+    if (data.medicalFitness instanceof File) {
+      formData.append('medical_fitness', data.medicalFitness);
+    }
+    if (data.aadhar instanceof File) {
+      formData.append('aadhar', data.aadhar);
     }
 
     axios({
-      method: 'POST',
-      url: `${config.site.serverURL}/api/worker/?work_site_id=${localStorage.getItem('work-site-id')}`,
-      data: formdata,
-      headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
+      method: 'PATCH',
+      url: `${config.site.serverURL}/api/worker/${workerId}/?work_site_id=${localStorage.getItem('work-site-id')}`,
+      data: formData,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+        'Content-Type': 'multipart/form-data', // Ensure binary data is sent correctly
+      },
     })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           setAlertSeverity('success');
-          setAlertMessage('Worker added successfully');
+          setAlertMessage('Worker Report updated successfully');
           setAlertKey((prev) => prev + 1);
           setAlertOpen(true);
           setTimeout(() => {
-            window.location.href = '/menu/worker/';
+            window.location.href = '/menu/worker';
           }, 500);
         }
       })
       .catch((error) => {
         setAlertSeverity('error');
         setButtonDisabled(false);
-        if (error.response.data.non_field_errors) {
-          setAlertMessage(error.response.data.non_field_errors[0]);
-        } else {
-          setAlertMessage('Something went wrong');
-        }
+        setAlertMessage(error.response?.data?.non_field_errors?.[0] || 'Something went wrong');
         setAlertKey((prev) => prev + 1);
         setAlertOpen(true);
       });
+  };
 
-      setButtonDisabled(true);
+  const handleProfilePicChange = (file: File | null) => {
+    setProfilePicPreview(file ? URL.createObjectURL(file) : null);
+  };
+
+  const handleMedicalFitnessChange = (file: File | null) => {
+    setMedicalFitnessPreview(file ? URL.createObjectURL(file) : null);
+  };
+
+  const handleAadharChange = (file: File | null) => {
+    setAadharPreview(file ? URL.createObjectURL(file) : null);
   };
 
   return (
@@ -152,6 +199,7 @@ const WorkerForm: React.FC = () => {
                   {...field}
                   type="date"
                   label="Induction date"
+                  InputLabelProps={{ shrink: true }}
                   variant="outlined"
                   fullWidth
                   error={!!errors.inductionDate}
@@ -160,7 +208,6 @@ const WorkerForm: React.FC = () => {
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="name"
@@ -173,6 +220,7 @@ const WorkerForm: React.FC = () => {
                   value={value}
                   fullWidth
                   label="Name"
+                  InputLabelProps={{ shrink: true }}
                   variant="outlined"
                 />
               )}
@@ -191,6 +239,7 @@ const WorkerForm: React.FC = () => {
                   value={value}
                   fullWidth
                   label="Father Name"
+                  InputLabelProps={{ shrink: true }}
                   variant="outlined"
                 />
               )}
@@ -206,10 +255,10 @@ const WorkerForm: React.FC = () => {
                   {...field}
                   select
                   label="Gender"
-                  variant="outlined"
                   fullWidth
                   error={!!errors.gender}
                   helperText={errors.gender?.message}
+                  value={field.value || ''}
                 >
                   <MenuItem value="M">Male</MenuItem>
                   <MenuItem value="F">Female</MenuItem>
@@ -226,10 +275,9 @@ const WorkerForm: React.FC = () => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  type="date"
                   label="Date of Birth"
-                  InputLabelProps={{ shrink: true }}
-                  variant="outlined"
+                   InputLabelProps={{ shrink: true }}
+                  type="date"
                   fullWidth
                   error={!!errors.dateOfBirth}
                   helperText={errors.dateOfBirth?.message}
@@ -237,7 +285,6 @@ const WorkerForm: React.FC = () => {
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="bloodGroup"
@@ -247,10 +294,10 @@ const WorkerForm: React.FC = () => {
                   {...field}
                   select
                   label="Blood Group"
-                  variant="outlined"
                   fullWidth
                   error={!!errors.bloodGroup}
                   helperText={errors.bloodGroup?.message}
+                  value={field.value || ''}
                 >
                   <MenuItem value="A+">A+</MenuItem>
                   <MenuItem value="A-">A-</MenuItem>
@@ -264,133 +311,118 @@ const WorkerForm: React.FC = () => {
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="designation"
               control={control}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
-                  helperText={error ? error.message : null}
-                  error={!!error}
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
+                  {...field}
                   label="Designation"
-                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.designation}
+                  helperText={errors.designation?.message}
                 />
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="mobileNumber"
               control={control}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
-                  helperText={error ? error.message : null}
-                  error={!!error}
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
+                  {...field}
                   label="Mobile Number"
-                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.mobileNumber}
+                  helperText={errors.mobileNumber?.message}
                 />
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="emergencyContactNumber"
               control={control}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
-                  helperText={error ? error.message : null}
-                  error={!!error}
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
+                  {...field}
                   label="Emergency Contact Number"
-                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.emergencyContactNumber}
+                  helperText={errors.emergencyContactNumber?.message}
                 />
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="identityMarks"
               control={control}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
-                  helperText={error ? error.message : null}
-                  error={!!error}
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
+                  {...field}
                   label="Identity Marks"
-                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.identityMarks}
+                  helperText={errors.identityMarks?.message}
                 />
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="address"
               control={control}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
-                  helperText={error ? error.message : null}
-                  error={!!error}
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
+                  {...field}
                   label="Address"
-                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.address}
+                  helperText={errors.address?.message}
                 />
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="city"
               control={control}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
-                  helperText={error ? error.message : null}
-                  error={!!error}
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
+                  {...field}
                   label="City"
-                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.city}
+                  helperText={errors.city?.message}
                 />
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="state"
               control={control}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
-                  helperText={error ? error.message : null}
-                  error={!!error}
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
+                  {...field}
                   label="State"
-                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.state}
+                  helperText={errors.state?.message}
                 />
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="country"
@@ -400,32 +432,30 @@ const WorkerForm: React.FC = () => {
                   {...field}
                   select
                   label="Country"
-                  variant="outlined"
                   fullWidth
                   error={!!errors.country}
                   helperText={errors.country?.message}
+                  value={field.value || ''}
                 >
                   <MenuItem value="IN">India</MenuItem>
-                  <MenuItem value="AE">Dubai</MenuItem>
+                  <MenuItem value="AE">United Arab Emirates</MenuItem>
                   <MenuItem value="BR">Brazil</MenuItem>
                 </TextField>
               )}
             />
           </Grid>
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="pincode"
               control={control}
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
-                  helperText={error ? error.message : null}
-                  error={!!error}
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
+                  {...field}
                   label="Pincode"
-                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  error={!!errors.pincode}
+                  helperText={errors.pincode?.message}
                 />
               )}
             />
@@ -437,20 +467,31 @@ const WorkerForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  helperText={errors.profilePic ? errors.profilePic.message : null}
                   error={!!errors.profilePic}
                   InputLabelProps={{ shrink: true }}
-                  inputProps={{
-                    accept: 'image/*',
-                  }}
+                  inputProps={{ accept: 'image/*' }}
                   type="file"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files?.[0])}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const file = e.target.files?.[0] || null;
+                    field.onChange(file);
+                    handleProfilePicChange(file);
+                  }}
                   fullWidth
                   label="Profile Picture"
                   variant="outlined"
                 />
               )}
             />
+            <div>
+              Current Profile Picture: <br />
+              {currentProfilePic && <img src={currentProfilePic} style={{ maxWidth: '250px' }} />}
+              {profilePicPreview && (
+                <>
+                  <p>Preview:</p>
+                  <img src={profilePicPreview} style={{ maxWidth: '250px' }} />
+                </>
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12} sm={4} md={4}>
@@ -459,20 +500,31 @@ const WorkerForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  helperText={errors.medicalFitness ? errors.medicalFitness.message : null}
                   error={!!errors.medicalFitness}
                   InputLabelProps={{ shrink: true }}
-                  inputProps={{
-                    accept: 'image/*',
-                  }}
+                  inputProps={{ accept: 'image/*' }}
                   type="file"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files?.[0])}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const file = e.target.files?.[0] || null;
+                    field.onChange(file);
+                    handleMedicalFitnessChange(file);
+                  }}
                   fullWidth
                   label="Medical Fitness"
                   variant="outlined"
                 />
               )}
             />
+            <div>
+              Current Medical Fitness: <br />
+              {currentMedicalFitness && <img src={currentMedicalFitness} style={{ maxWidth: '250px' }} />}
+              {medicalFitnessPreview && (
+                <>
+                  <p>Preview:</p>
+                  <img src={medicalFitnessPreview} style={{ maxWidth: '250px' }} />
+                </>
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12} sm={4} md={4}>
@@ -481,20 +533,31 @@ const WorkerForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  helperText={errors.aadhar ? errors.aadhar.message : null}
                   error={!!errors.aadhar}
                   InputLabelProps={{ shrink: true }}
-                  inputProps={{
-                    accept: 'image/*',
-                  }}
+                  inputProps={{ accept: 'image/*' }}
                   type="file"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files?.[0])}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const file = e.target.files?.[0] || null;
+                    field.onChange(file);
+                    handleAadharChange(file);
+                  }}
                   fullWidth
                   label="Aadhar"
                   variant="outlined"
                 />
               )}
             />
+            <div>
+              Current Aadhar: <br />
+              {currentAadhar && <img src={currentAadhar} style={{ maxWidth: '250px' }} />}
+              {aadharPreview && (
+                <>
+                  <p>Preview:</p>
+                  <img src={aadharPreview} style={{ maxWidth: '250px' }} />
+                </>
+              )}
+            </div>
           </Grid>
 
           <Grid item xs={12} container justifyContent="flex-start">
@@ -504,9 +567,6 @@ const WorkerForm: React.FC = () => {
           </Grid>
         </Grid>
       </form>
-      <PopUp key={alertKey} open={alertOpen} alertSeverity={alertSeverity} alertMessage={alertMessage} />
     </Box>
   );
 };
-
-export default WorkerForm;

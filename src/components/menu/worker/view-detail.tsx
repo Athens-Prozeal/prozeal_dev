@@ -35,7 +35,7 @@ const WorkerDetail: React.FC = () => {
           <Grid item xs={12}>
             <Box display="flex" justifyContent="center">
               <br />
-              <img src={data?.profile_pic || 'https://res.cloudinary.com/dbbmdq3uy/image/upload/v1725044492/Assets/user_woot6s.png'} alt="Profile Picture" style={{ maxWidth: '250px' }} />
+              <img src={data?.profile_pic} alt="Profile Picture" style={{ maxWidth: '250px' }} />
             </Box>
           </Grid>
 

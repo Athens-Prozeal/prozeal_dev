@@ -1,5 +1,6 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Box, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { ColDef } from 'ag-grid-community';
 
 import 'ag-grid-community/styles/ag-grid.css';
@@ -21,26 +22,48 @@ export interface SafetyObservationHandles {
 const SafetyObservationTable = forwardRef<SafetyObservationHandles, SafetyObservationProps>((props, ref) => {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
   const router = useRouter();
-  const [rowData, setRowData] = React.useState([]);
-  const [colDefs, setColDefs] = React.useState<ColDef[]>();
+  const searchParams = useSearchParams();
+  const [rowData, setRowData] = useState([]);
+  const [colDefs, setColDefs] = useState<ColDef[]>();
+
+  const statusOptions = [
+    { value: 'all', label: 'All' },
+    { value: 'open', label: 'Open' },
+    { value: 'closed', label: 'Closed' },
+    { value: 'action-required', label: 'Require Action' },
+  ];
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || 'all');
 
   const gridRef = useRef<AgGridReact>(null);
 
-  React.useEffect(() => {
-    axios
-      .get(`${config.site.serverURL}/api/safety-observation/?work_site_id=${localStorage.getItem('work-site-id')}`, {
-        headers: {
-          Authorization: authToken,
-        },
-      })
-      .then((response) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const statusParam = statusFilter ? `&status=${statusFilter}` : '';
+        const response = await axios.get(
+          `${config.site.serverURL}/api/safety-observation/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
+          {
+            headers: {
+              Authorization: authToken,
+            },
+          }
+        );
+
         setRowData(response.data);
 
         setColDefs([
           { field: 'date', headerName: 'Date', filter: 'agDateColumnFilter' },
           { field: 'time', headerName: 'Time', filter: 'agTextColumnFilter' },
           { field: 'work_location', headerName: 'Work Location', filter: 'agNumberColumnFilter' },
-          { field: 'department', headerName: 'Department', filter: 'agTextColumnFilter' },
+          { field: 'department_name', headerName: 'Department', filter: 'agTextColumnFilter' },
+          { field: 'sub_contractor_full_name', headerName: 'Sub Contractor', filter: 'agTextColumnFilter' },
+          { field: 'safety_observation_found', headerName: 'Safety Observation Found', filter: 'agTextColumnFilter' },
+          { field: 'type_of_observation', headerName: 'Type Of Observation', filter: 'agTextColumnFilter' },
+          { field: 'classification', headerName: 'Classification', filter: 'agTextColumnFilter' },
+          { field: 'risk_rated', headerName: 'Risk Rated', filter: 'agTextColumnFilter' },
+          { field: 'reported_by_full_name', headerName: 'Reported By', filter: 'agTextColumnFilter' },
+          { field: 'corrective_action_assigned_to_full_name', headerName: 'Assigned To', filter: 'agTextColumnFilter' },
+
           {
             field: 'actions',
             cellRenderer: ActionButtonsRenderer,
@@ -52,11 +75,21 @@ const SafetyObservationTable = forwardRef<SafetyObservationHandles, SafetyObserv
             minWidth: 250,
           },
         ]);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching data:', error);
-      });
-  }, []);
+      }
+    };
+
+    fetchData();
+  }, [statusFilter]);
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedStatus = event.target.value;
+    setStatusFilter(selectedStatus);
+
+    // Update the URL parameters with the selected filter
+    router.push(`?status=${selectedStatus}`);
+  };
 
   const exportSafetyObservation = () => {
     const params = {
@@ -73,9 +106,25 @@ const SafetyObservationTable = forwardRef<SafetyObservationHandles, SafetyObserv
   }));
 
   return (
-    <div className="ag-theme-quartz" style={{ height: 500 }}>
-      <AgGridReact ref={gridRef} columnDefs={colDefs} rowHeight={60} rowData={rowData} pagination />
-    </div>
+    <Box>
+      <FormControl component="fieldset" fullWidth margin="normal">
+        <RadioGroup
+          value={statusFilter}
+          onChange={handleStatusChange}
+          row
+          aria-label="status"
+          name="status-radio-group"
+        >
+          {statusOptions.map((option) => (
+            <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
+          ))}
+        </RadioGroup>
+      </FormControl>
+
+      <div className="ag-theme-quartz" style={{ height: 500 }}>
+        <AgGridReact ref={gridRef} columnDefs={colDefs} rowHeight={60} rowData={rowData} pagination />
+      </div>
+    </Box>
   );
 });
 

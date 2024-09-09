@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Grid, MenuItem, TextField } from '@mui/material';
+import { Box, Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
@@ -18,26 +18,29 @@ const safetyObservationSchema = z.object({
   }),
   time: z.string(),
   workLocation: z.string().max(255, 'Work location must be at most 155 characters'),
-  department: z.enum(['electrical', 'civil', 'mechanical', 'stores']),
+  department: z.number(),
   activityPerformed: z.string().min(2, 'Activity Performed must be atleast 2 characters'),
   subContractor: z.number(),
   safetyObservationFound: z.string().min(2, 'Safety Observation Found must be atleast 2 characters'),
   typeOfObservation: z.enum(['unsafe_act', 'unsafe_condition']),
   classification: z.string(),
   riskRated: z.enum(['high', 'significant', 'medium', 'low']),
-  actionTakenOrRequired: z.string().min(2, 'Action Taken or Required must be atleast 2 characters'),
-  reportedBy: z.string().max(155, 'Reported By must be at most 155 characters'),
+  correctiveActionTaken: z.string().optional(),
+  correctiveActionRequired: z
+    .string()
+    .min(2, 'Corrective Action Taken or Required must be atleast 2 characters')
+    .optional(),
   correctiveActionAssignedTo: z.number(),
   observationStatus: z.enum(['open', 'closed']),
-  closingDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: 'Invalid date format',
-  }),
   beforeImage: z.instanceof(File).refine((file) => file instanceof File, {
     message: 'Invalid file format',
   }),
-  afterImage: z.instanceof(File).refine((file) => file instanceof File, {
-    message: 'Invalid file format',
-  }),
+  afterImage: z
+    .instanceof(File)
+    .refine((file) => file instanceof File, {
+      message: 'Invalid file format',
+    })
+    .optional(),
   remarks: z.string().min(2, 'Remarks must be atleast 2 characters'),
 });
 
@@ -50,13 +53,11 @@ const SafetyObservationForm: React.FC = () => {
   const [alertKey, setAlertKey] = useState(0);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const currentDate = new Date().toISOString().split('T')[0];
+  const [observationStatus, setObservationStatus] = useState<string>('');
+  const [departments, setDepartments] = useState<{id: number, name: string}[]>([]);
   const [subContractors, setSubContractors] = useState<SubContractorType[]>([]);
-  const [correctiveActionUsers, setCorrectiveActionUsers] = useState<
-    {
-      id: number;
-      username: string;
-    }[]
-  >([]);
+  const [classification, setClassification] = useState<{ name: string }[]>([]);
+  const [correctiveActionUsers, setCorrectiveActionUsers] = useState<{ id: number; username: string }[]>([]);
 
   const {
     control,
@@ -70,6 +71,7 @@ const SafetyObservationForm: React.FC = () => {
   });
 
   useEffect(() => {
+    // Get subcontractors
     axios
       .get(
         `${config.site.serverURL}/api/auth/user/sub-contractor/?work_site_id=${localStorage.getItem('work-site-id')}`,
@@ -79,6 +81,7 @@ const SafetyObservationForm: React.FC = () => {
         setSubContractors(response.data);
       });
 
+    // Get corrective action users
     axios
       .get(
         `${config.site.serverURL}/api/auth/user/corrective-action-user/?work_site_id=${localStorage.getItem('work-site-id')}`,
@@ -87,15 +90,59 @@ const SafetyObservationForm: React.FC = () => {
       .then((response) => {
         setCorrectiveActionUsers(response.data);
       });
+
+    // Get departments
+    axios
+      .get(`${config.site.serverURL}/api/auth/my-departments/?work_site_id=${localStorage.getItem('work-site-id')}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
+      })
+      .then((response) => {
+        setDepartments(response.data);
+      });
+
+    // Get classification
+    axios
+      .get(
+        `${config.site.serverURL}/api/safety-observation/classification/?work_site_id=${localStorage.getItem('work-site-id')}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
+        }
+      )
+      .then((response) => {
+        setClassification(response.data);
+      });
   }, []);
 
   const onSubmit = async (data: SafetyObservationSchemaType) => {
+    //setButtonDisabled(true);
+
     const formdata = new FormData();
     formdata.append('date', data.date);
+    formdata.append('time', data.time);
+    formdata.append('work_location', data.workLocation);
+    formdata.append('department', data.department.toString());
+    formdata.append('activity_performed', data.activityPerformed);
+    formdata.append('sub_contractor', data.subContractor.toString());
+    formdata.append('safety_observation_found', data.safetyObservationFound);
+    formdata.append('type_of_observation', data.typeOfObservation);
+    formdata.append('classification', data.classification);
+    formdata.append('risk_rated', data.riskRated);
+    if (data.correctiveActionTaken) {
+      formdata.append('corrective_action_taken', data.correctiveActionTaken);
+    }
+    formdata.append('corrective_action_required', data?.correctiveActionRequired ?? '');
+    formdata.append('corrective_action_assigned_to', data.correctiveActionAssignedTo.toString());
+    formdata.append('observation_status', data.observationStatus);
+
+    formdata.append('before_image', data.beforeImage);
+    if (data.afterImage) {
+      formdata.append('after_image', data.afterImage);
+    }
+    formdata.append('remarks', data.remarks);
 
     axios({
       method: 'POST',
-      url: `${config.site.serverURL}/api/tbt/?work_site_id=${localStorage.getItem('work-site-id')}`,
+      url: `${config.site.serverURL}/api/safety-observation/?work_site_id=${localStorage.getItem('work-site-id')}`,
       data: formdata,
       headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
     })
@@ -106,7 +153,7 @@ const SafetyObservationForm: React.FC = () => {
           setAlertKey((prev) => prev + 1);
           setAlertOpen(true);
           setTimeout(() => {
-            window.location.href = '/menu/safety-observation/';
+            //  window.location.href = '/menu/safety-observation/';
           }, 500);
         }
       })
@@ -121,7 +168,6 @@ const SafetyObservationForm: React.FC = () => {
         setAlertKey((prev) => prev + 1);
         setAlertOpen(true);
       });
-    setButtonDisabled(true);
   };
 
   return (
@@ -135,6 +181,7 @@ const SafetyObservationForm: React.FC = () => {
               render={({ field }) => (
                 <TextField
                   {...field}
+                  required
                   type="date"
                   label="Date"
                   variant="outlined"
@@ -149,10 +196,31 @@ const SafetyObservationForm: React.FC = () => {
 
           <Grid item xs={12} sm={4} md={4}>
             <Controller
+              name="time"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  type="time"
+                  label="Time"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.time}
+                  helperText={errors.time?.message}
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={4} md={4}>
+            <Controller
               name="workLocation"
               control={control}
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
+                  required
                   helperText={error ? error.message : null}
                   error={!!error}
                   onChange={onChange}
@@ -171,17 +239,18 @@ const SafetyObservationForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  select
                   {...field}
-                  fullWidth
+                  required
+                  select
                   label="Department"
                   variant="outlined"
+                  fullWidth
                   error={!!errors.department}
                   helperText={errors.department?.message}
                 >
-                  {['electrical', 'civil', 'mechanical', 'stores'].map((department) => (
-                    <MenuItem key={department} value={department}>
-                      {department}
+                  {departments?.map((department) => (
+                    <MenuItem key={department.id} value={department.id}>
+                      {department.name}
                     </MenuItem>
                   ))}
                 </TextField>
@@ -196,8 +265,9 @@ const SafetyObservationForm: React.FC = () => {
               render={({ field }) => (
                 <TextField
                   {...field}
+                  required
                   select
-                  label="Sub Contractors"
+                  label="Sub Contractor"
                   variant="outlined"
                   fullWidth
                   error={!!errors.subContractor}
@@ -213,7 +283,6 @@ const SafetyObservationForm: React.FC = () => {
             />
           </Grid>
 
-
           <Grid item xs={12} sm={4} md={4}>
             <Controller
               name="typeOfObservation"
@@ -222,6 +291,7 @@ const SafetyObservationForm: React.FC = () => {
                 <TextField
                   select
                   {...field}
+                  required
                   fullWidth
                   label="Type of Observation"
                   variant="outlined"
@@ -244,13 +314,46 @@ const SafetyObservationForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  helperText={errors.classification ? errors.classification.message : null}
-                  error={!!errors.classification}
+                  select
+                  {...field}
+                  required
                   fullWidth
                   label="Classification"
                   variant="outlined"
+                  error={!!errors.classification}
+                  helperText={errors.classification?.message}
+                >
+                  {classification?.map((classf) => (
+                    <MenuItem key={classf.name} value={classf.name}>
+                      {classf.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={4} md={4}>
+            <Controller
+              name="riskRated"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  select
                   {...field}
-                />
+                  required
+                  fullWidth
+                  label="Risk Rated"
+                  variant="outlined"
+                  error={!!errors.riskRated}
+                  helperText={errors.riskRated?.message}
+                >
+                  {['high', 'significant', 'medium', 'low'].map((risk) => (
+                    <MenuItem key={risk} value={risk}>
+                      {risk}
+                    </MenuItem>
+                  ))}
+                </TextField>
               )}
             />
           </Grid>
@@ -261,6 +364,7 @@ const SafetyObservationForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
+                  required
                   helperText={errors.safetyObservationFound ? errors.safetyObservationFound.message : null}
                   error={!!errors.safetyObservationFound}
                   fullWidth
@@ -278,6 +382,7 @@ const SafetyObservationForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
+                  required
                   helperText={errors.activityPerformed ? errors.activityPerformed.message : null}
                   error={!!errors.activityPerformed}
                   fullWidth
@@ -289,57 +394,16 @@ const SafetyObservationForm: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={4} md={4}>
+          <Grid item xs={12} sm={12} md={12}>
             <Controller
-              name="riskRated"
+              name="correctiveActionRequired"
               control={control}
               render={({ field }) => (
                 <TextField
-                  select
-                  {...field}
+                  helperText={errors.correctiveActionRequired ? errors.correctiveActionRequired.message : null}
+                  error={!!errors.correctiveActionRequired}
                   fullWidth
-                  label="Risk Rated"
-                  variant="outlined"
-                  error={!!errors.riskRated}
-                  helperText={errors.riskRated?.message}
-                >
-                  {['high', 'significant', 'medium', 'low'].map((risk) => (
-                    <MenuItem key={risk} value={risk}>
-                      {risk}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={4} md={4}>
-            <Controller
-              name="actionTakenOrRequired"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  helperText={errors.actionTakenOrRequired ? errors.actionTakenOrRequired.message : null}
-                  error={!!errors.actionTakenOrRequired}
-                  fullWidth
-                  label="Action Taken or Required"
-                  variant="outlined"
-                  {...field}
-                />
-              )}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={4} md={4}>
-            <Controller
-              name="reportedBy"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  helperText={errors.reportedBy ? errors.reportedBy.message : null}
-                  error={!!errors.reportedBy}
-                  fullWidth
-                  label="Reported By"
+                  label="Corrective Action Required"
                   variant="outlined"
                   {...field}
                 />
@@ -355,6 +419,7 @@ const SafetyObservationForm: React.FC = () => {
                 <TextField
                   select
                   {...field}
+                  required
                   fullWidth
                   label="Corrective Action Assigned To"
                   variant="outlined"
@@ -379,11 +444,17 @@ const SafetyObservationForm: React.FC = () => {
                 <TextField
                   select
                   {...field}
+                  required
                   fullWidth
                   label="Observation Status"
                   variant="outlined"
                   error={!!errors.observationStatus}
                   helperText={errors.observationStatus?.message}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    setObservationStatus(e.target.value);
+
+                  }}
                 >
                   {['open', 'closed'].map((status) => (
                     <MenuItem key={status} value={status}>
@@ -397,29 +468,11 @@ const SafetyObservationForm: React.FC = () => {
 
           <Grid item xs={12} sm={4} md={4}>
             <Controller
-              name="closingDate"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="date"
-                  label="Closing Date"
-                  InputLabelProps={{ shrink: true }}
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.closingDate}
-                  helperText={errors.closingDate?.message}
-                />
-              )}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={4} md={4}>
-            <Controller
               name="remarks"
               control={control}
               render={({ field }) => (
                 <TextField
+                  required
                   helperText={errors.remarks ? errors.remarks.message : null}
                   error={!!errors.remarks}
                   fullWidth
@@ -437,6 +490,7 @@ const SafetyObservationForm: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
+                  required
                   helperText={errors.beforeImage ? errors.beforeImage.message : null}
                   error={!!errors.beforeImage}
                   InputLabelProps={{ shrink: true }}
@@ -452,27 +506,56 @@ const SafetyObservationForm: React.FC = () => {
               )}
             />
           </Grid>
+          <br />
 
-          <Grid item xs={12} sm={4} md={4}>
-            <Controller
-              name="afterImage"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  helperText={errors.afterImage ? errors.afterImage.message : null}
-                  error={!!errors.afterImage}
-                  InputLabelProps={{ shrink: true }}
-                  inputProps={{
-                    accept: 'image/*',
-                  }}
-                  type="file"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files?.[0])}
-                  fullWidth
-                  label="After Image"
-                  variant="outlined"
-                />
-              )}
-            />
+          <Grid item xs={12} sm={12} md={12}>
+            {observationStatus === 'closed' && (
+              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid item xs={12} sm={12} md={12}>
+                  <Typography> Closure Action: </Typography>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12}>
+                  <Controller
+                    name="correctiveActionTaken"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        required
+                        helperText={errors.correctiveActionTaken ? errors.correctiveActionTaken.message : null}
+                        error={!!errors.correctiveActionTaken}
+                        fullWidth
+                        label="Corrective Action Taken"
+                        variant="outlined"
+                        {...field}
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={4} md={4}>
+                  <Controller
+                    name="afterImage"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        required
+                        helperText={errors.afterImage ? errors.afterImage.message : null}
+                        error={!!errors.afterImage}
+                        InputLabelProps={{ shrink: true }}
+                        inputProps={{
+                          accept: 'image/*',
+                        }}
+                        type="file"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files?.[0])}
+                        fullWidth
+                        label="After Image"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            )}
           </Grid>
 
           <Grid item xs={12} container justifyContent="flex-start">

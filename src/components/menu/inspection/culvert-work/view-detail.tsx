@@ -22,17 +22,17 @@ import axios from 'axios';
 import { config } from '@/config';
 import WitnessTable from '@/components/menu/inspection/witnesses/witness-table';
 
-const PaintingDetail: React.FC = () => {
+const CulvertWorkDetail: React.FC = () => {
   const searchParams = useSearchParams();
   const workSiteId = localStorage.getItem('work-site-id');
-  const paintingId = searchParams.get('paintingId');
+  const culvertWorkId = searchParams.get('culvertWorkId');
   const [data, setData] = useState<any>();
   const [approveUrl, setApproveUrl] = useState<string | null>(null);
   const [approveBtnDisabled, setApproveBtnDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     axios
-      .get(`${config.site.serverURL}/api/inspection/painting/${paintingId}/?work_site_id=${workSiteId}`, {
+      .get(`${config.site.serverURL}/api/inspection/culvert-work/${culvertWorkId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
         },
@@ -48,7 +48,7 @@ const PaintingDetail: React.FC = () => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [paintingId]);
+  }, [culvertWorkId]);
 
   const checklists = (checklists: any) => {
     return Object.entries(checklists).map(([item, details]: any) => ({
@@ -125,7 +125,7 @@ const PaintingDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  INSTALLATION CHECKLIST FOR PAINTING
+                  INSTALLATION CHECKLIST FOR CULVERT WORK
                 </Typography>
               </Box>
             </Stack>
@@ -143,7 +143,7 @@ const PaintingDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/022
+                IMS/FOR/PR/021
               </Stack>
               <Stack
                 direction="row"
@@ -223,7 +223,7 @@ const PaintingDetail: React.FC = () => {
 
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Comments/Remarks</strong> {data?.comments}
+              <strong>Comments:</strong> {data?.comments}
             </Typography>
           </Grid>
 
@@ -283,4 +283,4 @@ const PaintingDetail: React.FC = () => {
   );
 };
 
-export default PaintingDetail;
+export default CulvertWorkDetail;

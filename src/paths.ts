@@ -54,6 +54,14 @@ export const paths = {
       htCable: {
         home: '/menu/inspection/ht-cable',
         add: '/menu/inspection/ht-cable/add',
+      },
+      gridEarthing: {
+        home: '/menu/inspection/grid-earthing',
+        add: '/menu/inspection/grid-earthing/add',
+      },
+      roofTop: {
+        home: '/menu/inspection/roof-top',
+        add: '/menu/inspection/roof-top/add',
       }
     },
   },

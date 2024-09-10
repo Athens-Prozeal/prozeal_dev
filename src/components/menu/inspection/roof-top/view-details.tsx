@@ -22,17 +22,17 @@ import axios from 'axios';
 import { config } from '@/config';
 import WitnessTable from '@/components/menu/inspection/witnesses/witness-table';
 
-const PaintingDetail: React.FC = () => {
+const RoofTopDetail: React.FC = () => {
   const searchParams = useSearchParams();
   const workSiteId = localStorage.getItem('work-site-id');
-  const paintingId = searchParams.get('paintingId');
+  const roofTopId = searchParams.get('roofTopId');
   const [data, setData] = useState<any>();
   const [approveUrl, setApproveUrl] = useState<string | null>(null);
   const [approveBtnDisabled, setApproveBtnDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     axios
-      .get(`${config.site.serverURL}/api/inspection/painting/${paintingId}/?work_site_id=${workSiteId}`, {
+      .get(`${config.site.serverURL}/api/inspection/roof-top/${roofTopId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
         },
@@ -48,7 +48,7 @@ const PaintingDetail: React.FC = () => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [paintingId]);
+  }, [roofTopId]);
 
   const checklists = (checklists: any) => {
     return Object.entries(checklists).map(([item, details]: any) => ({
@@ -125,7 +125,7 @@ const PaintingDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  INSTALLATION CHECKLIST FOR PAINTING
+                  INSTALLATION CHECKLIST FOR ROOF TOP
                 </Typography>
               </Box>
             </Stack>
@@ -143,7 +143,7 @@ const PaintingDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/022
+                IMS/FOR/PR/097
               </Stack>
               <Stack
                 direction="row"
@@ -167,7 +167,7 @@ const PaintingDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                Rev. Date: 14.03.2024
+                Rev. Date: 30.09.2023
               </Stack>
             </Stack>
           </Grid>
@@ -177,12 +177,17 @@ const PaintingDetail: React.FC = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Site Location / Area:</strong> {data?.site_location_or_area}
+              <strong>Location / Area:</strong> {data?.location}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Drawing / Specification No:</strong> {data?.drawing_or_specification_no}
+              <strong>Project Name:</strong> {data?.project_name}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
+              <strong>Customer:</strong> {data?.customer}
             </Typography>
           </Grid>
 
@@ -223,7 +228,12 @@ const PaintingDetail: React.FC = () => {
 
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Comments/Remarks</strong> {data?.comments}
+              <strong>Comments:</strong> {data?.comments}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
+              <strong>PGEPL QHSE:</strong> {data?.pgepl}
             </Typography>
           </Grid>
 
@@ -283,4 +293,4 @@ const PaintingDetail: React.FC = () => {
   );
 };
 
-export default PaintingDetail;
+export default RoofTopDetail;

@@ -223,7 +223,7 @@ const PaintingDetail: React.FC = () => {
 
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Comments/Remarks</strong> {data?.comments}
+              <strong>Comments/Remarks:</strong> {data?.comments}
             </Typography>
           </Grid>
 

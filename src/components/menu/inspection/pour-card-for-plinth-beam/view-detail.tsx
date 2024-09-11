@@ -131,7 +131,7 @@ const pourCardForPlinthBeamDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  Check List for Pour Card For Plinth Beam
+                  Check List for Pour Card / Pour Card For Plinth Beam/Lintel Beam/Roof Beam
                 </Typography>
               </Box>
             </Stack>
@@ -149,7 +149,7 @@ const pourCardForPlinthBeamDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/006
+                IMS/FOR/PR/007
               </Stack>
               <Stack
                 direction="row"

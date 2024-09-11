@@ -131,7 +131,7 @@ const plasteringDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  Check List for Pour Card For Column Concret
+                  Check List for Plastering
                 </Typography>
               </Box>
             </Stack>
@@ -149,7 +149,7 @@ const plasteringDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/006
+                IMS/FOR/PR/011
               </Stack>
               <Stack
                 direction="row"
@@ -173,7 +173,7 @@ const plasteringDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                Rev. Date: 12.09.2023
+                Rev. Date: 22.09.2023
               </Stack>
             </Stack>
           </Grid>

@@ -131,7 +131,7 @@ const plainCementConcreteWorkDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  Check List for Pour Card For Column Concret
+                  Check List for Plain Cement Concrete Work
                 </Typography>
               </Box>
             </Stack>
@@ -149,7 +149,7 @@ const plainCementConcreteWorkDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/006
+                IMS/FOR/PR/010
               </Stack>
               <Stack
                 direction="row"

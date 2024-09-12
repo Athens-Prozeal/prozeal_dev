@@ -86,6 +86,7 @@ const baseCCTVInstallationSchema = {
     witness3: z.number().optional(),
   };
   
+  
   const cctvInstallationSchema = z.object(baseCCTVInstallationSchema);
   
   type CCTVInstallationSchemaType = z.infer<typeof cctvInstallationSchema>;

@@ -86,6 +86,7 @@ const CCTVInstallationDetail: React.FC = () => {
 
   const groupedChecklists = data?.checklists ? checklists(data.checklists) : [];
 
+  
   return (
     <Box display="flex" justifyContent="center" minHeight="100vh" flexDirection="column" gap={4}>
       <Paper elevation={2} sx={{ maxWidth: '100%', width: '100%' }}>

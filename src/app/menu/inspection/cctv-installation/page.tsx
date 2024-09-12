@@ -12,6 +12,7 @@ import CCTVInstallationTable from '@/components/menu/inspection/cctv-installatio
 export default function Page() {
   const role = localStorage.getItem('role');
 
+  
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>

@@ -4,6 +4,7 @@ import { Box, Stack, Typography } from '@mui/material';
 
 import CCTVInstallationDetail from '@/components/menu/inspection/cctv-installation/view-detail';
 
+
 const Page = () => {
   return (
     <Stack spacing={3} sx={{ p: { xs: 2, sm: 3 } }}>

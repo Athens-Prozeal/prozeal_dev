@@ -75,6 +75,7 @@ const CCTVInstallationTable = () => {
     router.push(`?status=${selectedStatus}`);
   };
 
+  
   return (
     <Box>
       <FormControl component="fieldset" fullWidth margin="normal">

@@ -2,6 +2,7 @@ import { Stack, Typography } from '@mui/material';
 
 import { Form } from '@/components/menu/inspection/cctv-installation/add-form';
 
+
 export default function Page() {
   return (
     <Stack spacing={3}>

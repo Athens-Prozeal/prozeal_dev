@@ -2,7 +2,7 @@
 
 import { Box, Stack, Typography } from '@mui/material';
 
-import GridEarthingDetail from '@/components/menu/inspection/grid-earthing/view-detail';
+import GridEarthingDetail from '@/components/menu/inspection/grid-earthing-053/view-detail';
 
 const Page = () => {
   return (

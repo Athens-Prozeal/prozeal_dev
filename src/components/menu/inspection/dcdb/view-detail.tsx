@@ -22,17 +22,17 @@ import axios from 'axios';
 import { config } from '@/config';
 import WitnessTable from '@/components/menu/inspection/witnesses/witness-table';
 
-const HTCableDetail: React.FC = () => {
+const DcdbDetail: React.FC = () => {
   const searchParams = useSearchParams();
   const workSiteId = localStorage.getItem('work-site-id');
-  const htCableId = searchParams.get('htCableId');
+  const dcdbId = searchParams.get('dcdbId');
   const [data, setData] = useState<any>();
   const [approveUrl, setApproveUrl] = useState<string | null>(null);
   const [approveBtnDisabled, setApproveBtnDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     axios
-      .get(`${config.site.serverURL}/api/inspection/ht-Cable/${htCableId}/?work_site_id=${workSiteId}`, {
+      .get(`${config.site.serverURL}/api/inspection/dcdb/${dcdbId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
         },
@@ -48,7 +48,7 @@ const HTCableDetail: React.FC = () => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [htCableId]);
+  }, [dcdbId]);
 
   const checklists = (checklists: any) => {
     return Object.entries(checklists).map(([item, details]: any) => ({
@@ -125,7 +125,7 @@ const HTCableDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  INSTALLATION CHECKLIST FOR HT CABLE
+                  INSTALLATION CHECKLIST FOR DCDB
                 </Typography>
               </Box>
             </Stack>
@@ -143,7 +143,7 @@ const HTCableDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/022
+                IMS/FOR/PR/070
               </Stack>
               <Stack
                 direction="row"
@@ -283,4 +283,4 @@ const HTCableDetail: React.FC = () => {
   );
 };
 
-export default HTCableDetail;
+export default DcdbDetail;

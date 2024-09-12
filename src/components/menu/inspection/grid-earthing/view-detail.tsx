@@ -22,21 +22,24 @@ import axios from 'axios';
 import { config } from '@/config';
 import WitnessTable from '@/components/menu/inspection/witnesses/witness-table';
 
-const HTCableDetail: React.FC = () => {
+const gridEarthingDetail: React.FC = () => {
   const searchParams = useSearchParams();
   const workSiteId = localStorage.getItem('work-site-id');
-  const htCableId = searchParams.get('htCableId');
+  const gridEarthingId = searchParams.get('gridEarthingId');
   const [data, setData] = useState<any>();
   const [approveUrl, setApproveUrl] = useState<string | null>(null);
   const [approveBtnDisabled, setApproveBtnDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     axios
-      .get(`${config.site.serverURL}/api/inspection/ht-Cable/${htCableId}/?work_site_id=${workSiteId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access-token')}`,
-        },
-      })
+      .get(
+        `${config.site.serverURL}/api/inspection/grid-earthing/${gridEarthingId}/?work_site_id=${workSiteId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+          },
+        }
+      )
       .then((response) => {
         setData(response.data);
         for (const action of response.data.actions) {
@@ -48,13 +51,16 @@ const HTCableDetail: React.FC = () => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [htCableId]);
+  }, [gridEarthingId]);
 
-  const checklists = (checklists: any) => {
-    return Object.entries(checklists).map(([item, details]: any) => ({
-      item: details.verbose_name,
-      choice: details.choice,
-      remark: details.remark,
+  const groupChecklists = (checklists: any) => {
+    return Object.entries(checklists).map(([category, items]) => ({
+      category: category.replace(/_/g, ' ').toUpperCase(),
+      items: Object.entries(items as { [key: string]: any }).map(([item, details]: any) => ({
+        item: details.verbose_name,
+        choice: details.choice,
+        remark: details.remark,
+      })),
     }));
   };
 
@@ -84,7 +90,7 @@ const HTCableDetail: React.FC = () => {
     }
   };
 
-  const groupedChecklists = data?.checklists ? checklists(data.checklists) : [];
+  const groupedChecklists = data?.checklists ? groupChecklists(data.checklists) : [];
 
   return (
     <Box display="flex" justifyContent="center" minHeight="100vh" flexDirection="column" gap={4}>
@@ -125,7 +131,7 @@ const HTCableDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  INSTALLATION CHECKLIST FOR HT CABLE
+                  Check List for Grid Earthing
                 </Typography>
               </Box>
             </Stack>
@@ -143,7 +149,7 @@ const HTCableDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/022
+                IMS/FOR/PR/037
               </Stack>
               <Stack
                 direction="row"
@@ -177,12 +183,17 @@ const HTCableDetail: React.FC = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Site Location / Area:</strong> {data?.site_location_or_area}
+              <strong>Date Of Checking:</strong> {data?.date_of_checking}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Drawing / Specification No:</strong> {data?.drawing_or_specification_no}
+              <strong>Drawing / Specification No.:</strong> {data?.drawing_specification_no}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
+              <strong>Site Location / Area:</strong> {data?.location}
             </Typography>
           </Grid>
 
@@ -206,24 +217,30 @@ const HTCableDetail: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {groupedChecklists.map((checklistItem, checklistIndex) => (
-                    <React.Fragment key={checklistIndex}>
-                      <TableRow key={checklistIndex}>
-                        <TableCell>{checklistIndex + 1}</TableCell>
-                        <TableCell>{checklistItem.item}</TableCell>
-                        <TableCell>{checklistItem.choice}</TableCell>
-                        <TableCell>{checklistItem.remark}</TableCell>
+                  {groupedChecklists.map((group, groupIndex) => (
+                    <React.Fragment key={groupIndex}>
+                      <TableRow>
+                        <TableCell colSpan={4} sx={{ backgroundColor: '#f5f5f5', fontWeight: 'bold' }}>
+                          {group.category}
+                        </TableCell>
                       </TableRow>
+                      {group.items.map((checklistItem, itemIndex) => (
+                        <TableRow key={itemIndex}>
+                          <TableCell>{itemIndex + 1}</TableCell>
+                          <TableCell>{checklistItem.item}</TableCell>
+                          <TableCell>{checklistItem.choice}</TableCell>
+                          <TableCell>{checklistItem.remark}</TableCell>
+                        </TableRow>
+                      ))}
                     </React.Fragment>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
           </Grid>
-
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Comments/Remarks</strong> {data?.comments}
+              <strong>Comments:</strong> {data?.comments}
             </Typography>
           </Grid>
 
@@ -265,13 +282,7 @@ const HTCableDetail: React.FC = () => {
                   label="Signature"
                   variant="outlined"
                 />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={approveBtnDisabled}
-                  sx={{ maxWidth: { xs: '100%', sm: 250 } }}
-                >
+                <Button variant="contained" color="primary" type="submit" disabled={approveBtnDisabled}>
                   Approve
                 </Button>
               </Stack>
@@ -283,4 +294,4 @@ const HTCableDetail: React.FC = () => {
   );
 };
 
-export default HTCableDetail;
+export default gridEarthingDetail;

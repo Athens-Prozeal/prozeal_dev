@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 
-import GridEarthing from '@/components/menu/inspection/grid-earthing/table';
+import GridEarthing from '@/components/menu/inspection/grid-earthing-053/table';
 
 export default function Page() {
   const role = localStorage.getItem('role');
@@ -22,7 +22,7 @@ export default function Page() {
         {role === 'epc_admin' || role === 'epc' || role === 'quality_inspector' ? (
           <Button
             component={RouterLink}
-            href={'/menu/inspection/grid-earthing/add'}
+            href={'/menu/inspection/grid-earthing-053/add'}
             startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
             variant="contained"
           >

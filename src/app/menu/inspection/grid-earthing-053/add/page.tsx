@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 
-import { Form } from '@/components/menu/inspection/grid-earthing/add-form';
+import { Form } from '@/components/menu/inspection/grid-earthing-053/add-form';
 
 export default function Page() {
   return (

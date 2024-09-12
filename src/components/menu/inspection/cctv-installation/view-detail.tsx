@@ -22,17 +22,17 @@ import axios from 'axios';
 import { config } from '@/config';
 import WitnessTable from '@/components/menu/inspection/witnesses/witness-table';
 
-const HTCableDetail: React.FC = () => {
+const CCTVInstallationDetail: React.FC = () => {
   const searchParams = useSearchParams();
   const workSiteId = localStorage.getItem('work-site-id');
-  const htCableId = searchParams.get('htCableId');
+  const cctvInstallationId = searchParams.get('cctvInstallationId');
   const [data, setData] = useState<any>();
   const [approveUrl, setApproveUrl] = useState<string | null>(null);
   const [approveBtnDisabled, setApproveBtnDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     axios
-      .get(`${config.site.serverURL}/api/inspection/ht-Cable/${htCableId}/?work_site_id=${workSiteId}`, {
+      .get(`${config.site.serverURL}/api/inspection/cctv-installation/${cctvInstallationId}/?work_site_id=${workSiteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access-token')}`,
         },
@@ -48,7 +48,7 @@ const HTCableDetail: React.FC = () => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, [htCableId]);
+  }, [cctvInstallationId]);
 
   const checklists = (checklists: any) => {
     return Object.entries(checklists).map(([item, details]: any) => ({
@@ -125,7 +125,7 @@ const HTCableDetail: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  INSTALLATION CHECKLIST FOR HT CABLE
+                  INSTALLATION CHECKLIST FOR CCTV INSTALLATION
                 </Typography>
               </Box>
             </Stack>
@@ -143,7 +143,7 @@ const HTCableDetail: React.FC = () => {
                   p: 1,
                 }}
               >
-                IMS/FOR/PR/022
+                IMS/FOR/PR/084
               </Stack>
               <Stack
                 direction="row"
@@ -177,7 +177,7 @@ const HTCableDetail: React.FC = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Site Location / Area:</strong> {data?.site_location_or_area}
+              <strong>Serial. No:</strong> {data?.serial_no}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -283,4 +283,4 @@ const HTCableDetail: React.FC = () => {
   );
 };
 
-export default HTCableDetail;
+export default CCTVInstallationDetail;

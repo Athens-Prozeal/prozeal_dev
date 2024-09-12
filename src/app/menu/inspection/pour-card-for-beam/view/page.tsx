@@ -2,7 +2,7 @@
 
 import { Box, Stack, Typography } from '@mui/material';
 
-import PourCardForPlinthBeamDetail from '@/components/menu/inspection/pour-card-for-plinth-beam/view-detail';
+import PourCardForPlinthBeamDetail from '@/components/menu/inspection/pour-card-for-beam/view-detail';
 
 const Page = () => {
   return (

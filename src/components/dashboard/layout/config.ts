@@ -59,8 +59,14 @@ let allNavItems: NavItemConfig[] = [
         key: 'ht-cable',
         title: 'HT Cable',
         href: paths.menu.inspection.htCable.home,
-        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.htCable.home},
-      }
+        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.htCable.home },
+      },
+      {
+        key: 'pour-card-for-beam',
+        title: 'Pour Card For Beam',
+        href: paths.menu.inspection.pourCardForPlinthBeam.home,
+        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForPlinthBeam.home },
+      },
     ],
   },
   {

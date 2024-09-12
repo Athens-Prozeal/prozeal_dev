@@ -33,7 +33,7 @@ const pourCardForPlinthBeamDetail: React.FC = () => {
   useEffect(() => {
     axios
       .get(
-        `${config.site.serverURL}/api/inspection/pour-card-for-plinth-beam/${pourCardForPlinthBeamId}/?work_site_id=${workSiteId}`,
+        `${config.site.serverURL}/api/inspection/pour-card-for-beam/${pourCardForPlinthBeamId}/?work_site_id=${workSiteId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access-token')}`,
@@ -216,7 +216,7 @@ const pourCardForPlinthBeamDetail: React.FC = () => {
               <strong>Description:</strong> {data?.description}
             </Typography>
           </Grid>
-          
+
           <Grid item xs={12} sm={12}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
               <strong>Level:</strong> {data?.level}

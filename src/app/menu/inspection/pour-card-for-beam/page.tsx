@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 
-import PourCardForPlinthBeam from '@/components/menu/inspection/pour-card-for-plinth-beam/table';
+import PourCardForPlinthBeam from '@/components/menu/inspection/pour-card-for-beam/table';
 
 export default function Page() {
   const role = localStorage.getItem('role');
@@ -19,16 +19,16 @@ export default function Page() {
           <Typography variant="h5">Pour Card For Plinth Beam</Typography>
         </Stack>
         <div>
-        {role === 'epc_admin' || role === 'epc' || role === 'quality_inspector' ? (
-          <Button
-            component={RouterLink}
-            href={'/menu/inspection/pour-card-for-plinth-beam/add'}
-            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-            variant="contained"
-          >
-            Add
-          </Button>
-        ) : null}
+          {role === 'epc_admin' || role === 'epc' || role === 'quality_inspector' ? (
+            <Button
+              component={RouterLink}
+              href={'/menu/inspection/pour-card-for-beam/add'}
+              startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+              variant="contained"
+            >
+              Add
+            </Button>
+          ) : null}
         </div>
       </Stack>
       <Stack>

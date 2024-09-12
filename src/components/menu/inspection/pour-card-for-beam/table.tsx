@@ -1,14 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ColDef } from 'ag-grid-community';
+
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import '@/styles/ag-grid.css';
+
+import { Box, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { AgGridReact } from 'ag-grid-react';
 import axios from 'axios';
+
 import { config } from '@/config';
 import ActionButtonsRenderer from '@/components/core/ag-grid/action-buttons-renderer';
-import { FormControl, FormControlLabel, RadioGroup, Radio, Box } from '@mui/material';
 
 const PourCardForPlinthBeamTable = () => {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
@@ -35,7 +38,7 @@ const PourCardForPlinthBeamTable = () => {
       try {
         const statusParam = statusFilter ? `&status=${statusFilter}` : '';
         const response = await axios.get(
-          `${config.site.serverURL}/api/inspection/pour-card-for-plinth-beam/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
+          `${config.site.serverURL}/api/inspection/pour-card-for-beam/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
           {
             headers: {
               Authorization: authToken,
@@ -58,7 +61,7 @@ const PourCardForPlinthBeamTable = () => {
             cellRendererParams: {
               actionsToDisplay: ['view', 'delete'],
               router: router,
-              viewUrl: `/menu/inspection/pour-card-for-plinth-beam/view?pourCardForPlinthBeamId=`,
+              viewUrl: `/menu/inspection/pour-card-for-beam/view?pourCardForPlinthBeamId=`,
             },
             minWidth: 150,
           },
@@ -91,24 +94,13 @@ const PourCardForPlinthBeamTable = () => {
           name="status-radio-group"
         >
           {statusOptions.map((option) => (
-            <FormControlLabel
-              key={option.value}
-              value={option.value}
-              control={<Radio />}
-              label={option.label}
-            />
+            <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
           ))}
         </RadioGroup>
       </FormControl>
 
       <div className="ag-theme-quartz" style={{ height: 500, marginTop: '20px' }}>
-        <AgGridReact
-          ref={gridRef}
-          columnDefs={colDefs}
-          rowData={rowData}
-          pagination
-          rowHeight={60}
-        />
+        <AgGridReact ref={gridRef} columnDefs={colDefs} rowData={rowData} pagination rowHeight={60} />
       </div>
     </Box>
   );

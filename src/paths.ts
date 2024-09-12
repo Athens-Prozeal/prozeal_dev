@@ -54,7 +54,11 @@ export const paths = {
       htCable: {
         home: '/menu/inspection/ht-cable',
         add: '/menu/inspection/ht-cable/add',
-      }
+      },
+      pourCardForPlinthBeam: {
+        home: '/menu/inspection/pour-card-for-beam',
+        add: '/menu/inspection/pour-card-for-beam/add',
+      },
     },
   },
 

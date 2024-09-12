@@ -59,10 +59,58 @@ export const paths = {
         home: '/menu/inspection/grid-earthing',
         add: '/menu/inspection/grid-earthing/add',
       },
+      gridEarthing053: {
+        home: '/menu/inspection/grid-earthing-053',
+        add: '/menu/inspection/grid-earthing-053/add',
+      },
       roofTop: {
         home: '/menu/inspection/roof-top',
         add: '/menu/inspection/roof-top/add',
-      }
+      },
+      roofTop097: {
+        home: '/menu/inspection/roof-top-097',
+        add: '/menu/inspection/roof-top-097/add',
+      },
+      cableTrayConduit: {
+        home: '/menu/inspection/cable-tray-conduit',
+        add: '/menu/inspection/cable-tray-conduit/add',
+      },
+      cctvInstallation: {
+        home: '/menu/inspection/cctv-installation',
+        add: '/menu/inspection/cctv-installation/add',
+      },
+      culvertWork: {
+        home: '/menu/inspection/culvert-work',
+        add: '/menu/inspection/culvert-work/add',
+      },
+      dcdb: {
+        home: '/menu/inspection/dcdb',
+        add: '/menu/inspection/dcdb/add',
+      },
+      icogPanel: {
+        home: '/menu/inspection/icog-panel',
+        add: '/menu/inspection/icog-panel/add',
+      },
+      nifps: {
+        home: '/menu/inspection/nifps',
+        add: '/menu/inspection/nifps/add',
+      },
+      painting: {
+        home: '/menu/inspection/painting',
+        add: '/menu/inspection/painting/add',
+      },
+      potentialTransformer: {
+        home: '/menu/inspection/potential-transformer',
+        add: '/menu/inspection/potential-transformer/add',
+      },
+      remoteTerminalUnit: {
+        home: '/menu/inspection/remote-terminal-unit',
+        add: '/menu/inspection/remote-terminal-unit/add',
+      },
+      ups: {
+        home: '/menu/inspection/ups',
+        add: '/menu/inspection/ups/add',
+      },
     },
   },
 

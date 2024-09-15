@@ -185,6 +185,11 @@ const CulvertWorkDetail: React.FC = () => {
               <strong>Drawing / Specification No:</strong> {data?.drawing_or_specification_no}
             </Typography>
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
+              <strong>Checked By:</strong> {data?.checked_by_username}
+            </Typography>
+          </Grid>
 
           <Grid item xs={12} sx={{ maxWidth: '100%', whiteSpace: 'nowrap', overflowX: 'auto' }}>
             <TableContainer component={Paper}>

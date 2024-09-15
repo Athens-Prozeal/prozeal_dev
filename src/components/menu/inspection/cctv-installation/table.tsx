@@ -10,7 +10,7 @@ import { config } from '@/config';
 import ActionButtonsRenderer from '@/components/core/ag-grid/action-buttons-renderer';
 import { FormControl, FormControlLabel, RadioGroup, Radio, Box } from '@mui/material';
 
-const CulvertWorkTable = () => {
+const CCTVInstallationTable = () => {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,7 +35,7 @@ const CulvertWorkTable = () => {
       try {
         const statusParam = statusFilter ? `&status=${statusFilter}` : '';
         const response = await axios.get(
-          `${config.site.serverURL}/api/inspection/culvert-work/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
+          `${config.site.serverURL}/api/inspection/cctv-installation/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
           {
             headers: {
               Authorization: authToken,
@@ -46,14 +46,14 @@ const CulvertWorkTable = () => {
 
         setColDefs([
           { field: 'drawing_or_specification_no', headerName: 'Drawing/Specification No', filter: 'agTextColumnFilter' },
-          { field: 'site_location_or_area', headerName: 'Site Location / Area', filter: 'agTextColumnFilter' },
+          { field: 'serial_no', headerName: 'Serial. No:', filter: 'agTextColumnFilter' },
           {
             field: 'actions',
             cellRenderer: ActionButtonsRenderer,
             cellRendererParams: {
               actionsToDisplay: ['view', 'delete'],
               router: router,
-              viewUrl: `/menu/inspection/culvert-work/view?culvertWorkId=`,
+              viewUrl: `/menu/inspection/cctv-installation/view?cctvInstallationId=`,
             },
             minWidth: 150,
           },
@@ -75,6 +75,7 @@ const CulvertWorkTable = () => {
     router.push(`?status=${selectedStatus}`);
   };
 
+  
   return (
     <Box>
       <FormControl component="fieldset" fullWidth margin="normal">
@@ -109,4 +110,4 @@ const CulvertWorkTable = () => {
   );
 };
 
-export default CulvertWorkTable;
+export default CCTVInstallationTable;

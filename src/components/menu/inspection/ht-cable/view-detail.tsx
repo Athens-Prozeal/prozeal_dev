@@ -184,6 +184,8 @@ const HTCableDetail: React.FC = () => {
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
               <strong>Drawing / Specification No:</strong> {data?.drawing_or_specification_no}
             </Typography>
+
+            
           </Grid>
 
           <Grid item xs={12} sx={{ maxWidth: '100%', whiteSpace: 'nowrap', overflowX: 'auto' }}>

@@ -93,7 +93,7 @@ type CategorizedChecklistResponseType = {
   };
 };
 
-const basePourCardForPlinthBeamSchema = {
+const basePourCardForBeamSchema = {
   dateOfChecking: z.string().nonempty('Date is required'),
   projectName: z.string().max(255, 'Project Name must be at most 255 characters'),
   description: z.string(),
@@ -107,9 +107,9 @@ const basePourCardForPlinthBeamSchema = {
   witness3: z.number().optional(),
 };
 
-const pourCardForPlinthBeamSchema = z.object(basePourCardForPlinthBeamSchema);
+const pourCardForBeamSchema = z.object(basePourCardForBeamSchema);
 
-type PourCardForPlinthBeamSchemaType = z.infer<typeof pourCardForPlinthBeamSchema>;
+type PourCardForBeamSchemaType = z.infer<typeof pourCardForBeamSchema>;
 
 export const Form = () => {
   const currentDate = new Date().toISOString().split('T')[0];
@@ -176,14 +176,14 @@ export const Form = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<PourCardForPlinthBeamSchemaType>({
-    resolver: zodResolver(pourCardForPlinthBeamSchema),
+  } = useForm<PourCardForBeamSchemaType>({
+    resolver: zodResolver(pourCardForBeamSchema),
     defaultValues: {
       dateOfChecking: currentDate,
     },
   });
 
-  const onSubmit = async (data: PourCardForPlinthBeamSchemaType) => {
+  const onSubmit = async (data: PourCardForBeamSchemaType) => {
     if (data.witness1 === data.witness2 || data.witness2 === data.witness3 || data.witness3 === data.witness1) {
       alert('Witness cannot be same');
       return;
@@ -212,7 +212,7 @@ export const Form = () => {
       })
         .then((response) => {
           if (response.status === 201) {
-            window.alert('Pour Card For Plinth Beam Report Added');
+            window.alert('Pour Card For Plinth/Lintel Beam/Roof Beam Added');
             setTimeout(() => {
               window.location.href = '/menu/inspection/pour-card-for-beam?status=approved';
             }, 500);

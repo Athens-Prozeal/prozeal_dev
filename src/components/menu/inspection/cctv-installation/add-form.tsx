@@ -15,102 +15,88 @@ import { Witness as WitnessType } from '@/types/user';
 import { config } from '@/config';
 
 const checklistSchemas: ChecklistSchema = {
-    culvert_location_are_cleaned: {
-        verbose_name: 'Culvert location are cleaned?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      culvert_marking_as_per_drawing_and_site_condition: {
-        verbose_name: 'Culvert location are cleaned?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      excavation_done_as_per_drawing: {
-        verbose_name: 'Excavation done as per drawing?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      have_you_check_soil_compacted: {
-        verbose_name: 'Have you check soil compacted?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      pcc_with_m10_and_concrete_mix_as_per_design: {
-        verbose_name: 'PCC with M10 and Concrete Mix as per design?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      have_you_check_shuttering_and_as_per_drawing: {
-        verbose_name: 'Have you check shuttering and as per drawing?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      have_you_check_steel_as_per_drawing: {
-        verbose_name: 'Have you check steel as per drawing?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      have_you_check_length_width_and_height_as_per_drawing: {
-        verbose_name: 'Have you check length, width, and height as per drawing?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      hume_pipe_provided_as_per_drawing: {
-        verbose_name: 'Hume pipe provided as per drawing?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      hume_pipe_dia_as_per_drawing: {
-        verbose_name: 'Hume pipe dia as per drawing?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      hume_pipe_joint_applied_by_cement_and_sand_mortar: {
-        verbose_name: 'Hume pipe joint & Applied by cement and sand mortar?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      rcc_stone_work_done_as_per_drawing: {
-        verbose_name: 'RCC / Stone work done as per drawing?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      Have_you_check_length_width_and_height_as_per_drawing: {
-        verbose_name: 'Have you check length, width, and height as per drawing?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      have_you_check_honeycombs: {
-        verbose_name: 'Have you check honeycombs?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
-      curing_period_7_days: {
-        verbose_name: 'Curing period 7 days?',
-        choices: ['Yes', 'No', 'N/A'],
-        required: true,
-      },
+    correctness_of_foundation_and_its_foundation_bolt: {
+    verbose_name: 'Check the correctness of foundation and its foundation bolt',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  mounting_pole_must_be_vertically_straight_and_fixed_properly: {
+    verbose_name: 'Check that mounting pole must be vertically straight and fixed properly',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  correcting_of_CCTV_is_installed: {
+    verbose_name: 'Check correcting of CCTV is installed and properly fixed with its assembly',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  cable_make_size_voltage_grade_conductor_and_insulation: {
+    verbose_name: 'Check cable make, size, voltage grade, conductor & insulation type as per drawing',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  physical_damage_in_cable: {
+    verbose_name: 'Check for any physical damage in cable',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  cable_route_depth_and_width_of_the_trench: {
+    verbose_name: 'Check Cable route, depth & width of the trench as per drawings',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  no_twists_knots_or_kinks: {
+    verbose_name: 'No twists, knots or kinks',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  check_proper_dressing_of_cables: {
+    verbose_name: 'Check for proper Dressing of the cables',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  installation_of_IP65_box: {
+    verbose_name: 'Check for the installation of IP65 box for interconnection must be above 1mtr from NGL',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  Cable_Jointing_and_terminations: {
+    verbose_name: 'Cable Jointing & terminations done as per manufacturers instruction manual',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  tightness_of_the_cable_terminations_at_connection_points: {
+    verbose_name: 'Check tightness of the cable terminations at connection points',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
+  Earthing_Connections_provided: {
+    verbose_name: 'Check for Earthing Connections provided',
+    choices: ['Yes', 'No', 'N/A'],
+    required: true,
+  },
 };
 
-const baseCulvertWorkSchema = {
+const baseCCTVInstallationSchema = {
     drawingOrSpecificationNo: z.string().max(155, 'Drawing Or Specification number must be at most 155 characters'),
-    siteLocationOrArea: z.string().max(255, 'Project Name must be at most 255 characters'),
+    serialNo: z.string().max(255, 'Serial No must be at most 255 characters'),
     comments: z.string().max(255, 'Comments must be at most 255 characters'),
     witness1: z.number().optional(),
     witness2: z.number().optional(),
     witness3: z.number().optional(),
   };
-  
-  const culvertWorkSchema = z.object(baseCulvertWorkSchema);
-  
-  type CulvertWorkSchemaType = z.infer<typeof culvertWorkSchema>;
-  
+
+
+  const cctvInstallationSchema = z.object(baseCCTVInstallationSchema);
+
+  type CCTVInstallationSchemaType = z.infer<typeof cctvInstallationSchema>;
+
   export const Form = () => {
     const [checklistResponses, setChecklistResponses] = useState<NakedChecklistResponseType>({});
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [witnesses, setWitnesses] = useState<WitnessType[]>([]);
     const [btnDisabled, setBtnDisabled] = useState(false);
-  
+
     useEffect(() => {
       axios
         .get(`${config.site.serverURL}/api/auth/user/witness/?work_site_id=${localStorage.getItem('work-site-id')}`, {
@@ -120,7 +106,7 @@ const baseCulvertWorkSchema = {
           setWitnesses(response.data);
         });
     }, []);
-  
+
     const handleChoiceChange = (itemKey: string, choice: string) => {
       setChecklistResponses((prevResponses) => ({
         ...prevResponses,
@@ -131,7 +117,7 @@ const baseCulvertWorkSchema = {
         },
       }));
     };
-  
+
     const handleRemarkChange = (itemKey: string, remark: string) => {
       setChecklistResponses((prevResponses) => ({
         ...prevResponses,
@@ -142,42 +128,42 @@ const baseCulvertWorkSchema = {
         },
       }));
     };
-  
+
     const validateForm = () => {
       const errors: string[] = [];
-  
+
       Object.keys(checklistSchemas).forEach((key) => {
         if (checklistSchemas[key].required && !checklistResponses?.[key]?.choice) {
           errors.push(checklistSchemas[key].verbose_name);
         }
       });
-  
+
       setValidationErrors(errors);
       return errors.length === 0;
     };
-  
+
     const {
       control,
       handleSubmit,
       formState: { errors },
-    } = useForm<CulvertWorkSchemaType>({
-      resolver: zodResolver(culvertWorkSchema),
+    } = useForm<CCTVInstallationSchemaType>({
+      resolver: zodResolver(cctvInstallationSchema),
     });
-  
-    const onSubmit = async (data: CulvertWorkSchemaType) => {
+
+    const onSubmit = async (data: CCTVInstallationSchemaType) => {
       if (validateForm()) {
         if (data.witness1 === data.witness2 || data.witness2 === data.witness3 || data.witness3 === data.witness1) {
           alert('Witness cannot be same');
           return;
         }
-  
+
         setBtnDisabled(true);
         axios({
           method: 'POST',
-          url: `${config.site.serverURL}/api/inspection/culvert-work/?work_site_id=${localStorage.getItem('work-site-id')}`,
+          url: `${config.site.serverURL}/api/inspection/cctv-installation/?work_site_id=${localStorage.getItem('work-site-id')}`,
           data: {
             drawing_or_specification_no: data.drawingOrSpecificationNo,
-            site_location_or_area: data.siteLocationOrArea,
+            serial_no: data.serialNo,
             comments: data.comments,
             witness_1: data.witness1,
             witness_2: data.witness2,
@@ -188,9 +174,9 @@ const baseCulvertWorkSchema = {
         })
           .then((response) => {
             if (response.status === 201) {
-              window.alert('Culvert Work Report Added');
+              window.alert('CCTV Installation Report Added');
               setTimeout(() => {
-                window.location.href = '/menu/inspection/culvert-work?status=approved';
+                window.location.href = '/menu/inspection/cctv-installation?status=approved';
               }, 500);
             }
           })
@@ -200,7 +186,7 @@ const baseCulvertWorkSchema = {
           });
       }
     };
-  
+
     return (
       <Box sx={{ flexGrow: 1 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -223,10 +209,10 @@ const baseCulvertWorkSchema = {
                 )}
               />
             </Grid>
-  
+
             <Grid item xs={12} sm={4} md={6}>
               <Controller
-                name="siteLocationOrArea"
+                name="serialNo"
                 control={control}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
@@ -236,18 +222,18 @@ const baseCulvertWorkSchema = {
                     onChange={onChange}
                     value={value}
                     fullWidth
-                    label="Site Location/Area"
+                    label="Serial. No:"
                     variant="outlined"
                   />
                 )}
               />
             </Grid>
             <br />
-  
+
             <Grid item xs={12} sm={12} md={12}>
               <Typography variant="h6">Items to be checked</Typography>
             </Grid>
-  
+
             {Object.keys(checklistSchemas).map((key) => (
               <Grid item xs={12} key={key}>
                 <Typography gutterBottom>{checklistSchemas[key].verbose_name}</Typography>
@@ -273,7 +259,7 @@ const baseCulvertWorkSchema = {
                 />
               </Grid>
             ))}
-  
+
             <Grid item xs={12} sm={12} md={6}>
               <Controller
                 name="comments"
@@ -292,7 +278,7 @@ const baseCulvertWorkSchema = {
                 )}
               />
             </Grid>
-  
+
             {/* Witness */}
             <Grid item xs={12} sm={12} md={12}>
               <Typography variant="h6">Witnesses</Typography>
@@ -321,7 +307,7 @@ const baseCulvertWorkSchema = {
                 )}
               />
             </Grid>
-  
+
             <Grid item xs={12} sm={4} md={4}>
               <Controller
                 name="witness2"
@@ -346,7 +332,7 @@ const baseCulvertWorkSchema = {
                 )}
               />
             </Grid>
-  
+
             <Grid item xs={12} sm={4} md={4}>
               <Controller
                 name="witness3"
@@ -371,7 +357,7 @@ const baseCulvertWorkSchema = {
                 )}
               />
             </Grid>
-  
+
             {/* Validation Errors Display */}
             {validationErrors.length > 0 && (
               <Grid item xs={12}>
@@ -385,7 +371,7 @@ const baseCulvertWorkSchema = {
                 </Alert>
               </Grid>
             )}
-  
+
             <Grid item xs={12} container justifyContent="flex-start">
               <Button variant="contained" color="primary" type="submit" disabled={btnDisabled}>
                 Submit

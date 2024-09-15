@@ -55,6 +55,10 @@ export const paths = {
         home: '/menu/inspection/pour-card-for-beam',
         add: '/menu/inspection/pour-card-for-beam/add'
       },
+      plainCementConcreteWork: {
+        home: '/menu/inspection/plain-cement-concrete-work',
+        add: '/menu/inspection/plain-cement-concrete-work/add'
+      },
       htCable: {
         home: '/menu/inspection/ht-cable',
         add: '/menu/inspection/ht-cable/add',
@@ -67,7 +71,10 @@ export const paths = {
         home: '/menu/inspection/culvert-work',
         add: '/menu/inspection/culvert-work/add',
       },
-
+      nifps: {
+        home: '/menu/inspection/nifps',
+        add: '/menu/inspection/nifps/add',
+      },
 
     },
   },

@@ -114,7 +114,7 @@ const SafetyObservationForm: React.FC = () => {
   }, []);
 
   const onSubmit = async (data: SafetyObservationSchemaType) => {
-    //setButtonDisabled(true);
+    setButtonDisabled(true);
 
     const formdata = new FormData();
     formdata.append('date', data.date);
@@ -153,7 +153,7 @@ const SafetyObservationForm: React.FC = () => {
           setAlertKey((prev) => prev + 1);
           setAlertOpen(true);
           setTimeout(() => {
-            //  window.location.href = '/menu/safety-observation/';
+            window.location.href = '/menu/safety-observation/';
           }, 500);
         }
       })

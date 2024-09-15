@@ -72,7 +72,7 @@ const ToolBoxTalkForm: React.FC = () => {
           setAlertKey((prev) => prev + 1);
           setAlertOpen(true);
           setTimeout(() => {
-            window.location.href = '/menu/toolboxtalk/';
+            window.location.href = '/menu/toolboxTalk/';
           }, 500);
         }
       })

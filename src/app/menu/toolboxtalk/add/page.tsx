@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Box, Stack, Typography } from '@mui/material';
 
 import { config } from '@/config';
-import ToolBoxTalkForm from '@/components/menu/toolboxtalk/add-form';
+import ToolBoxTalkForm from '@/components/menu/toolboxTalk/add-form';
 
 export const metadata = { title: `Toolbox Talk | Add | ${config.site.name}` } satisfies Metadata;
 

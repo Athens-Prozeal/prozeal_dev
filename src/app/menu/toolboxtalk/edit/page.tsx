@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 
-import { Form } from '@/components/menu/toolboxtalk/edit-form';
+import { Form } from '@/components/menu/toolboxTalk/edit-form';
 
 export default function Page() {
   return (

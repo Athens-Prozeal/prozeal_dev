@@ -8,23 +8,23 @@ export const paths = {
   },
   dashboard: {
     overview: '/dashboard',
-    settings: '/dashboard/settings',
+    settings:'/dashboard/settings',
     account: '/dashboard/account',
   },
   settings: '/dashboard/settings',
   account: '/dashboard/account',
-  menu: {
+  menu:{
     toolboxTalk: {
-      home: '/menu/toolboxtalk',
-      add: '/menu/toolboxtalk/add',
-      edit: '/menu/toolboxtalk/edit',
+      home: '/menu/toolboxTalk',
+      add: '/menu/toolboxTalk/add',
+      edit: '/menu/toolboxTalk/edit',
     },
     worker: {
       home: '/menu/worker',
-      add: '/menu/worker/add',
+      add: '/menu/worker/add'
     },
     manpower: {
-      home: '/menu/manpower',
+      home:  '/menu/manpower',
       add: '/menu/manpower/add',
       edit: '/menu/manpower/edit',
       statistics: '/menu/manpower/statistics',
@@ -49,16 +49,26 @@ export const paths = {
       },
       pourCardForSlabConcrete: {
         home: '/menu/inspection/pour-card-for-slab-concrete',
-        add: '/menu/inspection/pour-card-for-slab-concrete/add',
+        add: '/menu/inspection/pour-card-for-slab-concrete/add'
+      },
+      pourCardForBeam: { // Pour Card For Plinth Beam/Lintel Beam/Roof Beam
+        home: '/menu/inspection/pour-card-for-beam',
+        add: '/menu/inspection/pour-card-for-beam/add'
       },
       htCable: {
         home: '/menu/inspection/ht-cable',
         add: '/menu/inspection/ht-cable/add',
       },
-      pourCardForPlinthBeam: {
-        home: '/menu/inspection/pour-card-for-beam',
-        add: '/menu/inspection/pour-card-for-beam/add',
+      cctvInstallation: {
+        home: '/menu/inspection/cctv-installation',
+        add: '/menu/inspection/cctv-installation/add',
       },
+      culvertWork: {
+        home: '/menu/inspection/culvert-work',
+        add: '/menu/inspection/culvert-work/add',
+      },
+
+
     },
   },
 

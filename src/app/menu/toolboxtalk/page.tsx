@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 
-import ToolBoxTalkTable, { ToolBoxTalkTableHandles } from '@/components/menu/toolboxtalk/table';
+import ToolBoxTalkTable, { ToolBoxTalkTableHandles } from '@/components/menu/toolboxTalk/table';
 
 export default function Page() {
   const role = localStorage.getItem('role');
@@ -36,7 +36,7 @@ export default function Page() {
           {role === 'epc_admin' || role === 'epc' ? (
             <Button
               component={RouterLink}
-              href={'/menu/toolboxtalk/add'}
+              href={'/menu/toolboxTalk/add'}
               startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
               variant="contained"
             >

@@ -6,7 +6,7 @@ let allNavItems: NavItemConfig[] = [
   { key: 'settings', title: 'Settings', href: paths.dashboard.settings, icon: 'gear-six' },
   { key: 'account', title: 'Account', href: paths.dashboard.account, icon: 'user' },
   {
-    key: 'toolboxtalk',
+    key: 'toolbox-talk',
     title: 'Toolbox Talk',
     href: paths.menu.toolboxTalk.home,
     icon: 'tool-box',
@@ -31,42 +31,14 @@ let allNavItems: NavItemConfig[] = [
     title: 'Inspection',
     icon: 'magnifying-glass',
     items: [
-      {
-        key: 'excavation',
-        title: 'Excavation',
-        href: paths.menu.inspection.excavation.home,
-        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.excavation.home },
-      },
-      {
-        key: 'anti-termite-treatment',
-        title: 'Anti Termite Treatment',
-        href: paths.menu.inspection.antiTermiteTreatment.home,
-        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.antiTermiteTreatment.home },
-      },
-      {
-        key: 'pour-card-for-column-concrete',
-        title: 'Pour Card Column Concrete',
-        href: paths.menu.inspection.pourCardForColumnConcrete.home,
-        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForColumnConcrete.home },
-      },
-      {
-        key: 'pour-card-for-slab-concrete',
-        title: 'Pour Card Slab Concrete',
-        href: paths.menu.inspection.pourCardForSlabConcrete.home,
-        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForSlabConcrete.home },
-      },
-      {
-        key: 'ht-cable',
-        title: 'HT Cable',
-        href: paths.menu.inspection.htCable.home,
-        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.htCable.home },
-      },
-      {
-        key: 'pour-card-for-beam',
-        title: 'Pour Card For Beam',
-        href: paths.menu.inspection.pourCardForPlinthBeam.home,
-        matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForPlinthBeam.home },
-      },
+      {key: 'excavation', title: 'Excavation', href: paths.menu.inspection.excavation.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.excavation.home },},
+      {key: 'anti-termite-treatment', title: 'Anti Termite Treatment', href: paths.menu.inspection.antiTermiteTreatment.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.antiTermiteTreatment.home },},
+      {key: 'pour-card-for-column-concrete', title: 'Pour Card - Column Concrete', href: paths.menu.inspection.pourCardForColumnConcrete.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForColumnConcrete.home },},
+      {key: 'pour-card-for-slab-concrete', title: 'Pour Card - Slab Concrete', href: paths.menu.inspection.pourCardForSlabConcrete.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForSlabConcrete.home },},
+      {key: 'pour-card-for-beam', title: 'Pour Card - Beam', href: paths.menu.inspection.pourCardForBeam.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForBeam.home },}, // Pour Card For Plinth Beam/Lintel Beam/Roof Beam
+      {key: 'ht-cable', title: 'HT Cable', href: paths.menu.inspection.htCable.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.htCable.home },},
+      {key: 'cctv-installation', title: 'CCTV Installation', href: paths.menu.inspection.cctvInstallation.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.cctvInstallation.home },},
+      {key: 'culvert-work', title: 'Culvert Work', href: paths.menu.inspection.culvertWork.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.culvertWork.home },},
     ],
   },
   {

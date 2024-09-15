@@ -2,7 +2,7 @@
 
 import { Box, Stack, Typography } from '@mui/material';
 
-import ToolBoxTalkDetail from '@/components/menu/toolboxtalk/view-detail';
+import ToolBoxTalkDetail from '@/components/menu/toolboxTalk/view-detail';
 
 const Page = () => {
   return (

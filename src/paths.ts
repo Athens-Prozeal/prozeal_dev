@@ -35,6 +35,7 @@ export const paths = {
       edit: '/menu/safety-observation/edit',
     },
     inspection: {
+      //  Categorized Checklists
       excavation: {
         home: '/menu/inspection/excavation',
         add: '/menu/inspection/excavation/add',
@@ -42,6 +43,10 @@ export const paths = {
       antiTermiteTreatment: {
         home: '/menu/inspection/anti-termite-treatment',
         add: '/menu/inspection/anti-termite-treatment/add',
+      },
+      plainCementConcreteWork: {
+        home: '/menu/inspection/plain-cement-concrete-work',
+        add: '/menu/inspection/plain-cement-concrete-work/add'
       },
       pourCardForColumnConcrete: {
         home: '/menu/inspection/pour-card-for-column-concrete',
@@ -55,10 +60,9 @@ export const paths = {
         home: '/menu/inspection/pour-card-for-beam',
         add: '/menu/inspection/pour-card-for-beam/add'
       },
-      plainCementConcreteWork: {
-        home: '/menu/inspection/plain-cement-concrete-work',
-        add: '/menu/inspection/plain-cement-concrete-work/add'
-      },
+
+
+      //  Un-Categorized Checklists
       htCable: {
         home: '/menu/inspection/ht-cable',
         add: '/menu/inspection/ht-cable/add',
@@ -74,6 +78,10 @@ export const paths = {
       nifps: {
         home: '/menu/inspection/nifps',
         add: '/menu/inspection/nifps/add',
+      },
+      remoteTerminalUnit: {
+        home: '/menu/inspection/remote-terminal-unit',
+        add: '/menu/inspection/remote-terminal-unit/add',
       },
 
     },

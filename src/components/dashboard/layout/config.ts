@@ -45,6 +45,7 @@ let allNavItems: NavItemConfig[] = [
       {key: 'culvert-work', title: 'Culvert Work', href: paths.menu.inspection.culvertWork.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.culvertWork.home },},
       {key: 'nifps', title: 'NIFPS', href: paths.menu.inspection.nifps.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.nifps.home },},
       {key: 'remote-terminal-unit', title: 'Remote Terminal Unit', href: paths.menu.inspection.remoteTerminalUnit.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.remoteTerminalUnit.home },},
+      {key: 'ups', title: 'UPS', href: paths.menu.inspection.ups.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.ups.home },},
     ],
   },
   {

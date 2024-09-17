@@ -83,6 +83,10 @@ export const paths = {
         home: '/menu/inspection/remote-terminal-unit',
         add: '/menu/inspection/remote-terminal-unit/add',
       },
+      ups: {
+        home: '/menu/inspection/ups',
+        add: '/menu/inspection/ups/add',
+      },
 
     },
   },

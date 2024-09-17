@@ -91,6 +91,10 @@ export const paths = {
         home: '/menu/inspection/icog-panel',
         add: '/menu/inspection/icog-panel/add',
       },
+      painting: {
+        home: '/menu/inspection/painting',
+        add: '/menu/inspection/painting/add',
+      },
 
     },
   },

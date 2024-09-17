@@ -46,6 +46,7 @@ let allNavItems: NavItemConfig[] = [
       {key: 'nifps', title: 'NIFPS', href: paths.menu.inspection.nifps.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.nifps.home },},
       {key: 'remote-terminal-unit', title: 'Remote Terminal Unit', href: paths.menu.inspection.remoteTerminalUnit.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.remoteTerminalUnit.home },},
       {key: 'ups', title: 'UPS', href: paths.menu.inspection.ups.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.ups.home },},
+      {key: 'icog-panel', title: 'ICOG Panel', href: paths.menu.inspection.icogPanel.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.icogPanel.home },},
     ],
   },
   {

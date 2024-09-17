@@ -87,6 +87,10 @@ export const paths = {
         home: '/menu/inspection/ups',
         add: '/menu/inspection/ups/add',
       },
+      icogPanel: {
+        home: '/menu/inspection/icog-panel',
+        add: '/menu/inspection/icog-panel/add',
+      },
 
     },
   },

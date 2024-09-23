@@ -38,6 +38,7 @@ let allNavItems: NavItemConfig[] = [
       {key: 'pour-card-for-slab-concrete', title: 'Pour Card - Slab Concrete', href: paths.menu.inspection.pourCardForSlabConcrete.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForSlabConcrete.home },},
       {key: 'pour-card-for-beam', title: 'Pour Card - Beam', href: paths.menu.inspection.pourCardForBeam.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.pourCardForBeam.home },}, // Pour Card For Plinth Beam/Lintel Beam/Roof Beam
       {key: 'plain-cement-concrete-work', title: 'Plain Cement Concrete Work', href: paths.menu.inspection.plainCementConcreteWork.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.plainCementConcreteWork.home },},
+      {key: 'plastering', title: 'Plastering', href: paths.menu.inspection.plastering.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.plastering.home },},
 
       // Un-Categorized Checklists
       {key: 'ht-cable', title: 'HT Cable', href: paths.menu.inspection.htCable.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.htCable.home },},

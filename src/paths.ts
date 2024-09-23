@@ -60,6 +60,10 @@ export const paths = {
         home: '/menu/inspection/pour-card-for-beam',
         add: '/menu/inspection/pour-card-for-beam/add'
       },
+      plastering: {
+        home: '/menu/inspection/plastering',
+        add: '/menu/inspection/plastering/add'
+      },
 
 
       //  Un-Categorized Checklists

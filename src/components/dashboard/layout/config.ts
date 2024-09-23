@@ -48,6 +48,7 @@ let allNavItems: NavItemConfig[] = [
       {key: 'ups', title: 'UPS', href: paths.menu.inspection.ups.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.ups.home },},
       {key: 'icog-panel', title: 'ICOG Panel', href: paths.menu.inspection.icogPanel.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.icogPanel.home },},
       {key: 'painting', title: 'Painting', href: paths.menu.inspection.painting.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.painting.home },},
+      {key: 'rcc', title: 'RCC', href: paths.menu.inspection.rcc.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.rcc.home },},
     ],
   },
   {

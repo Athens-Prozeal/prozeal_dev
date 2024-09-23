@@ -95,6 +95,10 @@ export const paths = {
         home: '/menu/inspection/painting',
         add: '/menu/inspection/painting/add',
       },
+      rcc: {
+        home: '/menu/inspection/rcc',
+        add: '/menu/inspection/rcc/add',
+      },
 
     },
   },

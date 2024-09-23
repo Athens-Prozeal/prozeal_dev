@@ -33,7 +33,7 @@ const plasteringDetail: React.FC = () => {
   useEffect(() => {
     axios
       .get(
-        `${config.site.serverURL}/api/inspection/plasteringId}/?work_site_id=${workSiteId}`,
+        `${config.site.serverURL}/api/inspection/plastering/${plasteringId}/?work_site_id=${workSiteId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access-token')}`,
@@ -201,16 +201,6 @@ const plasteringDetail: React.FC = () => {
               <strong>Checked By:</strong> {data?.checked_by_username}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Grade Of Concrete:</strong> {data?.grade_of_concrete}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Source Of Concrete:</strong> {data?.source_of_concrete}
-            </Typography>
-          </Grid>
           <Grid item xs={12} sm={12}>
             <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
               <strong>Description:</strong> {data?.description}
@@ -257,11 +247,6 @@ const plasteringDetail: React.FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body1" sx={{ fontSize: { xs: '14px', sm: '16px' }, marginBottom: 2 }}>
-              <strong>Comments:</strong> {data?.comments}
-            </Typography>
           </Grid>
 
           <Grid item xs={12} marginTop="30px" sx={{ maxWidth: '100%', whiteSpace: 'nowrap', overflowX: 'auto' }}>

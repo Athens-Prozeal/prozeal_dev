@@ -49,14 +49,14 @@ const PlasteringTable = () => {
           { field: 'project_name', headerName: 'Project Name', filter: 'agTextColumnFilter' },
           { field: 'ref_drawing_no', headerName: 'Reference Drawing Number', filter: 'agTextColumnFilter' },
           { field: 'description', headerName: 'Description', filter: 'agTextColumnFilter' },
-         
+
           {
             field: 'actions',
             cellRenderer: ActionButtonsRenderer,
             cellRendererParams: {
               actionsToDisplay: ['view', 'delete'],
               router: router,
-              viewUrl: `/menu/inspection/pour-card-for-column-concrete/view?plasteringId=`,
+              viewUrl: `/menu/inspection/plastering/view?plasteringId=`,
             },
             minWidth: 150,
           },

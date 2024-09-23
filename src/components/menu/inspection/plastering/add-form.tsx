@@ -19,7 +19,7 @@ type CategorizedChecklistSchema = {
     preparation: ChecklistSchema;
     in_process: ChecklistSchema;
   };
-  
+
   const checklistSchemas: CategorizedChecklistSchema = {
     preparation: {
         provision_of_plaster_pads_checked: {
@@ -62,7 +62,7 @@ type CategorizedChecklistSchema = {
         choices: ['Yes', 'No', 'N/A'],
         required: true,
       },
-      
+
     },
     in_process: {
         mix_proportion_of_mortar_as_per_specification: {
@@ -128,7 +128,7 @@ type CategorizedChecklistResponseType = {
       [key: string]: ChecklistResponseType;
     };
   };
-  
+
   const basePlasteringSchema = {
     dateOfChecking: z.string().nonempty('Date is required'),
     projectName: z.string().max(255, 'Project Name must be at most 255 characters'),
@@ -138,18 +138,18 @@ type CategorizedChecklistResponseType = {
     witness2: z.number().optional(),
     witness3: z.number().optional(),
   };
-  
+
   const plasteringSchema = z.object(basePlasteringSchema);
-  
+
   type plasteringSchemaType = z.infer<typeof plasteringSchema>;
-  
+
   export const Form = () => {
     const currentDate = new Date().toISOString().split('T')[0];
     const [checklistResponses, setChecklistResponses] = useState<CategorizedChecklistResponseType>({});
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [witnesses, setWitnesses] = useState<WitnessType[]>([]);
     const [btnDisabled, setBtnDisabled] = useState(false);
-  
+
     useEffect(() => {
       axios
         .get(`${config.site.serverURL}/api/auth/user/witness/?work_site_id=${localStorage.getItem('work-site-id')}`, {
@@ -159,7 +159,7 @@ type CategorizedChecklistResponseType = {
           setWitnesses(response.data);
         });
     }, []);
-  
+
     const handleChoiceChange = (category: keyof CategorizedChecklistSchema, itemKey: string, choice: string) => {
       setChecklistResponses((prevResponses) => ({
         ...prevResponses,
@@ -173,10 +173,10 @@ type CategorizedChecklistResponseType = {
         },
       }));
     };
-  
+
     const validateForm = () => {
         const errors: string[] = [];
-    
+
         Object.keys(checklistSchemas).forEach((category) => {
           const categoryKey = category as keyof CategorizedChecklistSchema;
           Object.keys(checklistSchemas[categoryKey]).forEach((key) => {
@@ -185,11 +185,11 @@ type CategorizedChecklistResponseType = {
             }
           });
         });
-    
+
         setValidationErrors(errors);
         return errors.length === 0;
       };
-    
+
       const {
         control,
         handleSubmit,
@@ -200,13 +200,13 @@ type CategorizedChecklistResponseType = {
           dateOfChecking: currentDate,
         },
       });
-    
+
       const onSubmit = async (data: plasteringSchemaType) => {
         if (data.witness1 === data.witness2 || data.witness2 === data.witness3 || data.witness3 === data.witness1) {
           alert('Witness cannot be same');
           return;
         }
-    
+
         if (validateForm()) {
           setBtnDisabled(true);
           axios({
@@ -238,10 +238,19 @@ type CategorizedChecklistResponseType = {
             });
         }
       };
-    
-      function handleRemarkChange(arg0: keyof CategorizedChecklistSchema, key: string, value: string): void {
-          throw new Error('Function not implemented.');
-      }
+      const handleRemarkChange = (category: keyof CategorizedChecklistSchema, itemKey: string, remark: string) => {
+        setChecklistResponses((prevResponses) => ({
+          ...prevResponses,
+          [category]: {
+            ...prevResponses[category],
+            [itemKey]: {
+              ...(prevResponses[category]?.[itemKey] || {}),
+              remark,
+              verbose_name: checklistSchemas[category][itemKey].verbose_name, // Include verbose_name
+            },
+          },
+        }));
+      };
 
       return (
         <Box sx={{ flexGrow: 1 }}>
@@ -315,13 +324,13 @@ type CategorizedChecklistResponseType = {
                   )}
                 />
               </Grid>
-             
+
               <br />
               <Grid item xs={12} sm={12} md={12}>
                 <Typography variant="h6">Items to be checked</Typography>
               </Grid>
               <br />
-    
+
               {Object.keys(checklistSchemas).map((category) => (
                 <Fragment key={category}>
                   <Grid item xs={12}>
@@ -357,14 +366,13 @@ type CategorizedChecklistResponseType = {
                         value={checklistResponses[category]?.[key]?.remark || ''}
                         onChange={(e) =>
                             handleRemarkChange(category as keyof CategorizedChecklistSchema, key, e.target.value)
-  
                         }
                       />
                     </Grid>
                   ))}
                 </Fragment>
               ))}
-    
+
               {/* Witness */}
               <Grid item xs={12} sm={12} md={12}>
                 <Typography variant="h6">Witnesses</Typography>
@@ -397,7 +405,7 @@ type CategorizedChecklistResponseType = {
                   )}
                 />
               </Grid>
-    
+
               <Grid item xs={12} sm={4} md={4}>
                 <Controller
                   name="witness2"
@@ -426,7 +434,7 @@ type CategorizedChecklistResponseType = {
                   )}
                 />
               </Grid>
-    
+
               <Grid item xs={12} sm={4} md={4}>
                 <Controller
                   name="witness3"
@@ -455,7 +463,7 @@ type CategorizedChecklistResponseType = {
                   )}
                 />
               </Grid>
-    
+
               {/* Validation Errors Display */}
               {validationErrors.length > 0 && (
                 <Grid item xs={12}>
@@ -469,7 +477,7 @@ type CategorizedChecklistResponseType = {
                   </Alert>
                 </Grid>
               )}
-    
+
               <Grid item xs={12} container justifyContent="flex-start">
                 <Button variant="contained" color="primary" type="submit" disabled={btnDisabled}>
                   Submit
@@ -480,4 +488,3 @@ type CategorizedChecklistResponseType = {
         </Box>
       );
     };
-    

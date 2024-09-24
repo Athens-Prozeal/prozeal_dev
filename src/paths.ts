@@ -103,6 +103,38 @@ export const paths = {
         home: '/menu/inspection/rcc',
         add: '/menu/inspection/rcc/add',
       },
+      acDistributionBoard: {
+        home: '/menu/inspection/ac-distribution-board',
+        add: '/menu/inspection/ac-distribution-board/add',
+      },
+      auxTransformer: {
+        home: '/menu/inspection/aux-transformer',
+        add: '/menu/inspection/aux-transformer/add',
+      },
+      busduct: {
+        home: '/menu/inspection/busduct',
+        add: '/menu/inspection/busduct/add',
+      },
+      highVoltagePanel: {
+        home: '/menu/inspection/high-voltage-panel',
+        add: '/menu/inspection/high-voltage-panel/add',
+      },
+      peripheryLighting: {
+        home: '/menu/inspection/periphery-lighting',
+        add: '/menu/inspection/periphery-lighting/add',
+      },
+      plumbing: {
+        home: '/menu/inspection/plumbing',
+        add: '/menu/inspection/plumbing/add',
+      },
+      scadaSystem: {
+        home: '/menu/inspection/scada-system',
+        add: '/menu/inspection/scada-system/add',
+      },
+      wms: {
+        home: '/menu/inspection/wms',
+        add: '/menu/inspection/wms/add',
+      },
 
     },
   },

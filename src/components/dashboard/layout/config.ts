@@ -58,6 +58,9 @@ let allNavItems: NavItemConfig[] = [
       {key: 'plumbing', title: 'Plumbing', href: paths.menu.inspection.plumbing.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.plumbing.home },},
       {key: 'scada-system', title: 'SCADA System', href: paths.menu.inspection.scadaSystem.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.scadaSystem.home },},
       {key: 'wms', title: 'WMS', href: paths.menu.inspection.wms.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.wms.home },},
+      {key: 'plant-boundary-and-fencing', title: 'Plant Boundary And Fencing', href: paths.menu.inspection.PlantBoundaryAndFencing.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.PlantBoundaryAndFencing.home },},
+      {key: 'chain-link-fencing', title: 'Chain Link Fencing', href: paths.menu.inspection.chainLinkFencing.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.chainLinkFencing.home },},
+      // 2 witness
       {key: 'dcdb', title: 'DCDB', href: paths.menu.inspection.dcdb.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.dcdb.home },},
     ],
   },

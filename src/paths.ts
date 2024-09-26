@@ -135,6 +135,17 @@ export const paths = {
         home: '/menu/inspection/wms',
         add: '/menu/inspection/wms/add',
       },
+      PlantBoundaryAndFencing: {
+        home: '/menu/inspection/plant-boundary-and-fencing',
+        add: '/menu/inspection/plant-boundary-and-fencing/add',
+      },
+
+      chainLinkFencing: {
+        home: '/menu/inspection/chain-link-fencing',
+        add: '/menu/inspection/chain-link-fencing/add',
+      },
+
+      // 2 witness
       dcdb: {
         home: '/menu/inspection/dcdb',
         add: '/menu/inspection/dcdb/add',

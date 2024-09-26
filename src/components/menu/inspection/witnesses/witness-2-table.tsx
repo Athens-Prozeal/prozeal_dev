@@ -10,11 +10,6 @@ interface Witness {
   witness_2_name: string;
   witness_2_company: string ;
   witness_2_signature: string;
-
-  witness_3_date: string ;
-  witness_3_name: string;
-  witness_3_company: string ;
-  witness_3_signature: string;
 }
 
 export default function WitnessTable(witness: Witness) {
@@ -57,15 +52,6 @@ export default function WitnessTable(witness: Witness) {
             <TableCell>{witness.witness_2_company}</TableCell>
             <TableCell>
               <img src={witness.witness_2_signature} alt="" style={{ maxWidth: '250px' }} />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>3</TableCell>
-            <TableCell>{witness.witness_3_date}</TableCell>
-            <TableCell>{witness.witness_3_name}</TableCell>
-            <TableCell>{witness.witness_3_company}</TableCell>
-            <TableCell>
-              <img src={witness.witness_3_signature} alt="" style={{ maxWidth: '250px' }} />
             </TableCell>
           </TableRow>
         </TableBody>

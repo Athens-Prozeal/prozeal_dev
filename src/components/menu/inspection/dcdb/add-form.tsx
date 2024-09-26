@@ -170,7 +170,7 @@ const checklistSchemas: ChecklistSchema = {
 const baseDcdbSchema = {
     drawingOrSpecificationNo: z.string().max(155, 'Drawing Or Specification number must be at most 155 characters'),
     siteLocationOrArea: z.string().max(255, 'Project Name must be at most 255 characters'),
-    comments: z.string().max(255, 'Comments must be at most 255 characters'),
+    commentsOrRemarks: z.string().max(255, 'comments/Remarks must be at most 255 characters'),
     witness1: z.number().optional(),
     witness2: z.number().optional(),
   };
@@ -252,7 +252,7 @@ const baseDcdbSchema = {
           data: {
             drawing_or_specification_no: data.drawingOrSpecificationNo,
             site_location_or_area: data.siteLocationOrArea,
-            comments: data.comments,
+            comments_or_remarks: data.commentsOrRemarks,
             witness_1: data.witness1,
             witness_2: data.witness2,
             checklists: checklistResponses,
@@ -349,7 +349,7 @@ const baseDcdbSchema = {
 
             <Grid item xs={12} sm={12} md={6}>
               <Controller
-                name="comments"
+                name="commentsOrRemarks"
                 control={control}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
@@ -359,7 +359,7 @@ const baseDcdbSchema = {
                     onChange={onChange}
                     value={value}
                     fullWidth
-                    label="Comments"
+                    label="comments/Remarks"
                     variant="outlined"
                   />
                 )}

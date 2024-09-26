@@ -58,6 +58,7 @@ let allNavItems: NavItemConfig[] = [
       {key: 'plumbing', title: 'Plumbing', href: paths.menu.inspection.plumbing.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.plumbing.home },},
       {key: 'scada-system', title: 'SCADA System', href: paths.menu.inspection.scadaSystem.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.scadaSystem.home },},
       {key: 'wms', title: 'WMS', href: paths.menu.inspection.wms.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.wms.home },},
+      {key: 'dcdb', title: 'DCDB', href: paths.menu.inspection.dcdb.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.dcdb.home },},
     ],
   },
   {

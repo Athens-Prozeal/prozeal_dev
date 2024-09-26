@@ -135,6 +135,10 @@ export const paths = {
         home: '/menu/inspection/wms',
         add: '/menu/inspection/wms/add',
       },
+      dcdb: {
+        home: '/menu/inspection/dcdb',
+        add: '/menu/inspection/dcdb/add',
+      },
 
     },
   },

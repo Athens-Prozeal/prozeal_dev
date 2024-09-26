@@ -144,6 +144,10 @@ export const paths = {
         home: '/menu/inspection/chain-link-fencing',
         add: '/menu/inspection/chain-link-fencing/add',
       },
+      potentialTransformer: {
+        home: '/menu/inspection/potential-transformer',
+        add: '/menu/inspection/potential-transformer/add',
+      },
 
       // 2 witness
       dcdb: {

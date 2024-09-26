@@ -60,6 +60,8 @@ let allNavItems: NavItemConfig[] = [
       {key: 'wms', title: 'WMS', href: paths.menu.inspection.wms.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.wms.home },},
       {key: 'plant-boundary-and-fencing', title: 'Plant Boundary And Fencing', href: paths.menu.inspection.PlantBoundaryAndFencing.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.PlantBoundaryAndFencing.home },},
       {key: 'chain-link-fencing', title: 'Chain Link Fencing', href: paths.menu.inspection.chainLinkFencing.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.chainLinkFencing.home },},
+      {key: 'potential-transformer', title: 'Potential Transformer', href: paths.menu.inspection.potentialTransformer.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.potentialTransformer.home },},
+
       // 2 witness
       {key: 'dcdb', title: 'DCDB', href: paths.menu.inspection.dcdb.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.dcdb.home },},
     ],

@@ -154,7 +154,46 @@ export const paths = {
         home: '/menu/inspection/dcdb',
         add: '/menu/inspection/dcdb/add',
       },
-
+      batteryBank: {
+        home: '/menu/inspection/battery-bank',
+        add: '/menu/inspection/battery-bank/add',
+      },
+      controlCableLaying: {
+        home: '/menu/inspection/control-cable-laying',
+        add: '/menu/inspection/control-cable-laying/add',
+      },
+      fireAlarmPanel: {
+        home: '/menu/inspection/fire-alarm-panel',
+        add: '/menu/inspection/fire-alarm-panel/add',
+      },
+      inverter: {
+        home: '/menu/inspection/inverter',
+        add: '/menu/inspection/inverter/add',
+      },
+      stringCables: {
+        home: '/menu/inspection/string-cables',
+        add: '/menu/inspection/string-cables/add',
+      },
+      lightningArrester: {
+        home: '/menu/inspection/lightning-arrester',
+        add: '/menu/inspection/lightning-arrester/add',
+      },
+      moduleInterconnection: {
+        home: '/menu/inspection/module-interconnection',
+        add: '/menu/inspection/module-interconnection/add',
+      },
+      transmissionLines: {
+        home: '/menu/inspection/transmission-lines',
+        add: '/menu/inspection/transmission-lines/add',
+      },
+      OutdoorIsolatorOrEarthSwitch: {
+        home: '/menu/inspection/outdoor-isolator-or-earth-switch',
+        add: '/menu/inspection/outdoor-isolator-or-earth-switch/add',
+      },
+      stringCables2: {
+        home: '/menu/inspection/string-cables2',
+        add: '/menu/inspection/string-cables2/add',
+      },
     },
   },
 

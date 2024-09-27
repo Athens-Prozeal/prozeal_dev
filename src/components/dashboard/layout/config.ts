@@ -61,9 +61,18 @@ let allNavItems: NavItemConfig[] = [
       {key: 'plant-boundary-and-fencing', title: 'Plant Boundary And Fencing', href: paths.menu.inspection.PlantBoundaryAndFencing.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.PlantBoundaryAndFencing.home },},
       {key: 'chain-link-fencing', title: 'Chain Link Fencing', href: paths.menu.inspection.chainLinkFencing.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.chainLinkFencing.home },},
       {key: 'potential-transformer', title: 'Potential Transformer', href: paths.menu.inspection.potentialTransformer.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.potentialTransformer.home },},
+      {key: 'battery-bank-and-battery-charger', title: 'Battery Bank And Battery Charger', href: paths.menu.inspection.batteryBank.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.batteryBank.home },},
+      {key: 'control-cable-laying', title: 'Control Cable Laying', href: paths.menu.inspection.controlCableLaying.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.controlCableLaying.home },},
+      {key: 'fire-alarm-panel', title: 'Fire Alarm Panel', href: paths.menu.inspection.fireAlarmPanel.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.fireAlarmPanel.home },},
+      {key: 'inverter', title: 'Inverter', href: paths.menu.inspection.inverter.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.inverter.home },},
+      {key: 'string-cables', title: 'String Cables', href: paths.menu.inspection.stringCables.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.stringCables.home },},
+      {key: 'lightning-arrester', title: 'Lightning Arrester', href: paths.menu.inspection.lightningArrester.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.lightningArrester.home },},
+      {key: 'string-cables2', title: 'String Cables 2', href: paths.menu.inspection.stringCables2.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.stringCables2.home },},
 
       // 2 witness
       {key: 'dcdb', title: 'DCDB', href: paths.menu.inspection.dcdb.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.dcdb.home },},
+      {key: 'transmission-lines',  title: 'Transmission Lines', href: paths.menu.inspection.transmissionLines.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.transmissionLines.home },},
+      {key: 'outdoor-isolator-or-earth-switch',  title: 'Outdoor Isolator Or Earth Switch', href: paths.menu.inspection.OutdoorIsolatorOrEarthSwitch.home, matcher: { type: 'startsWith' as const, href: paths.menu.inspection.OutdoorIsolatorOrEarthSwitch.home },},
     ],
   },
   {

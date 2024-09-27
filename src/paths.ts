@@ -191,8 +191,8 @@ export const paths = {
         add: '/menu/inspection/outdoor-isolator-or-earth-switch/add',
       },
       stringCables2: {
-        home: '/menu/inspection/string-cables2',
-        add: '/menu/inspection/string-cables2/add',
+        home: '/menu/inspection/second-string-cables',
+        add: '/menu/inspection/second-string-cables/add',
       },
     },
   },

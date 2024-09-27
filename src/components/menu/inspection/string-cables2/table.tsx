@@ -53,7 +53,7 @@ const StringCablesTable = () => {
             cellRendererParams: {
               actionsToDisplay: ['view', 'delete'],
               router: router,
-              viewUrl: `/menu/inspection/string-cables2/view?stringCablesId=`,
+              viewUrl: `/menu/inspection/second-string-cables/view?stringCablesId=`,
             },
             minWidth: 150,
           },

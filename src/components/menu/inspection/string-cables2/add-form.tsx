@@ -176,7 +176,7 @@ const baseStringCablesSchema = {
             if (response.status === 201) {
               window.alert('String Cables Report Added');
               setTimeout(() => {
-                window.location.href = '/menu/inspection/string-cables2?status=approved';
+                window.location.href = '/menu/inspection/second-string-cables?status=approved';
               }, 500);
             }
           })

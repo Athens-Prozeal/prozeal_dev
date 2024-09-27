@@ -22,7 +22,7 @@ export default function Page() {
         {role === 'epc_admin' || role === 'epc' || role === 'quality_inspector' ? (
           <Button
             component={RouterLink}
-            href={'/menu/inspection/string-cables2/add'}
+            href={'/menu/inspection/second-string-cables/add'}
             startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
             variant="contained"
           >

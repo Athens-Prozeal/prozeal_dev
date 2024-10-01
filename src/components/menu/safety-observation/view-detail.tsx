@@ -215,6 +215,15 @@ const SafetyObservationDetail: React.FC = () => {
               <img src={data?.before_image} alt="Before Image" style={{ maxWidth: '512px' }} />
             </Typography>
           </Grid>
+          {data?.observation_status === 'closed' && (
+          <Grid item xs={12}>
+            <Typography variant="body1" style={{ fontSize: '18px', marginBottom: '16px' }}>
+              <strong>After Image:</strong>
+              <br />
+              <img src={data?.after_image} alt="After Image" style={{ maxWidth: '512px' }} />
+            </Typography>
+          </Grid>
+          )}
         </Grid>
       </Paper>
 

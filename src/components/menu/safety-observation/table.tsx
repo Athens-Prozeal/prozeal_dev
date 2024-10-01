@@ -30,7 +30,8 @@ const SafetyObservationTable = forwardRef<SafetyObservationHandles, SafetyObserv
     { value: 'all', label: 'All' },
     { value: 'open', label: 'Open' },
     { value: 'closed', label: 'Closed' },
-    { value: 'action-required', label: 'Require Action' },
+    { value: 'corrective-action-required', label: 'Corrective Action Required' },
+    { value: 'verification-required', label: 'Verification Required' },
   ];
   const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || 'all');
 

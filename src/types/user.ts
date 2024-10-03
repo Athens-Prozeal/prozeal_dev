@@ -24,3 +24,15 @@ export interface Witness {
   username: string;
   company: string;
 }
+
+export interface ExecutionEngineer {
+  id: number;
+  username: string;
+  company: string;
+}
+
+export interface QualityEngineer {
+  id: number;
+  username: string;
+  company: string;
+}

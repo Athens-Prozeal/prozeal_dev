@@ -154,9 +154,9 @@ export const paths = {
         home: '/menu/inspection/dcdb',
         add: '/menu/inspection/dcdb/add',
       },
-      batteryBank: {
-        home: '/menu/inspection/battery-bank',
-        add: '/menu/inspection/battery-bank/add',
+      batteryBankAndBatteryCharger: {
+        home: '/menu/inspection/battery-bank-and-battery-charger',
+        add: '/menu/inspection/battery-bank-and-battery-charger/add',
       },
       controlCableLaying: {
         home: '/menu/inspection/control-cable-laying',
@@ -193,6 +193,11 @@ export const paths = {
       stringCables2: {
         home: '/menu/inspection/second-string-cables',
         add: '/menu/inspection/second-string-cables/add',
+      },
+
+      postCommissioningTestReport: {
+        home: '/menu/inspection/post-commissioning-test-report',
+        add: '/menu/inspection/post-commissioning-test-report/add',
       },
     },
   },

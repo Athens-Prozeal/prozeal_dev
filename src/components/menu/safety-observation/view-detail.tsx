@@ -197,11 +197,25 @@ const SafetyObservationDetail: React.FC = () => {
             </Typography>
           </Grid>
           {data?.observation_status === 'closed' && (
+            <>
             <Grid item xs={12}>
               <Typography variant="body1" style={{ fontSize: '18px', marginBottom: '16px' }}>
                 <strong>Corrective Action Taken:</strong> {data?.corrective_action_taken}
               </Typography>
             </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="body1" style={{ fontSize: '18px', marginBottom: '16px' }}>
+                <strong>Corrective Action Assigned To:</strong> {data?.corrective_action_assigned_to_full_name}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="body1" style={{ fontSize: '18px', marginBottom: '16px' }}>
+                <strong>Closed On:</strong> {data?.closed_on}
+              </Typography>
+            </Grid>
+            </>
           )}
           <Grid item xs={12}>
             <Typography variant="body1" style={{ fontSize: '18px', marginBottom: '16px' }}>

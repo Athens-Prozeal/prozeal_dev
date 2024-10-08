@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import {
   Table,
@@ -238,12 +240,12 @@ const CalibrationTable = () => {
             <Grid item xs={6}>
             <Typography variant="body1">Site Name: {data.site_name}</Typography>
         <Typography variant="body1">Equipment Make: {data.equipment_make}</Typography>
-        
+
             </Grid>
             <Grid item xs={6} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
             <Typography variant="body1">Serial No: {data.serial_no}</Typography>
             <Typography variant="body1">Calibration Date: {data.calibration_date}</Typography>
-            
+
             </Grid>
           </Grid>
         </Box>
@@ -257,7 +259,7 @@ const CalibrationTable = () => {
          // Ensure it takes the full container width
       }}
     >
-    
+
       <Table sx={{ minWidth: 650, border: "1px solid #ccc" }} aria-label="calibration table">
         <TableHead>
           <TableRow>

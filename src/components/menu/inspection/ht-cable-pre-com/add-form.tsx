@@ -4,7 +4,7 @@ import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Container, Grid, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import zod from 'zod';
+import zod, { ZodDate } from 'zod';
 
 // Define validation schema
 const formSchema = zod.object({
@@ -33,6 +33,7 @@ const formSchema = zod.object({
       }),
       found_healthy: zod.string().default('No'),
       general_inspection: zod.string().default('No'),
+      remarks: zod.string().optional(),
     }),
     hi_pot_test: zod.object({
       R_PH: zod.object({
@@ -164,8 +165,8 @@ const Form = () => {
                     {...field}
                     label={fieldName.replace('_', '-')}
                     fullWidth
-                    error={!!errors.data?.insulation_resistance?.before_hv_test?.[fieldName]}
-                    helperText={errors.data?.insulation_resistance?.before_hv_test?.[fieldName]?.message}
+                    error={!!errors.data?.insulation_resistance?.before_hv_test?.[fieldName as keyof typeof errors.data.insulation_resistance.before_hv_test]}
+                    helperText={errors.data?.insulation_resistance?.before_hv_test?.[fieldName as keyof typeof errors.data.insulation_resistance.before_hv_test]?.message}
                   />
                 )}
               />
@@ -185,8 +186,8 @@ const Form = () => {
                     {...field}
                     label={fieldName.replace('_', '-')}
                     fullWidth
-                    error={!!errors.data?.insulation_resistance?.after_hv_test?.[fieldName]}
-                    helperText={errors.data?.insulation_resistance?.after_hv_test?.[fieldName]?.message}
+                    error={!!errors.data?.insulation_resistance?.after_hv_test?.[fieldName as keyof typeof errors.data.insulation_resistance.after_hv_test]}
+                    helperText={errors.data?.insulation_resistance?.after_hv_test?.[fieldName as keyof typeof errors.data.insulation_resistance.after_hv_test]?.message}
                   />
                 )}
               />
@@ -231,6 +232,22 @@ const Form = () => {
             )}
           />
         </Grid>
+        <Grid marginTop={5} item xs={12}>
+          <Typography variant="subtitle1">Remarks </Typography>
+          <Controller
+            name="data.insulation_resistance.remarks"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Remarks"
+                fullWidth
+                error={!!errors.data?.insulation_resistance?.remarks}
+                helperText={errors.data?.insulation_resistance?.remarks?.message}
+              />
+            )}
+          />
+        </Grid>
 
         <Typography marginTop={5} variant="h5">
           Hi-Pot Test:
@@ -253,7 +270,7 @@ const Form = () => {
                         label={fieldName.replace('_', ' ').toUpperCase()}
                         fullWidth
                         {...(fieldName === 'time' ?  { InputLabelProps: { shrink: true } } : {})} // Set input label to shrink for 'time' field
-                        error={!!errors.data?.hi_pot_test?.[phase]?.[fieldName]}
+                        error={!!errors.data?.hi_pot_test?.[phase as 'R_PH' | 'Y_PH' | 'B_PH']?.[fieldName as 'injected_voltage' | 'leakage_current' | 'time']}
                         helperText={errors.data?.hi_pot_test?.[phase]?.[fieldName]?.message}
                       />
                     )}

@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import zod from 'zod';
+import { valueOrDefault } from 'chart.js/dist/helpers/helpers.core';
 
 const formSchema = zod.object({
   project_name: zod.string().min(1, 'Project name is required'),
@@ -48,6 +49,8 @@ const formSchema = zod.object({
 });
 
 export const Form = () => {
+  const [count,setCount] = useState(0);
+
   const {
     handleSubmit,
     control,
@@ -58,6 +61,7 @@ export const Form = () => {
   });
 
   const onSubmit = (data: any) => {
+    setCount(count+1);
     console.log(data);
   };
 
@@ -93,7 +97,7 @@ export const Form = () => {
                   fullWidth
                   error={!!errors?.description}
                   helperText={
-                    String(errors?.description?.message) == 'undefined'
+                    String(errors?.description?.message) === 'undefined'
                       ? ''
                       : String(errors?.description?.message)
                   }
@@ -116,7 +120,7 @@ export const Form = () => {
                   fullWidth
                   error={!!errors?.date_of_checking}
                   helperText={
-                    String(errors?.date_of_checking?.message) == 'undefined'
+                    String(errors?.date_of_checking?.message) === 'undefined'
                       ? ''
                       : String(errors?.date_of_checking?.message)
                   }
@@ -135,7 +139,7 @@ export const Form = () => {
                   fullWidth
                   error={!!errors?.ref_drawing_no}
                   helperText={
-                    String(errors?.ref_drawing_no?.message) == 'undefined'
+                    String(errors?.ref_drawing_no?.message) === 'undefined'
                       ? ''
                       : String(errors?.ref_drawing_no?.message)
                   }
@@ -157,17 +161,19 @@ export const Form = () => {
         ].map((item, index) => {
           // eslint-disable-next-line react-hooks/rules-of-hooks
           const [displaytoggle, setDisplaytoggle] = useState(false);
+
           return (
             <Box my={4}>
               <Typography>{item}</Typography>
               <Grid xs={12} md={6}>
+
                 <Controller
                   name={`preparation.${index}.yes_or_no`}
                   control={control}
                   render={({ field }) => (
                     <ToggleButtonGroup
                       exclusive
-                      value={field.value || 'N/A'}
+                      value={field.value }
                       onChange={(_, newValue) => {
                         field.onChange(newValue);
                         if (newValue != 'N/A' || newValue == null) {
@@ -185,10 +191,11 @@ export const Form = () => {
                     </ToggleButtonGroup>
                   )}
                 />
+                
+
+
               </Grid>
-              {displaytoggle == false ? (
-                <></>
-              ) : (
+
                 <Grid xs={12} md={6}>
                   <Controller
                     name={`preparation.${index}.remarks`}
@@ -196,7 +203,7 @@ export const Form = () => {
                     render={({ field }) => <TextField {...field} label="Remarks" fullWidth variant="standard" />}
                   />
                 </Grid>
-              )}
+
             </Box>
           );
         })}
@@ -228,7 +235,7 @@ export const Form = () => {
                   render={({ field }) => (
                     <ToggleButtonGroup
                       exclusive
-                      value={field.value || 'N/A'}
+                      value={field.value }
                       onChange={(_, newValue) => {
                         field.onChange(newValue);
                         if (newValue != 'N/A' || newValue == null) {
@@ -247,9 +254,7 @@ export const Form = () => {
                   )}
                 />
               </Grid>
-              {displaytoggle == false ? (
-                <></>
-              ) : (
+
                 <Grid xs={12} md={6}>
                   <Controller
                     name={`inprocess_to_be_checked.${index}.remarks`}
@@ -257,7 +262,7 @@ export const Form = () => {
                     render={({ field }) => <TextField {...field} label="Remarks" fullWidth variant="standard" />}
                   />
                 </Grid>
-              )}
+
             </Box>
           );
         })}
@@ -277,7 +282,7 @@ export const Form = () => {
                   render={({ field }) => (
                     <ToggleButtonGroup
                       exclusive
-                      value={field.value || 'N/A'}
+                      value={field.value }
                       onChange={(_, newValue) => {
                         field.onChange(newValue);
                         if (newValue != 'N/A' || newValue == null) {
@@ -296,9 +301,7 @@ export const Form = () => {
                   )}
                 />
               </Grid>
-              {displaytoggle == false ? (
-                <></>
-              ) : (
+
                 <Grid xs={12} md={6}>
                   <Controller
                     name={`courses.${index}.remarks`}
@@ -306,7 +309,7 @@ export const Form = () => {
                     render={({ field }) => <TextField {...field} label="Remarks" fullWidth variant="standard" />}
                   />
                 </Grid>
-              )}
+
             </Box>
           );
         })}

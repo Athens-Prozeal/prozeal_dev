@@ -34,6 +34,14 @@ export const paths = {
       add: '/menu/safety-observation/add',
       edit: '/menu/safety-observation/edit',
     },
+    permitToWork: {
+      general: {
+        home: '/menu/permit-to-work/general',
+        add: '/menu/permit-to-work/general/add',
+        edit: '/menu/permit-to-work/general/edit',
+      },
+
+    },
     inspection: {
       //  Categorized Checklists
       excavation: {
@@ -199,6 +207,16 @@ export const paths = {
         home: '/menu/inspection/post-commissioning-test-report',
         add: '/menu/inspection/post-commissioning-test-report/add',
       },
+
+      earthingSystem: {
+        home: '/menu/inspection/earthing-system',
+        add: '/menu/inspection/earthing-system/add',
+      },
+
+      htCablePreCom: {
+        home: '/menu/inspection/ht-cable-pre-com',
+        add: '/menu/inspection/ht-cable-pre-com/add',
+      }
     },
   },
 

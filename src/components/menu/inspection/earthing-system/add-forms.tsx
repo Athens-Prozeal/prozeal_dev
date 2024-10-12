@@ -71,6 +71,7 @@ export const Form = () => {
   });
 
   const onSubmit = (data: FormDataType) => {
+    setBtnDisabled(true);
     if (data.witness_1 === data.witness_2 || data.witness_2 === data.witness_3 || data.witness_3 === data.witness_1) {
       alert('Witness cannot be same');
       return;

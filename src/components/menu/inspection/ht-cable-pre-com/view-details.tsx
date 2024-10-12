@@ -77,7 +77,7 @@ const ViewDetails = () => {
 
   return (
     <>
-    <Container sx={{ border: '1px solid #ddd', borderRadius: '8px' }}>
+    <Container sx={{ border: '1px solid #ddd', borderRadius: '8px',minWidth:"860px" }}>
       <Box>
         <Grid container mb={2} sx={{ p: 2, border: '1px solid #ddd', borderRadius: '8px', minHeight: '130px' }}>
           <Grid item xs={3}>
@@ -317,7 +317,7 @@ const ViewDetails = () => {
         </Typography>
       </Box>
 
-      <Grid item xs={12} marginTop="30px" sx={{ maxWidth: '100%', whiteSpace: 'nowrap', overflowX: 'auto' }}>
+      <Grid item xs={12} marginTop="30px" sx={{ maxWidth: '100%', whiteSpace: 'nowrap' }}>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>
           Witness
         </Typography>

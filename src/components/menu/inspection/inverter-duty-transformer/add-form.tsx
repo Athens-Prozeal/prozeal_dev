@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import zod from 'zod';
 import { useForm, Controller } from 'react-hook-form';
 import {
@@ -12,8 +12,15 @@ import {
     Container,
     ToggleButtonGroup,
     ToggleButton,
+    MenuItem,
 } from '@mui/material';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+
+
+import { Witness as WitnessType } from '@/types/user';
+import { config } from '@/config';
+
 
 const formSchema = zod.object({
     drawing_specification_no: zod.string().nonempty("Drawing specification number is required"),
@@ -21,7 +28,7 @@ const formSchema = zod.object({
     site_location_area: zod.string().nonempty("Site location area is required"),
 
     // check list items
-
+    check_list : zod.object({
     check_points1: zod.array(zod.object({
         status: zod.string().default('N/A'),
         remarks: zod.string().optional(),
@@ -59,14 +66,17 @@ const formSchema = zod.object({
         status: zod.string().default('N/A'),
         remarks: zod.string().optional(),
     })).length(2, 'Please select 4 check points').optional(),
-
+  }),
+  witness1: zod.number().optional(),
+  witness2: zod.number().optional(),
+  witness3: zod.number().optional(),
 
     // checked  and witness
 
-    checked_by_1_signature: zod.string().nonempty("Signature is required"),
-    checked_by_1_name: zod.string().nonempty("Name is required"),
-    checked_by_1_date: zod.string().nonempty("Date is required"),
-    checked_by_1_company: zod.string().nonempty("Company is required"),
+    // checked_by_1_signature: zod.string().nonempty("Signature is required"),
+    // checked_by_1_name: zod.string().nonempty("Name is required"),
+    // checked_by_1_date: zod.string().nonempty("Date is required"),
+    // checked_by_1_company: zod.string().nonempty("Company is required"),
 
     // witnessed_by_1: zod.array(zod.object({
     //     signature: zod.string().nonempty("Signature is required"),
@@ -95,6 +105,19 @@ const formSchema = zod.object({
 type FormValues = zod.infer<typeof formSchema>;
 
 const Form = () => {
+  const [witnesses, setWitnesses] = useState<WitnessType[]>([]);
+
+
+  useEffect(() => {
+    axios
+      .get(`${config.site.serverURL}/api/auth/user/witness/?work_site_id=${localStorage.getItem('work-site-id')}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
+      })
+      .then((response) => {
+        setWitnesses(response.data);
+      });
+  }, []);
+
     const { handleSubmit, control, formState: { errors } } = useForm<FormValues>({
         resolver: zodResolver(formSchema),
     });
@@ -166,7 +189,7 @@ const Form = () => {
                     "Assembly of all accessories and fittings completed",
                     "Oil/Winding temperature gauges/relays installed",
                     "Check Transformer oil level in tank and conservator",
-                    "Ensure the radiator gasket are changed by new one"
+                    "Ensure the check_list.radiator gasket are changed by new one"
                 ].map((item, index) => (
 
                     <Box my={6} key={index}>
@@ -174,7 +197,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`check_points1.${index}.status`}
+                            name={`check_list.check_points1.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -191,7 +214,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`check_points1.${index}.remarks`}
+                            name={`check_list.check_points1.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -219,7 +242,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`buchholz_relay.${index}.status`}
+                            name={`check_list.buchholz_relay.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -236,7 +259,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`buchholz_relay.${index}.remarks`}
+                            name={`check_list.buchholz_relay.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -266,7 +289,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`breather.${index}.status`}
+                            name={`check_list.breather.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -283,7 +306,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`breather.${index}.remarks`}
+                            name={`check_list.breather.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -311,7 +334,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`bushing.${index}.status`}
+                            name={`check_list.bushing.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -328,7 +351,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`bushing.${index}.remarks`}
+                            name={`check_list.bushing.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -352,7 +375,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`radiator.${index}.status`}
+                            name={`check_list.radiator.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -369,7 +392,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`radiator.${index}.remarks`}
+                            name={`check_list.radiator.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -384,8 +407,8 @@ const Form = () => {
                 ))}
                 <Typography variant="h5">13 : Air release from </Typography>
                 {[
-                    "Radiator",
-                    "Bushings",
+                    "check_list.Radiator",
+                    "check_list.Bushings",
                     "Buchholz relay",
                     "Transformer tank",
                     "OLTC Tank & Surge relay"
@@ -396,7 +419,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`air_release_form.${index}.status`}
+                            name={`check_list.air_release_form.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -413,7 +436,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`air_release_form.${index}.remarks`}
+                            name={`check_list.air_release_form.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -431,7 +454,7 @@ const Form = () => {
                 {[
 
                     "Bulb inserted in pocket in Marshalling box",
-                    "Breather Pocket filled with oil",
+                    "check_list.Breather Pocket filled with oil",
                     "Marshalling box installed and connected",
                     "Tap Changer manual operation is free",
                     "Proper Control & Communication cables termination",
@@ -443,7 +466,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`instruments.${index}.status`}
+                            name={`check_list.instruments.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -460,7 +483,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`instruments.${index}.remarks`}
+                            name={`check_list.instruments.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -485,7 +508,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`check_points2.${index}.status`}
+                            name={`check_list.check_points2.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -502,7 +525,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`check_points2.${index}.remarks`}
+                            name={`check_list.check_points2.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -527,7 +550,7 @@ const Form = () => {
 
 
                         <Controller
-                            name={`bus_duct.${index}.status`}
+                            name={`check_list.bus_duct.${index}.status`}
                             control={control}
                             render={({ field }) => (
                                 <ToggleButtonGroup
@@ -544,7 +567,7 @@ const Form = () => {
                             )}
                         />
                         <Controller
-                            name={`bus_duct.${index}.remarks`}
+                            name={`check_list.bus_duct.${index}.remarks`}
                             control={control}
                             render={({ field }) => (
                                 <TextField
@@ -557,6 +580,85 @@ const Form = () => {
                         />
                     </Box>
                 ))}
+  <Grid container spacing={2} my={3}>
+<Grid item xs={12} sm={12} md={12}>
+            <Typography variant="h6">Witnesses</Typography>
+          </Grid>
+          <Grid item xs={12} sm={4} md={4}>
+            <Controller
+              name="witness1"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  required
+                  {...field}
+                  select
+                  label="Witness 1"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.witness1}
+                  helperText={errors.witness1?.message}
+                >
+                  {witnesses?.map((witness) => (
+                    <MenuItem key={witness.id} value={witness.id}>
+                      {witness.username} ({witness.company})
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={4} md={4}>
+            <Controller
+              name="witness2"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  required
+                  {...field}
+                  select
+                  label="Witness 2"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.witness2}
+                  helperText={errors.witness2?.message}
+                >
+                  {witnesses?.map((witness) => (
+                    <MenuItem key={witness.id} value={witness.id}>
+                      {witness.username} ({witness.company})
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={4} md={4}>
+            <Controller
+              name="witness3"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  required
+                  {...field}
+                  select
+                  label="Witness 3"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.witness3}
+                  helperText={errors.witness3?.message}
+                >
+                  {witnesses?.map((witness) => (
+                    <MenuItem key={witness.id} value={witness.id}>
+                      {witness.username} ({witness.company})
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+          </Grid>
+        </Grid>
 
                 {/* <Typography variant="h5">Checked By </Typography>
                 <Grid my={5} container spacing={2} >

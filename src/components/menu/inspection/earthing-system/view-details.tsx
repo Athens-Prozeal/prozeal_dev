@@ -78,7 +78,7 @@ const ViewDetails = () => {
 
   return (
     <>
-    <Container sx={{ border: '1px solid #ddd', borderRadius: '8px' }}>
+    <Container sx={{ border: '1px solid #ddd', borderRadius: '8px' ,minWidth:"940px" }}>
       <Box>
         <Grid container mb={2} sx={{ p: 2, border: '1px solid #ddd', borderRadius: '8px', minHeight: '130px' }}>
           <Grid item xs={3}>
@@ -253,7 +253,7 @@ const ViewDetails = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ minWidth: '150px', border: '1px solid #ddd', background: '#E6E6E6' }}>
+                <TableCell sx={{ minWidth: '90px', border: '1px solid #ddd', background: '#E6E6E6' }}>
                   <b>Earth pit.No </b>
                 </TableCell>
                 <TableCell sx={{ minWidth: '150px', border: '1px solid #ddd', background: '#E6E6E6' }}>

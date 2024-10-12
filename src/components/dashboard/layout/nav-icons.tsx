@@ -9,6 +9,7 @@ import { UsersFour } from '@phosphor-icons/react/dist/ssr/UsersFour';
 import { Person } from '@phosphor-icons/react/dist/ssr/Person';
 import { Toolbox } from '@phosphor-icons/react/dist/ssr/Toolbox';
 import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
+import { Clipboard } from '@phosphor-icons/react/dist/ssr/Clipboard';
 import { Shield } from '@phosphor-icons/react/dist/ssr/Shield';
 
 // Get icon code from https://phosphoricons.com/
@@ -23,6 +24,7 @@ export const navIcons = {
   'tool-box': Toolbox,
   'shield': Shield,
   'magnifying-glass': MagnifyingGlass,
+  'clipboard': Clipboard,
   user: UserIcon,
   users: UsersIcon,
 } as Record<string, Icon>;

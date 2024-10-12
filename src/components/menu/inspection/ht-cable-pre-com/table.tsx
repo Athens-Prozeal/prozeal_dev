@@ -54,7 +54,7 @@ export const Table = () => {
             cellRendererParams: {
               actionsToDisplay: ['view', 'delete'],
               router: router,
-              viewUrl: `/menu/inspection/ht-cable-pre-com/view?htCablePreComId=`,
+              viewUrl: `/menu/inspection/pre-com-ht-cable/view?htCablePreComId=`,
             },
             minWidth: 150,
           },

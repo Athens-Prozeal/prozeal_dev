@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 
-import {Table} from '@/components/menu/inspection/ht-cable-pre-com/table';
+import { Table } from '@/components/menu/inspection/ht-cable-pre-com/table';
 
 export default function Page() {
   const role = localStorage.getItem('role');
@@ -19,16 +19,16 @@ export default function Page() {
           <Typography variant="h5">HT Cable</Typography>
         </Stack>
         <div>
-        {role === 'epc_admin' || role === 'epc' || role === 'quality_inspector' ? (
-          <Button
-            component={RouterLink}
-            href={'/menu/inspection/ht-cable-pre-com/add'}
-            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-            variant="contained"
-          >
-            Add
-          </Button>
-        ) : null}
+          {role === 'epc_admin' || role === 'epc' || role === 'quality_inspector' ? (
+            <Button
+              component={RouterLink}
+              href={'/menu/inspection/pre-com-ht-cable/add'}
+              startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+              variant="contained"
+            >
+              Add
+            </Button>
+          ) : null}
         </div>
       </Stack>
       <Stack>

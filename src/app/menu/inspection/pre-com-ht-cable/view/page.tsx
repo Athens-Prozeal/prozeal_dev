@@ -9,7 +9,7 @@ const Page = () => {
     <Stack spacing={3} sx={{ p: { xs: 2, sm: 3 },overflowX:"scroll"  }}>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} sx={{ flexWrap: 'wrap' }}>
         <Stack spacing={5} sx={{ flex: '1 1 auto', maxWidth: '100%'}}>
-          <Typography variant="h5">HT CABLE PRE COM</Typography>
+          <Typography variant="h5">Ht Cable Pre-Commissioning</Typography>
             <Box sx={{overflowX : "scroll",minWidth:"100%"}} >
             <ViewDetails  />
             </Box>

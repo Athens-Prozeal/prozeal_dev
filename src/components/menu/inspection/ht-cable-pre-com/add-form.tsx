@@ -120,7 +120,7 @@ const Form = () => {
         if (response.status === 201) {
           window.alert('HT Cable Pre-Commissioning Checklist Added');
           setTimeout(() => {
-            window.location.href = '/menu/inspection/ht-cable-pre-com?status=approved';
+            window.location.href = '/menu/inspection/pre-com-ht-cable?status=approved';
           }, 500);
         }
       })

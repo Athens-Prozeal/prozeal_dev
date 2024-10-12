@@ -483,7 +483,7 @@ const Form = () => {
         </Grid>
 
         <Box my={5}>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary" disabled={btnDisabled}>
             Submit
           </Button>
         </Box>

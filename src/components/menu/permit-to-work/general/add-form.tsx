@@ -26,7 +26,7 @@ const formSchema = z.object({
   other_work_permit_issued_same_location_datetime: z.string().min(1, 'Other Work Permit is required').default('no'),
   other_permit_no: z.string().optional(),
   any_other_safety_precaution_required: z.string().min(1, 'Safety Precautions is required'),
-  site_safety_induction_conducted: z.string().min(1, 'Site safety induction conducted choice is required'),
+  // site_safety_induction_conducted: z.string().min(1, 'Site safety induction conducted choice is required'),
 });
 
 type FormDataType = z.infer<typeof formSchema>;
@@ -171,7 +171,25 @@ export const PTWGeneral = () => {
               )}
             />
           </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="issued_to"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Issued to (Contractor Firm/Supplier Name):"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.job_description}
+                  helperText={errors.job_description?.message}
+                />
+              )}
+            />
+          </Grid>
         </Grid>
+
+
 
         <Typography marginTop={3} variant="h6">
           Following safety measures taken to carry out work:
@@ -188,8 +206,7 @@ export const PTWGeneral = () => {
               control={control}
               render={({ field }) => (
                 <ToggleButtonGroup
-                  value={field.value}
-                  defaultValue={'n/a'}
+                  value={field.value || 'n/a'}
                   exclusive
                   onChange={(event, newValue) => field.onChange(newValue)}
                   aria-label="TBT Status"
@@ -219,7 +236,7 @@ export const PTWGeneral = () => {
               control={control}
               render={({ field }) => (
                 <ToggleButtonGroup
-                  value={field.value}
+                  value={field.value || 'n/a'}
                   exclusive
                   onChange={(event, newValue) => field.onChange(newValue)}
                   aria-label="Underground Status"

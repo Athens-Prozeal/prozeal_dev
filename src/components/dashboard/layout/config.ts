@@ -37,6 +37,12 @@ let allNavItems: NavItemConfig[] = [
         href: paths.menu.permitToWork.general.home,
         matcher: { type: 'startsWith' as const, href: paths.menu.permitToWork.general.home },
       },
+      {
+        key: 'work',
+        title: 'Work',
+        href: paths.menu.permitToWork.work.home,
+        matcher: { type: 'startsWith' as const, href: paths.menu.permitToWork.work.home },
+      },
     ],
   },
   {

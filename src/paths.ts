@@ -40,6 +40,11 @@ export const paths = {
         add: '/menu/permit-to-work/general/add',
         edit: '/menu/permit-to-work/general/edit',
       },
+      work: {
+        home: '/menu/permit-to-work/work',
+        add: '/menu/permit-to-work/work/add',
+        edit: '/menu/permit-to-work/work/edit',
+      },
     },
     inspection: {
       //  Categorized Checklists

@@ -5,9 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import axios from 'axios';
+
+import { config } from '@/config';
+import { PopUp } from '@/components/core/alert';
 
 const formSchema = z.object({
-  expiires_at: z
+  expires_at: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, 'Datetime must be in the format YYYY-MM-DDTHH:MM:SSZ')
     .refine((value) => !isNaN(Date.parse(value)), 'Invalid date format'),
@@ -32,6 +36,11 @@ const formSchema = z.object({
 type FormDataType = z.infer<typeof formSchema>;
 
 export const PTWGeneral = () => {
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState<'error' | 'success'>('success');
+  const [alertKey, setAlertKey] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [permitNo, setPermitNo] = useState('');
   const [isolationCarried, setIsolationCarried] = useState('');
   const {
@@ -43,8 +52,37 @@ export const PTWGeneral = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (data:FormDataType) => {
+  const onSubmit = (data: FormDataType) => {
     console.log(data);
+    axios({
+      method: 'POST',
+      url: `${config.site.serverURL}/api/ptw/general/?work_site_id=${localStorage.getItem('work-site-id')}`,
+      data: data,
+      headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setAlertSeverity('success');
+          setAlertMessage('Permit added successfully');
+          setAlertKey((prev) => prev + 1);
+          setAlertOpen(true);
+          setTimeout(() => {
+            window.location.href = '/menu/inspection/general';
+          }, 500);
+        }
+      })
+      .catch((error) => {
+        setAlertSeverity('error');
+        setButtonDisabled(false);
+        if (error.response.data.non_field_errors) {
+          setAlertMessage(error.response.data.non_field_errors[0]);
+        } else {
+          setAlertMessage('Something went wrong');
+        }
+        setAlertKey((prev) => prev + 1);
+        setAlertOpen(true);
+      });
+    setButtonDisabled(true);
   };
 
   return (
@@ -53,18 +91,18 @@ export const PTWGeneral = () => {
         <Grid container spacing={{ xs: 2, md: 3 }}>
           <Grid item xs={12} md={6} lg={4}>
             <Controller
-              name="expiires_at"
+              name="expires_at"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Datetime"
+                  label="Expires At"
                   type="datetime-local"
                   variant="outlined"
                   fullWidth
                   InputLabelProps={{ shrink: true }}
-                  error={!!errors.expiires_at}
-                  helperText={errors.expiires_at?.message}
+                  error={!!errors.expires_at}
+                  helperText={errors.expires_at?.message}
                 />
               )}
             />
@@ -181,15 +219,13 @@ export const PTWGeneral = () => {
                   label="Issued to (Contractor Firm/Supplier Name):"
                   variant="outlined"
                   fullWidth
-                  error={!!errors.job_description}
-                  helperText={errors.job_description?.message}
+                  error={!!errors.issued_to}
+                  helperText={errors.issued_to?.message}
                 />
               )}
             />
           </Grid>
         </Grid>
-
-
 
         <Typography marginTop={3} variant="h6">
           Following safety measures taken to carry out work:
@@ -335,7 +371,7 @@ export const PTWGeneral = () => {
                 name="other_permit_no"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} label="Permit No" variant="outlined" fullWidth margin="normal" />
+                  <TextField {...field} label="Permit No" required variant="outlined" fullWidth margin="normal" />
                 )}
               />
             </Grid>
@@ -373,6 +409,7 @@ export const PTWGeneral = () => {
           </Button>
         </Box>
       </form>
+      <PopUp key={alertKey} open={alertOpen} alertSeverity={alertSeverity} alertMessage={alertMessage} />
     </Box>
   );
 };

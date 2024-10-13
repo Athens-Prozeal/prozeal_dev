@@ -8,12 +8,12 @@ export const paths = {
   },
   dashboard: {
     overview: '/dashboard',
-    settings:'/dashboard/settings',
+    settings: '/dashboard/settings',
     account: '/dashboard/account',
   },
   settings: '/dashboard/settings',
   account: '/dashboard/account',
-  menu:{
+  menu: {
     toolboxTalk: {
       home: '/menu/toolboxTalk',
       add: '/menu/toolboxTalk/add',
@@ -21,10 +21,10 @@ export const paths = {
     },
     worker: {
       home: '/menu/worker',
-      add: '/menu/worker/add'
+      add: '/menu/worker/add',
     },
     manpower: {
-      home:  '/menu/manpower',
+      home: '/menu/manpower',
       add: '/menu/manpower/add',
       edit: '/menu/manpower/edit',
       statistics: '/menu/manpower/statistics',
@@ -40,7 +40,6 @@ export const paths = {
         add: '/menu/permit-to-work/general/add',
         edit: '/menu/permit-to-work/general/edit',
       },
-
     },
     inspection: {
       //  Categorized Checklists
@@ -54,7 +53,7 @@ export const paths = {
       },
       plainCementConcreteWork: {
         home: '/menu/inspection/plain-cement-concrete-work',
-        add: '/menu/inspection/plain-cement-concrete-work/add'
+        add: '/menu/inspection/plain-cement-concrete-work/add',
       },
       pourCardForColumnConcrete: {
         home: '/menu/inspection/pour-card-for-column-concrete',
@@ -62,17 +61,17 @@ export const paths = {
       },
       pourCardForSlabConcrete: {
         home: '/menu/inspection/pour-card-for-slab-concrete',
-        add: '/menu/inspection/pour-card-for-slab-concrete/add'
+        add: '/menu/inspection/pour-card-for-slab-concrete/add',
       },
-      pourCardForBeam: { // Pour Card For Plinth Beam/Lintel Beam/Roof Beam
+      pourCardForBeam: {
+        // Pour Card For Plinth Beam/Lintel Beam/Roof Beam
         home: '/menu/inspection/pour-card-for-beam',
-        add: '/menu/inspection/pour-card-for-beam/add'
+        add: '/menu/inspection/pour-card-for-beam/add',
       },
       plastering: {
         home: '/menu/inspection/plastering',
-        add: '/menu/inspection/plastering/add'
+        add: '/menu/inspection/plastering/add',
       },
-
 
       //  Un-Categorized Checklists
       htCable: {
@@ -214,9 +213,9 @@ export const paths = {
       },
 
       htCablePreCom: {
-        home: '/menu/inspection/ht-cable-pre-com',
-        add: '/menu/inspection/ht-cable-pre-com/add',
-      }
+        home: '/menu/inspection/pre-com-ht-cable',
+        add: '/menu/inspection/pre-com-ht-cable/add',
+      },
     },
   },
 

@@ -9,6 +9,7 @@ import '@/styles/ag-grid.css';
 
 import { AgGridReact } from 'ag-grid-react';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import { config } from '@/config';
 import ActionButtonsRenderer from '@/components/core/ag-grid/action-buttons-renderer';
@@ -21,19 +22,21 @@ export interface PermitToWorkHandles {
 
 const PermitToWorkTable = forwardRef<PermitToWorkHandles, PermitToWorkProps>((props, ref) => {
   const authToken = `Bearer ${localStorage.getItem('access-token')}`;
+  const role = localStorage.getItem('role');
   const router = useRouter();
   const searchParams = useSearchParams();
   const [rowData, setRowData] = useState([]);
   const [colDefs, setColDefs] = useState<ColDef[]>();
 
   const statusOptions = [
-    { value: 'all', label: 'All' },
-    { value: 'open', label: 'Open' },
+    { value: 'open', label: 'Open' }, // Approved by client
     { value: 'closed', label: 'Closed' },
-    { value: 'corrective-action-required', label: 'Corrective Action Required' },
-    { value: 'verification-required', label: 'Verification Required' },
+    { value: 'submitted', label: 'Submitted by sub-contractor' }, // Visible only for Sub Contractor and EPC
+    { value: 'pending-approval', label: 'Pending Client Approval' }, // EPC Approved
+    { value: 'rejected', label: 'Rejected By Client' },
+    { value: 'expired', label: 'Expired' },
   ];
-  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || 'all');
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || 'open');
 
   const gridRef = useRef<AgGridReact>(null);
 
@@ -42,7 +45,7 @@ const PermitToWorkTable = forwardRef<PermitToWorkHandles, PermitToWorkProps>((pr
       try {
         const statusParam = statusFilter ? `&status=${statusFilter}` : '';
         const response = await axios.get(
-          `${config.site.serverURL}/api/permit-to-work/general/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
+          `${config.site.serverURL}/api/ptw/general/?work_site_id=${localStorage.getItem('work-site-id')}${statusParam}`,
           {
             headers: {
               Authorization: authToken,
@@ -53,10 +56,39 @@ const PermitToWorkTable = forwardRef<PermitToWorkHandles, PermitToWorkProps>((pr
         setRowData(response.data);
 
         setColDefs([
-          { field: 'issue_date', headerName: 'Issue Date', filter: 'agDateColumnFilter' },
+          {
+            field: 'issued_date',
+            headerName: 'Issue Date',
+            filter: 'agDateColumnFilter',
+            valueFormatter: (params) => {
+              return dayjs(params.value).format('DD/MM/YYYY HH:mm');
+            },
+          },
           { field: 'permit_no', headerName: 'Permit No', filter: 'agTextColumnFilter' },
           { field: 'submitted_by_username', headerName: 'Submitted by', filter: 'agTextColumnFilter' },
-          { field: 'status', headerName: 'Status', filter: 'agTextColumnFilter' },
+          {
+            field: 'status',
+            headerName: 'Status',
+            filter: 'agTextColumnFilter',
+            valueFormatter: (params) => {
+              switch (params.value) {
+                case 'epc_approved':
+                  return 'EPC Approved';
+                case 'submitted':
+                  return 'Submitted';
+                case 'client_rejected':
+                  return 'Rejected By Client';
+                case 'client_approved':
+                  return 'Approved By Client';
+                case 'auto_closed':
+                  return 'Auto Closed';
+                case 'expired':
+                  return 'Expired';
+                default:
+                  return params.value;
+              }
+            },
+          },
           { field: 'validity', headerName: 'Validity', filter: 'agTextColumnFilter' },
           { field: 'section', headerName: 'Section', filter: 'agTextColumnFilter' },
           { field: 'lock_out_no', headerName: 'Lock Out No', filter: 'agTextColumnFilter' },
@@ -64,16 +96,16 @@ const PermitToWorkTable = forwardRef<PermitToWorkHandles, PermitToWorkProps>((pr
           { field: 'work_order_no', headerName: 'Work Order No', filter: 'agTextColumnFilter' },
           { field: 'issued_to', headerName: 'Issued To', filter: 'agTextColumnFilter' },
 
-          // {
-          //   field: 'actions',
-          //   cellRenderer: ActionButtonsRenderer,
-          //   cellRendererParams: {
-          //     actionsToDisplay: ['view', 'edit', 'delete'],
-          //     viewUrl: `/menu/permit-to-work/general/view?PermitToWorkId=`,
-          //     router: router,
-          //   },
-          //   minWidth: 250,
-          // },
+          {
+            field: 'actions',
+            cellRenderer: ActionButtonsRenderer,
+            cellRendererParams: {
+              actionsToDisplay: ['view', 'edit', 'delete'],
+              viewUrl: `/menu/permit-to-work/general/view?permitToWorkId=`,
+              router: router,
+            },
+            minWidth: 250,
+          },
         ]);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -93,7 +125,7 @@ const PermitToWorkTable = forwardRef<PermitToWorkHandles, PermitToWorkProps>((pr
 
   const exportPermitToWork = () => {
     const params = {
-      columnKeys: ['issue_date',],
+      columnKeys: ['issued_date'],
     };
 
     if (gridRef.current?.api) {
@@ -122,7 +154,21 @@ const PermitToWorkTable = forwardRef<PermitToWorkHandles, PermitToWorkProps>((pr
       </FormControl>
 
       <div className="ag-theme-quartz" style={{ height: 500 }}>
-        <AgGridReact ref={gridRef} columnDefs={colDefs} rowHeight={60} rowData={rowData} pagination />
+        <AgGridReact
+          ref={gridRef}
+          columnDefs={colDefs}
+          rowHeight={60}
+          rowData={rowData}
+          pagination
+          getRowStyle={(params) => {
+            if (params.data.status === 'auto_closed') {
+              return { backgroundColor: 'red' };
+            } else if (params.data.status === 'expired') {
+              return { backgroundColor: 'orange' };
+            }
+            return undefined;
+          }}
+        />
       </div>
     </Box>
   );

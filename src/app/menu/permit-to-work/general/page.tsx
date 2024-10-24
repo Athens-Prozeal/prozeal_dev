@@ -33,7 +33,7 @@ export default function Page() {
           </Stack>
         </Stack>
         <div>
-        {role === 'epc_admin' || role === 'epc' || role == 'sub_contractor'? (
+        {role == 'sub_contractor'? (
           <Button
             component={RouterLink}
             href={'/menu/permit-to-work/general/add'}

@@ -3,19 +3,19 @@
 import React, { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import axios from 'axios';
 
 import { config } from '@/config';
 import { PopUp } from '@/components/core/alert';
 
 const formSchema = z.object({
-  expires_at: z
+  validity: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, 'Datetime must be in the format YYYY-MM-DDTHH:MM:SSZ')
-    .refine((value) => !isNaN(Date.parse(value)), 'Invalid date format'),
-  validity: z.string().min(1, 'Validity is required'),
+    .refine((value) => !isNaN(Date.parse(value)), 'Invalid date format')
+    .refine((value) => new Date(value) > new Date(), 'Validity should be a future date'),
   section: z.string().min(1, 'Section is required'),
   lock_out_no: z.string().min(1, 'Lock Out No is required'),
   location: z.string().min(1, 'Location is required'),
@@ -31,6 +31,9 @@ const formSchema = z.object({
   other_permit_no: z.string().optional(),
   any_other_safety_precaution_required: z.string().min(1, 'Safety Precautions is required'),
   // site_safety_induction_conducted: z.string().min(1, 'Site safety induction conducted choice is required'),
+  submitted_by_signature:  z.instanceof(File).refine((file) => file instanceof File, {
+    message: 'Invalid file format',
+  }),
 });
 
 type FormDataType = z.infer<typeof formSchema>;
@@ -40,7 +43,7 @@ export const PTWGeneral = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState<'error' | 'success'>('success');
   const [alertKey, setAlertKey] = useState(0);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [btnDisabled, setBtnDisabled] = useState(false);
   const [permitNo, setPermitNo] = useState('');
   const [isolationCarried, setIsolationCarried] = useState('');
   const {
@@ -53,11 +56,29 @@ export const PTWGeneral = () => {
   });
 
   const onSubmit = (data: FormDataType) => {
-    console.log(data);
+    const formData = new FormData();
+
+    formData.append('validity', data.validity);
+    formData.append('section', data.section);
+    formData.append('lock_out_no', data.lock_out_no);
+    formData.append('location', data.location);
+    formData.append('work_order_no', data.work_order_no);
+    formData.append('job_description', data.job_description);
+    formData.append('issued_to', data.issued_to);
+    formData.append('tool_box_talk', data.tool_box_talk);
+    formData.append('underground_or_overhead_cables_checked', data.underground_or_overhead_cables_checked);
+    formData.append('ppe_required_to_be_used', JSON.stringify(data.ppe_required_to_be_used));
+    formData.append('other_work_permit_issued_same_location_datetime', data.other_work_permit_issued_same_location_datetime);
+    if (data.other_permit_no) {
+      formData.append('other_permit_no', data.other_permit_no);
+    }
+    formData.append('any_other_safety_precaution_required', data.any_other_safety_precaution_required);
+    formData.append('submitted_by_signature', data.submitted_by_signature);
+
     axios({
       method: 'POST',
       url: `${config.site.serverURL}/api/ptw/general/?work_site_id=${localStorage.getItem('work-site-id')}`,
-      data: data,
+      data: formData,
       headers: { Authorization: `Bearer ${localStorage.getItem('access-token')}` },
     })
       .then((response) => {
@@ -67,13 +88,13 @@ export const PTWGeneral = () => {
           setAlertKey((prev) => prev + 1);
           setAlertOpen(true);
           setTimeout(() => {
-            window.location.href = '/menu/inspection/general';
+            window.location.href = '/menu/permit-to-work/general';
           }, 500);
         }
       })
       .catch((error) => {
         setAlertSeverity('error');
-        setButtonDisabled(false);
+        setBtnDisabled(false);
         if (error.response.data.non_field_errors) {
           setAlertMessage(error.response.data.non_field_errors[0]);
         } else {
@@ -82,7 +103,7 @@ export const PTWGeneral = () => {
         setAlertKey((prev) => prev + 1);
         setAlertOpen(true);
       });
-    setButtonDisabled(true);
+    setBtnDisabled(true);
   };
 
   return (
@@ -91,33 +112,16 @@ export const PTWGeneral = () => {
         <Grid container spacing={{ xs: 2, md: 3 }}>
           <Grid item xs={12} md={6} lg={4}>
             <Controller
-              name="expires_at"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Expires At"
-                  type="datetime-local"
-                  variant="outlined"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  error={!!errors.expires_at}
-                  helperText={errors.expires_at?.message}
-                />
-              )}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <Controller
               name="validity"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Validity"
+                  type="datetime-local"
                   variant="outlined"
                   fullWidth
+                  InputLabelProps={{ shrink: true }}
                   error={!!errors.validity}
                   helperText={errors.validity?.message}
                 />
@@ -403,8 +407,30 @@ export const PTWGeneral = () => {
           know the applicable safety rules and that they know what to do in an EMERGENCY.
         </Typography>
 
+        <Box marginTop={3}>
+          <Controller
+            name="submitted_by_signature"
+            control={control}
+            render={({ field }) => (
+              <TextField
+              helperText={errors.submitted_by_signature ? errors.submitted_by_signature.message : null}
+              error={!!errors.submitted_by_signature}
+              InputLabelProps={{ shrink: true }}
+              inputProps={{
+                accept: 'image/*',
+              }}
+              type="file"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files?.[0])}
+              label="Signature"
+              variant="outlined"
+            />
+            )}
+          />
+          {errors?.submitted_by_signature && <Typography color="error">{errors.submitted_by_signature.message}</Typography>}
+        </Box>
+
         <Box marginTop={5}>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary" disabled={btnDisabled}>
             Submit
           </Button>
         </Box>

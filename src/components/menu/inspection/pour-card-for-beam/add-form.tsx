@@ -1,5 +1,5 @@
-`'use client';
-`
+'use client';
+
 import { Fragment, useEffect, useState } from 'react';
 import { ChecklistSchema } from '@/schemas/checklist';
 import { zodResolver } from '@hookform/resolvers/zod';
